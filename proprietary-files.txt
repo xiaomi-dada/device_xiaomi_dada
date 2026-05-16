@@ -2418,3 +2418,7 @@ odm/firmware/water_check.tflite
 # Vibrator
 odm/lib64/libcom.xiaomi.ionutils.so
 odm/lib64/libmicamera_fps_checker.so
+
+# ACDB (Fluence)
+odm/etc/acdbdata/Fluence/Fluence_acdb_cal.acdb
+odm/etc/acdbdata/Fluence/Fluence_workspaceFileXml.qwsp
