@@ -2090,6 +2090,16 @@ odm/firmware/dada_sunny_s5kjn5_bu24619_tele3x_i_ois_lsm6dsv.prog
 odm/etc/df_default.xml
 odm/etc/mdss_dsi_o3_36_02_0b_dsc_cmd_mi.xml
 odm/etc/mdss_dsi_o3_42_0d_0a_dsc_cmd_mi.xml
+product/etc/displayconfig/common_multi_factor_thermal_brightness_control.xml
+product/etc/displayconfig/display_id_4630946682710401939.xml
+product/etc/displayconfig/display_id_4630947212918452371.xml
+product/etc/displayconfig/multi_factor_thermal_brightness_control.xml
+product/etc/displayconfig/rhythmic_app_category_list_backup.xml
+vendor/etc/displayconfig/display_id_4630946916234099603.xml
+vendor/etc/displayconfig/display_id_4630947039571902850.xml
+vendor/etc/displayconfig/display_id_4630947039571902851.xml
+vendor/etc/displayconfig/display_id_4630947075271898515.xml
+vendor/etc/displayconfig/display_layout_configuration.xml
 odm/etc/disp0/mdss_dsi_o3_36_02_0b_dsc_cmd/cct_pcc.txt
 odm/etc/disp0/mdss_dsi_o3_36_02_0b_dsc_cmd/clstc/clstc_gc_0.txt
 odm/etc/disp0/mdss_dsi_o3_36_02_0b_dsc_cmd/clstc/clstc_igc_0.txt
