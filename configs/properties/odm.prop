@@ -12,6 +12,13 @@ vendor.display.enable_spr=1
 # Fingerprint
 persist.vendor.fingerprint.type=udfps
 persist.vendor.fingerprint.sensor_location=600|2050|109
+persist.vendor.sys.fp.fod.location.X_Y=518,1954
+persist.vendor.sys.fp.fod.size.width_height=164,164
+persist.vendor.sys.fp.fod.us.target=509,1936,690,2135
+ro.hardware.fp.fod=true
+ro.hardware.fp.fod.c=true
+ro.hardware.fp.fod.touch.ctl.version=2.0
+ro.hardware.fp.mievent=true
 
 # Marketname
 ro.product.marketname=Xiaomi 15

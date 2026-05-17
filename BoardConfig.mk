@@ -38,3 +38,6 @@ TARGET_ODM_PROP += $(DEVICE_PATH)/configs/properties/odm.prop
 
 # Inherit from the proprietary version
 include vendor/xiaomi/dada/BoardConfigVendor.mk
+
+# Firmware
+-include vendor/xiaomi/dada-firmware/BoardConfigVendor.mk

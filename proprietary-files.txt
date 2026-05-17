@@ -1707,11 +1707,11 @@ odm/lib64/camera/plugins/com.xiaomi.plugin.facealignpreview.so
 odm/lib64/camera/plugins/com.xiaomi.plugin.filter.so
 odm/lib64/camera/plugins/com.xiaomi.plugin.frontbokeh.so
 odm/lib64/camera/plugins/com.xiaomi.plugin.frontbokehpreview.so
-odm/lib64/camera/plugins/com.xiaomi.plugin.gainmap.so
+odm/lib64/camera/plugins/com.xiaomi.plugin.gainmap.so;DISABLE_DEPS
 odm/lib64/camera/plugins/com.xiaomi.plugin.gainmapPostProc.so
 odm/lib64/camera/plugins/com.xiaomi.plugin.GestureEffects.so
 odm/lib64/camera/plugins/com.xiaomi.plugin.heifedit.so
-odm/lib64/camera/plugins/com.xiaomi.plugin.jpegrAggr.so
+odm/lib64/camera/plugins/com.xiaomi.plugin.jpegrAggr.so;DISABLE_DEPS
 odm/lib64/camera/plugins/com.xiaomi.plugin.ldc.so
 odm/lib64/camera/plugins/com.xiaomi.plugin.memcpy.so
 odm/lib64/camera/plugins/com.xiaomi.plugin.memcpyCustomization.so
@@ -1998,7 +1998,10 @@ odm/lib64/libmmcamera_lscv35.so
 odm/lib64/libmmcamera_mfnr_t4.so
 odm/lib64/libmmcamera_mfnr.so
 odm/lib64/libmmcamera_pdpc.so
-odm/lib64/libmmfp.so
+odm/lib64/hw/fingerprint.goodix_us.so;DISABLE_DEPS
+odm/lib64/hw/fingerprint.qcom_us.so;DISABLE_DEPS
+odm/lib64/libgf_hal.so;DISABLE_DEPS
+odm/lib64/libmmfp.so;DISABLE_DEPS
 odm/lib64/libmorpho_Depurple.so
 odm/lib64/libocr_api.so
 odm/lib64/libofestriping.so
