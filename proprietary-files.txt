@@ -220,6 +220,14 @@ vendor/lib64/rfs/dsp/libVppFrcQnnHtp.so
 vendor/lib64/rfs/dsp/libvpt_action_recognition.so
 vendor/lib64/rfs/dsp/libworker_pool.so
 
+# ODM DSP
+odm/lib64/rfs/dsp/libapn_dsp_skel.so
+odm/lib64/rfs/dsp/libbitml_nsp_73na_skel.so
+odm/lib64/rfs/dsp/libbitml_nsp_79na_skel.so
+odm/lib64/rfs/dsp/libbitml_nsp_skel.so
+odm/lib64/rfs/dsp/libhdr_skel.so
+odm/lib64/rfs/dsp/libqsegnetengine_dsp_skel.so
+
 # Audio (Config)
 odm/etc/audio/sku_sun/mixer_paths_overlay_dynamic.xml
 odm/etc/audio/sku_sun/mixer_paths_overlay_static.xml
@@ -2066,6 +2074,7 @@ vendor/lib64/libopencv_core.so
 vendor/lib64/libopencv_imgproc_se.so
 vendor/lib64/libopencv_imgproc.so
 vendor/lib64/libSNPESample.so
+vendor/lib64/libultrahdr.so|libultrahdr_dada
 vendor/lib64/vendor.xiaomi.hardware.aidl.intentaware-V1-ndk_platform.so
 vendor/lib64/vendor.xiaomi.hardware.aon-V1-ndk.so
 vendor/lib64/vendor.xiaomi.hardware.camera.injection-client.so
