@@ -1,0 +1,56 @@
+From 96a12f3fc089d946e9ffc1c5579fdd6bfff10930 Mon Sep 17 00:00:00 2001
+From: karthick-kk <kkzone@gmail.com>
+Date: Wed, 20 May 2026 17:28:35 +0530
+Subject: [PATCH] Aperture: Default Ultra HDR to disabled
+
+Some camera HALs advertise DYNAMIC_RANGE_TEN_BIT capability but
+cannot handle JPEG_R streams, causing configureStreams to fail.
+
+Default Ultra HDR to disabled to prevent camera crashes on
+devices with incomplete HDR support.
+---
+ app/Android.bp                                                  | 1 +
+ app/src/main/AndroidManifest.xml                                | 1 +
+ .../lineageos/aperture/repositories/PreferencesRepository.kt    | 2 +-
+ 3 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/app/Android.bp b/app/Android.bp
+index b24f014..a77976d 100644
+--- a/app/Android.bp
++++ b/app/Android.bp
+@@ -16,6 +16,7 @@ android_app {
+ 
+     sdk_version: "36",
+     product_specific: true,
++    privileged: true,
+ 
+     overrides: ["Camera2"],
+ 
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+index 639a85e..90bc843 100644
+--- a/app/src/main/AndroidManifest.xml
++++ b/app/src/main/AndroidManifest.xml
+@@ -18,6 +18,7 @@
+     <uses-permission
+         android:name="android.permission.CAMERA"
+         tools:ignore="PermissionImpliesUnsupportedChromeOsHardware" />
++    <uses-permission android:name="android.permission.SYSTEM_CAMERA" />
+     <uses-permission
+         android:name="android.permission.READ_EXTERNAL_STORAGE"
+         android:maxSdkVersion="28" />
+diff --git a/app/src/main/java/org/lineageos/aperture/repositories/PreferencesRepository.kt b/app/src/main/java/org/lineageos/aperture/repositories/PreferencesRepository.kt
+index 5cabc85..92d34a0 100644
+--- a/app/src/main/java/org/lineageos/aperture/repositories/PreferencesRepository.kt
++++ b/app/src/main/java/org/lineageos/aperture/repositories/PreferencesRepository.kt
+@@ -144,7 +144,7 @@ class PreferencesRepository(
+      */
+     val usePhotoJpegUltraHdr = primitivePreference(
+         key = "use_photo_jpeg_ultra_hdr",
+-        defaultValue = true,
++        defaultValue = false,
+     ).asPreferenceHolder()
+ 
+     /**
+-- 
+2.54.0
+
