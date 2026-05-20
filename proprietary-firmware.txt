@@ -1,4 +1,4 @@
-## Firmware images extracted from LumineDroid-bellflower-20260321-UNOFFICIAL-dada
+## Firmware images for Xiaomi dada
 
 abl.img;AB
 aop.img;AB

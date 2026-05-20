@@ -1,4 +1,4 @@
-## Proprietary files for Xiaomi dada - filtered from backup for LumineDroid
+## Proprietary files for Xiaomi dada
 
 
 # ACDB
@@ -2006,8 +2006,8 @@ odm/lib64/libmmcamera_lscv35.so
 odm/lib64/libmmcamera_mfnr_t4.so
 odm/lib64/libmmcamera_mfnr.so
 odm/lib64/libmmcamera_pdpc.so
-odm/lib64/hw/fingerprint.goodix_us.so;DISABLE_DEPS
-odm/lib64/hw/fingerprint.qcom_us.so;DISABLE_DEPS
+odm/lib64/hw/fingerprint.goodix_us.default.so;DISABLE_DEPS
+odm/lib64/hw/fingerprint.qcom_us.default.so;DISABLE_DEPS
 odm/lib64/libgf_hal.so;DISABLE_DEPS
 odm/lib64/libmmfp.so;DISABLE_DEPS
 odm/lib64/libmorpho_Depurple.so
