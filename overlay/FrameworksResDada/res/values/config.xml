@@ -4,6 +4,10 @@
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources>
+    <!-- Use the back ambient light sensor (tcs3408) for auto-brightness instead of
+         the under-display sensor (TCS3720) which requires CWB data from display composer -->
+    <string name="config_displayLightSensorType" translatable="false">xiaomi.sensor.back_lux</string>
+
     <!-- Screen brightness used to dim the screen when the user activity
          timeout expires.  May be less than the minimum allowed brightness setting
          that can be set by the user. -->
