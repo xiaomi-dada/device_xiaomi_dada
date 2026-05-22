@@ -35,6 +35,23 @@
          auto-brightness adjustment setting. -->
     <fraction name="config_autoBrightnessAdjustmentMaxGamma">100.0%</fraction>
 
+    <!-- An array of floats describing the screen brightness in nits corresponding to the backlight
+         values in the config_screenBrightnessBacklight array. Used for auto-brightness. -->
+    <array name="config_screenBrightnessNits">
+        <item>2.0</item>
+        <item>1800.0</item>
+        <item>3200.0</item>
+    </array>
+
+    <!-- An array of floats describing the screen backlight values corresponding to the brightness
+         values in the config_screenBrightnessNits array. Used for auto-brightness.
+         Values are normalized to 0.0-1.0 range. -->
+    <array name="config_screenBrightnessBacklight">
+        <item>0.000854597</item>
+        <item>0.7498474</item>
+        <item>1.0</item>
+    </array>
+
     <!-- Array of desired screen brightness in nits corresponding to the lux values
          in the config_autoBrightnessLevels array. The display brightness is defined as the measured
          brightness of an all-white image.
