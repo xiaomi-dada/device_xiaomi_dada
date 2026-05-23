@@ -39,6 +39,16 @@
          values in the config_screenBrightnessBacklight array. Used for auto-brightness. -->
     <array name="config_screenBrightnessNits">
         <item>2.0</item>
+        <item>50.0</item>
+        <item>100.0</item>
+        <item>200.0</item>
+        <item>400.0</item>
+        <item>600.0</item>
+        <item>800.0</item>
+        <item>1000.0</item>
+        <item>1200.0</item>
+        <item>1400.0</item>
+        <item>1600.0</item>
         <item>1800.0</item>
         <item>3200.0</item>
     </array>
@@ -48,6 +58,16 @@
          Values are normalized to 0.0-1.0 range. -->
     <array name="config_screenBrightnessBacklight">
         <item>0.000854597</item>
+        <item>0.03</item>
+        <item>0.06</item>
+        <item>0.12</item>
+        <item>0.22</item>
+        <item>0.32</item>
+        <item>0.42</item>
+        <item>0.50</item>
+        <item>0.57</item>
+        <item>0.64</item>
+        <item>0.70</item>
         <item>0.7498474</item>
         <item>1.0</item>
     </array>
@@ -65,134 +85,134 @@
          array. The brightness values must be non-negative and non-decreasing. This must be
          overridden in platform specific overlays -->
     <array name="config_autoBrightnessDisplayValuesNits">
-        <item>4.2</item>
-        <item>9.22</item>
-        <item>14.24</item>
-        <item>19.26</item>
-        <item>24.28</item>
-        <item>29.3</item>
-        <item>34.32</item>
-        <item>37.01</item>
-        <item>38.48</item>
-        <item>40.25</item>
-        <item>42.01</item>
-        <item>43.91</item>
-        <item>45.89</item>
-        <item>47.99</item>
-        <item>50.18</item>
-        <item>52.49</item>
-        <item>54.9</item>
-        <item>57.42</item>
-        <item>60.05</item>
-        <item>62.77</item>
-        <item>66.32</item>
-        <item>68.54</item>
-        <item>71.59</item>
-        <item>74.74</item>
-        <item>78.94</item>
-        <item>81.36</item>
-        <item>84.83</item>
-        <item>88.4</item>
-        <item>92.08</item>
-        <item>95.87</item>
-        <item>99.76</item>
-        <item>100.31</item>
-        <item>100.85</item>
-        <item>101.41</item>
-        <item>101.94</item>
-        <item>102.48</item>
-        <item>103.01</item>
-        <item>103.54</item>
-        <item>104.08</item>
-        <item>104.63</item>
-        <item>105.14</item>
-        <item>105.66</item>
-        <item>106.19</item>
-        <item>106.7</item>
-        <item>107.23</item>
-        <item>108.97</item>
-        <item>110.72</item>
-        <item>112.46</item>
-        <item>114.3</item>
-        <item>115.96</item>
-        <item>117.71</item>
-        <item>119.46</item>
-        <item>121.2</item>
-        <item>122.95</item>
-        <item>124.69</item>
-        <item>126.44</item>
-        <item>128.18</item>
-        <item>129.94</item>
-        <item>131.69</item>
-        <item>133.51</item>
-        <item>135.18</item>
-        <item>136.92</item>
-        <item>138.7</item>
-        <item>140.51</item>
-        <item>142.32</item>
-        <item>151.37</item>
-        <item>162.96</item>
-        <item>186.14</item>
-        <item>210.41</item>
-        <item>236.12</item>
-        <item>262.4</item>
-        <item>289.26</item>
-        <item>316.61</item>
-        <item>330.48</item>
-        <item>402.46</item>
-        <item>477.58</item>
-        <item>556.19</item>
-        <item>638.92</item>
-        <item>724.6</item>
-        <item>739.93</item>
-        <item>755.27</item>
-        <item>770.6</item>
-        <item>785.94</item>
-        <item>801.28</item>
-        <item>816.61</item>
-        <item>831.95</item>
-        <item>847.28</item>
-        <item>862.62</item>
-        <item>877.96</item>
-        <item>893.29</item>
-        <item>908.63</item>
-        <item>923.96</item>
-        <item>939.3</item>
-        <item>954.64</item>
-        <item>969.96</item>
-        <item>985.3</item>
-        <item>1000.63</item>
-        <item>1015.97</item>
-        <item>1031.3</item>
-        <item>1046.64</item>
-        <item>1077.31</item>
-        <item>1107.98</item>
-        <item>1138.66</item>
-        <item>1169.33</item>
+        <item>8.0</item>
+        <item>14.4</item>
+        <item>20.8</item>
+        <item>27.2</item>
+        <item>33.6</item>
+        <item>40.0</item>
+        <item>46.0</item>
+        <item>52.0</item>
+        <item>58.0</item>
+        <item>64.0</item>
+        <item>70.0</item>
+        <item>74.0</item>
+        <item>78.0</item>
+        <item>82.0</item>
+        <item>86.0</item>
+        <item>90.0</item>
+        <item>94.0</item>
+        <item>98.0</item>
+        <item>102.0</item>
+        <item>106.0</item>
+        <item>110.0</item>
+        <item>114.0</item>
+        <item>118.0</item>
+        <item>122.0</item>
+        <item>126.0</item>
+        <item>130.0</item>
+        <item>134.0</item>
+        <item>138.0</item>
+        <item>142.0</item>
+        <item>146.0</item>
+        <item>150.0</item>
+        <item>157.5</item>
+        <item>165.0</item>
+        <item>172.5</item>
+        <item>180.0</item>
+        <item>187.0</item>
+        <item>194.0</item>
+        <item>201.0</item>
+        <item>208.0</item>
+        <item>215.0</item>
+        <item>222.0</item>
+        <item>229.0</item>
+        <item>236.0</item>
+        <item>243.0</item>
+        <item>250.0</item>
+        <item>264.0</item>
+        <item>278.0</item>
+        <item>292.0</item>
+        <item>306.0</item>
+        <item>320.0</item>
+        <item>332.0</item>
+        <item>344.0</item>
+        <item>356.0</item>
+        <item>368.0</item>
+        <item>380.0</item>
+        <item>387.0</item>
+        <item>394.0</item>
+        <item>401.0</item>
+        <item>408.0</item>
+        <item>415.0</item>
+        <item>422.0</item>
+        <item>429.0</item>
+        <item>436.0</item>
+        <item>443.0</item>
+        <item>450.0</item>
+        <item>485.0</item>
+        <item>520.0</item>
+        <item>573.3</item>
+        <item>620.0</item>
+        <item>660.0</item>
+        <item>700.0</item>
+        <item>740.0</item>
+        <item>780.0</item>
+        <item>800.0</item>
+        <item>875.0</item>
+        <item>950.0</item>
+        <item>1012.5</item>
+        <item>1075.0</item>
+        <item>1137.5</item>
         <item>1200.0</item>
+        <item>1230.0</item>
         <item>1260.0</item>
+        <item>1290.0</item>
         <item>1320.0</item>
+        <item>1350.0</item>
         <item>1380.0</item>
+        <item>1410.0</item>
         <item>1440.0</item>
+        <item>1470.0</item>
         <item>1500.0</item>
+        <item>1515.0</item>
+        <item>1530.0</item>
+        <item>1545.0</item>
         <item>1560.0</item>
+        <item>1575.0</item>
+        <item>1590.0</item>
+        <item>1605.0</item>
         <item>1620.0</item>
+        <item>1635.0</item>
+        <item>1650.0</item>
         <item>1680.0</item>
+        <item>1710.0</item>
         <item>1740.0</item>
+        <item>1770.0</item>
         <item>1800.0</item>
+        <item>1830.0</item>
+        <item>1860.0</item>
+        <item>1890.0</item>
+        <item>1920.0</item>
+        <item>1950.0</item>
+        <item>1980.0</item>
+        <item>2010.0</item>
+        <item>2040.0</item>
+        <item>2070.0</item>
         <item>2100.0</item>
+        <item>2250.0</item>
         <item>2400.0</item>
+        <item>2550.0</item>
         <item>2700.0</item>
+        <item>2850.0</item>
         <item>3000.0</item>
-        <item>3200.0</item>
-        <item>3200.0</item>
-        <item>3200.0</item>
-        <item>3200.0</item>
-        <item>3200.0</item>
-        <item>3200.0</item>
-        <item>3200.0</item>
-        <item>3200.0</item>
-        <item>3200.0</item>
+        <item>3020.0</item>
+        <item>3050.0</item>
+        <item>3075.0</item>
+        <item>3100.0</item>
+        <item>3125.0</item>
+        <item>3150.0</item>
+        <item>3175.0</item>
         <item>3200.0</item>
     </array>
 
