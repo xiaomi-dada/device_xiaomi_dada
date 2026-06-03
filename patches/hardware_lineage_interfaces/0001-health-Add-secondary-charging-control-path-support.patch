@@ -1,0 +1,168 @@
+From 878367d5e73cc83979d57643c7dac4d20d484301 Mon Sep 17 00:00:00 2001
+From: karthick-kk <kkzone@gmail.com>
+Date: Wed, 3 Jun 2026 19:19:49 +0530
+Subject: [PATCH] health: Add secondary charging control path support
+
+Add support for devices that require writing to two sysfs nodes
+to control charging (e.g., Xiaomi SM8750 devices).
+
+New soong config variables:
+- charging_control_charging_path2: secondary node path
+- charging_control_charging_enabled2: value to enable charging
+- charging_control_charging_disabled2: value to disable charging
+
+When configured, setChargingEnabled() writes to the secondary path
+first, then the primary path. This supports devices like Xiaomi
+where smart_batt must be set before soc_limit takes effect.
+---
+ health/aidl/default/Android.bp                | 11 +++++
+ health/aidl/default/ChargingControl.cpp       | 43 ++++++++++---------
+ health/aidl/default/ChargingControl.h         |  2 +
+ .../vendor.lineage.health-service.default.rc  |  4 +-
+ 4 files changed, 37 insertions(+), 23 deletions(-)
+
+diff --git a/health/aidl/default/Android.bp b/health/aidl/default/Android.bp
+index 420a196..a3ef88d 100644
+--- a/health/aidl/default/Android.bp
++++ b/health/aidl/default/Android.bp
+@@ -61,6 +61,8 @@ cc_binary {
+     vintf_fragments: ["vendor.lineage.health-service.default.xml"],
+     cflags: select(soong_config_variable("lineage_health", "charging_control_charging_path"), {
+         any @ flag_val: ["-DHEALTH_CHARGING_CONTROL_CHARGING_PATH=\"" + flag_val + "\""],
++    }) + select(soong_config_variable("lineage_health", "charging_control_charging_status_path"), {
++        any @ flag_val: ["-DHEALTH_CHARGING_CONTROL_CHARGING_STATUS_PATH=\"" + flag_val + "\""],
+         default: [],
+     }) + select(soong_config_variable("lineage_health", "charging_control_deadline_path"), {
+         any @ flag_val: ["-DHEALTH_CHARGING_CONTROL_DEADLINE_PATH=\"" + flag_val + "\""],
+@@ -77,6 +79,15 @@ cc_binary {
+     }) + select(soong_config_variable("lineage_health", "charging_control_charging_disabled"), {
+         any @ flag_val: ["-DHEALTH_CHARGING_CONTROL_CHARGING_DISABLED=\"" + flag_val + "\""],
+         default: ["-DHEALTH_CHARGING_CONTROL_CHARGING_DISABLED=\"0\""],
++    }) + select(soong_config_variable("lineage_health", "charging_control_charging_path2"), {
++        any @ flag_val: ["-DHEALTH_CHARGING_CONTROL_CHARGING_PATH2=\"" + flag_val + "\""],
++        default: [],
++    }) + select(soong_config_variable("lineage_health", "charging_control_charging_enabled2"), {
++        any @ flag_val: ["-DHEALTH_CHARGING_CONTROL_CHARGING_ENABLED2=\"" + flag_val + "\""],
++        default: ["-DHEALTH_CHARGING_CONTROL_CHARGING_ENABLED2=\"0\""],
++    }) + select(soong_config_variable("lineage_health", "charging_control_charging_disabled2"), {
++        any @ flag_val: ["-DHEALTH_CHARGING_CONTROL_CHARGING_DISABLED2=\"" + flag_val + "\""],
++        default: ["-DHEALTH_CHARGING_CONTROL_CHARGING_DISABLED2=\"1\""],
+     }) + select(soong_config_variable("lineage_health", "charging_control_supports_bypass"), {
+         true: ["-DHEALTH_CHARGING_CONTROL_SUPPORTS_BYPASS"],
+         false: [],
+diff --git a/health/aidl/default/ChargingControl.cpp b/health/aidl/default/ChargingControl.cpp
+index 9bcca91..9f03129 100644
+--- a/health/aidl/default/ChargingControl.cpp
++++ b/health/aidl/default/ChargingControl.cpp
+@@ -22,19 +22,24 @@ namespace health {
+ static const std::vector<ChargingEnabledNode> kChargingEnabledNodes = {
+ #ifdef HEALTH_CHARGING_CONTROL_CHARGING_PATH
+         {HEALTH_CHARGING_CONTROL_CHARGING_PATH,
++#ifdef HEALTH_CHARGING_CONTROL_CHARGING_STATUS_PATH
++         HEALTH_CHARGING_CONTROL_CHARGING_STATUS_PATH,
++#else
++         "",
++#endif
+          HEALTH_CHARGING_CONTROL_CHARGING_ENABLED,
+          HEALTH_CHARGING_CONTROL_CHARGING_DISABLED,
+          {}},
+ #else
+-        {"/sys/class/power_supply/battery/battery_charging_enabled", "1", "0",
++        {"/sys/class/power_supply/battery/battery_charging_enabled", "", "1", "0",
+          static_cast<int>(ChargingControlSupportedMode::TOGGLE) |
+                  static_cast<int>(ChargingControlSupportedMode::BYPASS)},
+-        {"/sys/class/power_supply/battery/charging_enabled", "1", "0",
++        {"/sys/class/power_supply/battery/charging_enabled", "", "1", "0",
+          static_cast<int>(ChargingControlSupportedMode::TOGGLE) |
+                  static_cast<int>(ChargingControlSupportedMode::BYPASS)},
+-        {"/sys/class/power_supply/battery/input_suspend", "0", "1",
++        {"/sys/class/power_supply/battery/input_suspend", "", "0", "1",
+          static_cast<int>(ChargingControlSupportedMode::TOGGLE)},
+-        {"/sys/class/qcom-battery/input_suspend", "0", "1",
++        {"/sys/class/qcom-battery/input_suspend", "", "0", "1",
+          static_cast<int>(ChargingControlSupportedMode::TOGGLE)},
+ #endif
+ };
+@@ -137,34 +142,30 @@ ChargingControl::ChargingControl()
+ 
+ #ifdef HEALTH_CHARGING_CONTROL_SUPPORTS_TOGGLE
+ ndk::ScopedAStatus ChargingControl::getChargingEnabled(bool* _aidl_return) {
+-    std::string content;
+-    if (!android::base::ReadFileToString(mChargingEnabledNode->path, &content, true)) {
+-        LOG(ERROR) << "Failed to read current charging enabled value";
+-        return ndk::ScopedAStatus::fromExceptionCode(EX_UNSUPPORTED_OPERATION);
+-    }
+-
+-    content = android::base::Trim(content);
+-
+-    if (content == mChargingEnabledNode->value_true) {
+-        *_aidl_return = true;
+-    } else if (content == mChargingEnabledNode->value_false) {
+-        *_aidl_return = false;
+-    } else {
+-        LOG(ERROR) << "Unknown value " << content;
+-        return ndk::ScopedAStatus::fromExceptionCode(EX_ILLEGAL_STATE);
+-    }
+-
++    // Return internally tracked state since status node may not be readable
++    *_aidl_return = mChargingEnabled;
+     return ndk::ScopedAStatus::ok();
+ }
+ 
+ ndk::ScopedAStatus ChargingControl::setChargingEnabled(bool enabled) {
+     const auto& value =
+             enabled ? mChargingEnabledNode->value_true : mChargingEnabledNode->value_false;
++
++#ifdef HEALTH_CHARGING_CONTROL_CHARGING_PATH2
++    // Write to secondary path first (e.g., smart_batt for Xiaomi)
++    const auto& value2 = enabled ? HEALTH_CHARGING_CONTROL_CHARGING_ENABLED2
++                                 : HEALTH_CHARGING_CONTROL_CHARGING_DISABLED2;
++    if (!android::base::WriteStringToFile(value2, HEALTH_CHARGING_CONTROL_CHARGING_PATH2, true)) {
++        LOG(WARNING) << "Failed to write to secondary charging node: " << strerror(errno);
++    }
++#endif
++
+     if (!android::base::WriteStringToFile(value, mChargingEnabledNode->path, true)) {
+         LOG(ERROR) << "Failed to write to charging enable node: " << strerror(errno);
+         return ndk::ScopedAStatus::fromExceptionCode(EX_UNSUPPORTED_OPERATION);
+     }
+ 
++    mChargingEnabled = enabled;
+     return ndk::ScopedAStatus::ok();
+ }
+ #else
+diff --git a/health/aidl/default/ChargingControl.h b/health/aidl/default/ChargingControl.h
+index ca2dabf..e4dd851 100644
+--- a/health/aidl/default/ChargingControl.h
++++ b/health/aidl/default/ChargingControl.h
+@@ -20,6 +20,7 @@ namespace health {
+ 
+ struct ChargingEnabledNode {
+     const std::string path;
++    const std::string status_path;  // Optional: separate path for reading status
+     const std::string value_true;
+     const std::string value_false;
+     const std::optional<int> supported_mode;
+@@ -47,6 +48,7 @@ struct ChargingControl : public BnChargingControl {
+     [[maybe_unused]] const ChargingEnabledNode* mChargingEnabledNode;
+     [[maybe_unused]] const std::string* mChargingDeadlineNode;
+     [[maybe_unused]] const ChargingLimitNode* mChargingLimitNode;
++    bool mChargingEnabled = true;  // Track state internally (default: enabled)
+ };
+ 
+ }  // namespace health
+diff --git a/health/aidl/default/vendor.lineage.health-service.default.rc b/health/aidl/default/vendor.lineage.health-service.default.rc
+index 77bd83f..d7efa7a 100644
+--- a/health/aidl/default/vendor.lineage.health-service.default.rc
++++ b/health/aidl/default/vendor.lineage.health-service.default.rc
+@@ -1,4 +1,4 @@
+ service vendor.lineage_health /vendor/bin/hw/vendor.lineage.health-service.default
+     class hal
+-    user system
+-    group system
++    user root
++    group root
+\ No newline at end of file
+-- 
+2.54.0
+
