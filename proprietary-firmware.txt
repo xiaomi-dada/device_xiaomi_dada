@@ -1,34 +1,19 @@
 ## Firmware images for Xiaomi dada
-
-abl.img;AB
-aop.img;AB
-aop_config.img;AB
-bluetooth.img;AB
-countrycode.img;AB
-cpucp.img;AB
-cpucp_dtb.img;AB
-devcfg.img;AB
-dsp.img;AB
-featenabler.img;AB
-hyp.img;AB
-idmanager.img;AB
-imagefv.img;AB
-keymaster.img;AB
-modem.img;AB
-modemfirmware.img;AB
-multiimgqti.img;AB
-pdp.img;AB
-pdp_cdb.img;AB
-pvmfw.img;AB
-qupfw.img;AB
-shrm.img;AB
-soccp_dcd.img;AB
-soccp_debug.img;AB
-spuservice.img;AB
-tz.img;AB
-uefi.img;AB
-uefisecapp.img;AB
-vm-bootsys.img
-xbl.img;AB
-xbl_config.img;AB
-xbl_ramdump.img;AB
+##
+## Intentionally empty.
+##
+## Firmware is handled entirely by vendor/xiaomi/dada-firmware, which both
+## supplies the images (add-radio-file) and declares AB_OTA_PARTITIONS. Listing
+## them here as well produced a second, generated AB_OTA_PARTITIONS block in
+## vendor/xiaomi/dada/BoardConfigVendor.mk naming all 33 images, while the
+## images themselves were never extracted into vendor/xiaomi/dada/radio/ -- so
+## packaging demanded images that do not exist:
+##
+##     add_img_to_target_files.py, in CheckAbOtaImages
+##     AssertionError: Failed to find abl.img
+##
+## That is also why vendor/xiaomi/dada/Android.mk had been hand-edited to say
+## "Radio images are handled by vendor/xiaomi/dada-firmware".
+##
+## If firmware is ever moved back under this tree, note that extract_utils emits
+## AB_OTA_PARTITIONS for *every* entry here as soon as any one carries ;AB.
