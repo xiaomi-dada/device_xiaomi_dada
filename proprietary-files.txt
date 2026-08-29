@@ -1847,7 +1847,7 @@ odm/lib64/com.xiaomi.plugin.ecdengine.so
 odm/lib64/hw/camera.qcom.sm8750.so
 odm/lib64/hw/camera.qcom.so;SYMLINK=vendor/lib64/hw/camera.qcom.so
 odm/lib64/hw/com.qti.chi.offline.so
-odm/lib64/hw/com.qti.chi.override.so;SYMLINK=vendor/lib64/hw/com.qti.chi.override.so
+odm/lib64/hw/com.qti.chi.override.so;SYMLINK=vendor/lib64/hw/com.qti.chi.override.so;DISABLE_CHECKELF
 odm/lib64/immunesystem.db.sqlite3.so
 odm/lib64/libAF.so
 odm/lib64/libAncHumanPreviewBokeh.so
@@ -1884,7 +1884,7 @@ odm/lib64/libcamxhwlfrontend.so
 odm/lib64/libcamxhwlipedriver.so
 odm/lib64/libcamxhwnodecontext.so
 odm/lib64/libcamxifestriping.so
-odm/lib64/libcamximageformatutils.so
+odm/lib64/libcamximageformatutils.so;DISABLE_CHECKELF
 odm/lib64/libcamxncsdatafactory.so
 odm/lib64/libcamxods.so
 odm/lib64/libcamxofehwl.so
@@ -1895,7 +1895,7 @@ odm/lib64/libcamxswispiqmodule.so
 odm/lib64/libcamxswprocessalgo.so
 odm/lib64/libcamxtintlessalgo.so
 odm/lib64/libcamxvppservicebase.so
-odm/lib64/libchifeature2.so
+odm/lib64/libchifeature2.so;DISABLE_CHECKELF
 odm/lib64/libchilog.so
 odm/lib64/libchinodeevautils.so
 odm/lib64/libchinodehmeutils.so
@@ -2465,7 +2465,6 @@ odm/lib64/libqc_hal.so;MAKE_COPY_RULE_ONLY
 vendor/bin/hw/vendor.qti.hardware.display.allocator-service;MAKE_COPY_RULE_ONLY
 vendor/etc/init/vendor.qti.hardware.display.allocator-service.rc;MAKE_COPY_RULE_ONLY
 vendor/etc/vintf/manifest/vendor.qti.hardware.display.allocator-service.xml
-vendor/lib64/android.hardware.graphics.allocator-V1-ndk.so;MODULE=android.hardware.graphics.allocator-V1-ndk_vendor
 vendor/lib64/libc++.so;MAKE_COPY_RULE_ONLY
 vendor/lib64/libgralloc.qti.so;MAKE_COPY_RULE_ONLY
 vendor/lib64/libgralloccore.so;MAKE_COPY_RULE_ONLY

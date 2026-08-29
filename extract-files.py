@@ -105,21 +105,11 @@ blob_fixups: blob_fixups_user_type = {
 # Soong fail with "depends on multiple versions of the same aidl_interface", so
 # drop V1 from the generated dependencies -- the library is still installed, so
 # anything that needs it resolves at runtime.
-def lib_fixup_allocator_v1(lib: str, *args, **kwargs):
-    # The camera stack links both V1 and V2 of the graphics allocator AIDL.
-    # Depending on AOSP's V1 and V2 aidl_interface modules at once makes Soong
-    # fail with "depends on multiple versions of the same aidl_interface", but
-    # dropping V1 outright makes check_elf_file fail instead, because the blobs
-    # really do have it in DT_NEEDED. Point them at the shipped V1 blob, which
-    # is a plain prebuilt and so is not an aidl_interface at all.
-    return 'android.hardware.graphics.allocator-V1-ndk_vendor'
-
-
 lib_fixups: lib_fixups_user_type = {
     **lib_fixups,
     (
         'android.hardware.graphics.allocator-V1-ndk',
-    ): lib_fixup_allocator_v1,
+    ): lib_fixup_remove,
 }
 
 module = ExtractUtilsModule(
