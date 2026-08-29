@@ -2074,7 +2074,7 @@ vendor/lib64/libopencv_core.so
 vendor/lib64/libopencv_imgproc_se.so
 vendor/lib64/libopencv_imgproc.so
 vendor/lib64/libSNPESample.so
-vendor/lib64/libultrahdr.so;MODULE=libultrahdr_dada
+vendor/lib64/libultrahdr.so:vendor/lib64/libultrahdr_dada.so;FIX_SONAME
 vendor/lib64/vendor.xiaomi.hardware.aidl.intentaware-V1-ndk_platform.so
 vendor/lib64/vendor.xiaomi.hardware.aon-V1-ndk.so
 vendor/lib64/vendor.xiaomi.hardware.camera.injection-client.so
