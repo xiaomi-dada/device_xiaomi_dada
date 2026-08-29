@@ -2464,7 +2464,7 @@ odm/etc/acdbdata/Fluence/Fluence_workspaceFileXml.qwsp
 odm/lib64/libqc_hal.so;MAKE_COPY_RULE_ONLY
 vendor/bin/hw/vendor.qti.hardware.display.allocator-service;MAKE_COPY_RULE_ONLY
 vendor/etc/init/vendor.qti.hardware.display.allocator-service.rc;MAKE_COPY_RULE_ONLY
-vendor/etc/vintf/manifest/vendor.qti.hardware.display.allocator-service.xml;MAKE_COPY_RULE_ONLY
+vendor/etc/vintf/manifest/vendor.qti.hardware.display.allocator-service.xml
 vendor/lib64/android.hardware.graphics.allocator-V1-ndk.so;MAKE_COPY_RULE_ONLY
 vendor/lib64/libc++.so;MAKE_COPY_RULE_ONLY
 vendor/lib64/libgralloc.qti.so;MAKE_COPY_RULE_ONLY
