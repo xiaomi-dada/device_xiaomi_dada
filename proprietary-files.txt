@@ -2074,7 +2074,15 @@ vendor/lib64/libopencv_core.so
 vendor/lib64/libopencv_imgproc_se.so
 vendor/lib64/libopencv_imgproc.so
 vendor/lib64/libSNPESample.so
-vendor/lib64/libultrahdr.so:vendor/lib64/libultrahdr_dada.so;FIX_SONAME
+# NOTE: this blob was built against an older external/libultrahdr. It imports
+#   ultrahdr::JpegDecoderHelper::decompressImage(void const*, int, decode_mode_t)
+#   ultrahdr::JpegEncoderHelper::compressImage(..., int, ...)
+# whereas the libjpegdecoder/libjpegencoder in this tree take size_t. Xiaomi
+# ships no matching helper blobs, so those two symbols cannot resolve and the
+# Ultra HDR / gainmap camera plugins that depend on it will not load.
+# DISABLE_CHECKELF records that rather than hiding it; the feature needs either
+# an older external/libultrahdr or the missing Xiaomi helper libraries.
+vendor/lib64/libultrahdr.so:vendor/lib64/libultrahdr_dada.so;FIX_SONAME;DISABLE_CHECKELF
 vendor/lib64/vendor.xiaomi.hardware.aidl.intentaware-V1-ndk_platform.so
 vendor/lib64/vendor.xiaomi.hardware.aon-V1-ndk.so
 vendor/lib64/vendor.xiaomi.hardware.camera.injection-client.so
