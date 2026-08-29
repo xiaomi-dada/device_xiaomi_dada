@@ -105,11 +105,23 @@ blob_fixups: blob_fixups_user_type = {
 # Soong fail with "depends on multiple versions of the same aidl_interface", so
 # drop V1 from the generated dependencies -- the library is still installed, so
 # anything that needs it resolves at runtime.
+def lib_fixup_ultrahdr(lib: str, *args, **kwargs):
+    # The camera stack links libultrahdr, but AOSP's external/libultrahdr is
+    # system-only. Point dependents at the vendor blob (installed as
+    # libultrahdr_dada) instead of dragging the system module into vendor, which
+    # both fails the partition check and races the blob for
+    # vendor/lib64/libultrahdr.so.
+    return 'libultrahdr_dada'
+
+
 lib_fixups: lib_fixups_user_type = {
     **lib_fixups,
     (
         'android.hardware.graphics.allocator-V1-ndk',
     ): lib_fixup_remove,
+    (
+        'libultrahdr',
+    ): lib_fixup_ultrahdr,
 }
 
 module = ExtractUtilsModule(
