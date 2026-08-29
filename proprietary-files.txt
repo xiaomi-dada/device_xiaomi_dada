@@ -2444,3 +2444,29 @@ odm/lib64/libmicamera_fps_checker.so
 # ACDB (Fluence)
 odm/etc/acdbdata/Fluence/Fluence_acdb_cal.acdb
 odm/etc/acdbdata/Fluence/Fluence_workspaceFileXml.qwsp
+
+# ---------------------------------------------------------------------------
+# Re-tracked blobs
+#
+# These were installed by hand-written entries in the generated
+# vendor/xiaomi/dada makefiles while having no entry here, so re-running
+# extract-files.py against a stock ROM silently dropped them.
+#
+# MAKE_COPY_RULE_ONLY is deliberate. They were previously emitted as
+# PRODUCT_COPY_FILES, and four of them -- libgralloc.qti, libgralloccore,
+# libgrallocutils and vendor.qti.hardware.display.allocator-service -- share
+# their module names with hardware/qcom-caf/sm8750/display/hal/gralloc. Turning
+# them into Soong modules would make Soong fail with 'found in multiple
+# namespaces'. Copy rules keep the existing behaviour byte for byte while
+# making the files reproducible from a stock ROM.
+# ---------------------------------------------------------------------------
+
+odm/lib64/libqc_hal.so;MAKE_COPY_RULE_ONLY
+vendor/bin/hw/vendor.qti.hardware.display.allocator-service;MAKE_COPY_RULE_ONLY
+vendor/etc/init/vendor.qti.hardware.display.allocator-service.rc;MAKE_COPY_RULE_ONLY
+vendor/etc/vintf/manifest/vendor.qti.hardware.display.allocator-service.xml;MAKE_COPY_RULE_ONLY
+vendor/lib64/android.hardware.graphics.allocator-V1-ndk.so;MAKE_COPY_RULE_ONLY
+vendor/lib64/libc++.so;MAKE_COPY_RULE_ONLY
+vendor/lib64/libgralloc.qti.so;MAKE_COPY_RULE_ONLY
+vendor/lib64/libgralloccore.so;MAKE_COPY_RULE_ONLY
+vendor/lib64/libgrallocutils.so;MAKE_COPY_RULE_ONLY
