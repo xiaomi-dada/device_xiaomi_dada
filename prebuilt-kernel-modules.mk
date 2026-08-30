@@ -1,32 +1,38 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 # Vendor modules with no source in this tree, so they cannot be built.
+#
 # Everything else the device loads is built from kernel/xiaomi/sm8750 and
-# kernel/xiaomi/sm8750-modules-qcom; copying a prebuilt over one of those
-# would replace a module built against this kernel with one built against
-# another, so only the modules listed here are taken from the prebuilts.
+# kernel/xiaomi/sm8750-modules-qcom.  A module binds to a kernel by the symbol
+# CRCs of everything it imports, and those follow the source that kernel was
+# built from, so copying a prebuilt over one of those would put back a module
+# compiled against a different kernel.  Only the modules named here are taken
+# from the prebuilts.
 #
-# Modules for parts this board does not have are left out: its device tree
-# names the peach wlan chip and cs35l43 amplifiers, so the prebuilt modules
-# for the other wlan chips and for the aw882xx, tfa98xx, fs19xx and sia91xx
-# amplifiers are not shipped.
+# Three groups are left out entirely.
 #
-# Neither are the MIUI instrumentation modules.  migt, perfmgr, mi_mempool,
-# bootmonitor, mi_ubt_test, mtdoops and ufs_ffu drive no hardware -- they are
-# scheduler and memory tuning, boot timing, backtrace tests, crash logging to
-# an MTD partition and a firmware update tool -- and each needs kernel symbols
-# that exist only in Xiaomi's tree.  migt alone wants 82 of them, from a
-# frame-aware scheduler that is not published anywhere.
+# Parts this board does not have: its device tree names the peach wlan chip
+# and cs35l43 amplifiers, so the prebuilts for the other wlan chips and for
+# the aw882xx, tfa98xx, fs19xx and sia91xx amplifiers are not shipped.
 #
-# mca_qcom_panel and mi_thermal_interface are left out for a third reason.
-# They import panel_event_notifier_register, whose signature takes a struct
-# drm_panel, so its CRC follows the DRM core; theirs was computed against
-# 6.6.30 and nothing in this tree reproduces it on 6.6.142.  Both only listen
-# for screen on and off, and nothing else depends on them, so dropping them
-# costs the charging and thermal drivers those notifications and no more.
-# xiaomi_touch imports the same symbol and has the same problem, but
-# synaptics_tcm2 needs fifteen symbols from it, so the pair is kept together
-# rather than losing the touchscreen driver as well.
+# MIUI instrumentation: migt, perfmgr, mi_mempool, bootmonitor, mi_ubt_test,
+# mtdoops and ufs_ffu drive no hardware -- they are scheduler and memory
+# tuning, boot timing, backtrace tests, crash logging to an MTD partition and
+# a firmware update tool -- and each wants kernel symbols that exist only in
+# Xiaomi's tree.  migt alone wants eighty-two of them, from a frame-aware
+# scheduler that is not published anywhere.  xiaomi_touch belongs here too: it
+# is the feature and telemetry layer above the touchscreen -- touch modes,
+# gesture type, raw data for diagnostics, MiSight events and the under-display
+# fingerprint press report -- and not the driver.  synaptics_tcm2 is built
+# from source instead of taken from the prebuilts, and the QCOM source does
+# not call into any of it, so the touchscreen works without it.  What goes
+# with it is those features, the fingerprint press report among them.
+#
+# Panel event consumers: mca_qcom_panel and mi_thermal_interface import
+# panel_event_notifier_register, whose signature takes a struct drm_panel, so
+# its CRC follows the DRM core.  Theirs was computed against 6.6.30 and
+# nothing in this tree reproduces it on 6.6.142.  Both only listen for the
+# screen turning on and off and nothing depends on either.
 
 DADA_EXCLUDED_KERNEL_MODULES := \
     aw882xx_dlkm.ko \
@@ -45,7 +51,8 @@ DADA_EXCLUDED_KERNEL_MODULES := \
     qca_cld3_wcn7750.ko \
     sia91xx_dlkm.ko \
     tfa98xx_dlkm.ko \
-    ufs_ffu.ko
+    ufs_ffu.ko \
+    xiaomi_touch.ko
 
 DADA_PREBUILT_KERNEL_MODULES := \
     binder_prio.ko \
@@ -144,11 +151,9 @@ DADA_PREBUILT_KERNEL_MODULES := \
     stm_nfc_i2c.ko \
     stm_st54se_gpio.ko \
     swinfo.ko \
-    synaptics_tcm2.ko \
     tas25xx_dlkm.ko \
     typec_analog_acc_dlkm.ko \
     unfairmem.ko \
-    xiaomi_touch.ko \
     xiaomi_wifi_gpio.ko
 
 PRODUCT_COPY_FILES += \

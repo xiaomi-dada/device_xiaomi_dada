@@ -61,6 +61,7 @@ TARGET_KERNEL_EXT_MODULES := \
     qcom/opensource/eva-kernel \
     qcom/opensource/graphics-kernel \
     qcom/opensource/spu-kernel \
+    qcom/opensource/touch-drivers \
     qcom/opensource/video-driver \
     qcom/opensource/wlan/platform \
     qcom/opensource/wlan/qcacld-3.0 \
@@ -75,6 +76,12 @@ BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD := $(filter-out $(DADA_EXCLUDE
     $(strip $(shell cat $(KERNEL_PATH)/vendor_ramdisk/modules.load.recovery)))
 BOARD_VENDOR_KERNEL_MODULES_LOAD := $(filter-out $(DADA_EXCLUDED_KERNEL_MODULES),\
     $(strip $(shell cat $(KERNEL_PATH)/vendor_dlkm/modules.load)))
+
+# The touchscreen driver is built from source now, and the techpack names it
+# synaptics_tcm2_ts rather than synaptics_tcm2.  It sits on QTI Touch
+# Services, so that goes in ahead of it.
+BOARD_VENDOR_KERNEL_MODULES_LOAD := $(patsubst synaptics_tcm2.ko,qts.ko synaptics_tcm2_ts.ko,\
+    $(BOARD_VENDOR_KERNEL_MODULES_LOAD))
 
 PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(KERNEL_PATH)/system_dlkm_flatten/,$(TARGET_COPY_OUT_SYSTEM_DLKM)/flatten/lib/modules) \
