@@ -6,36 +6,46 @@
 # would replace a module built against this kernel with one built against
 # another, so only the modules listed here are taken from the prebuilts.
 #
-# Variants for parts this board does not have are left out: its device tree
-# names the peach wlan chip and cs35l43 amplifiers, so the prebuilt modules for
-# the other wlan chips and for the aw882xx, tfa98xx, fs19xx and sia91xx
+# Modules for parts this board does not have are left out: its device tree
+# names the peach wlan chip and cs35l43 amplifiers, so the prebuilt modules
+# for the other wlan chips and for the aw882xx, tfa98xx, fs19xx and sia91xx
 # amplifiers are not shipped.
 #
-# So are the MIUI instrumentation modules.  migt, perfmgr, mi_mempool,
+# Neither are the MIUI instrumentation modules.  migt, perfmgr, mi_mempool,
 # bootmonitor, mi_ubt_test, mtdoops and ufs_ffu drive no hardware -- they are
 # scheduler and memory tuning, boot timing, backtrace tests, crash logging to
-# an MTD partition and a firmware update tool -- and each one needs kernel
-# symbols that exist only in Xiaomi's own tree.  migt alone wants 82 of them,
-# from a frame-aware scheduler that is not published anywhere.
+# an MTD partition and a firmware update tool -- and each needs kernel symbols
+# that exist only in Xiaomi's tree.  migt alone wants 82 of them, from a
+# frame-aware scheduler that is not published anywhere.
+#
+# mca_qcom_panel and mi_thermal_interface are left out for a third reason.
+# They import panel_event_notifier_register, whose signature takes a struct
+# drm_panel, so its CRC follows the DRM core; theirs was computed against
+# 6.6.30 and nothing in this tree reproduces it on 6.6.142.  Both only listen
+# for screen on and off, and nothing else depends on them, so dropping them
+# costs the charging and thermal drivers those notifications and no more.
+# xiaomi_touch imports the same symbol and has the same problem, but
+# synaptics_tcm2 needs fifteen symbols from it, so the pair is kept together
+# rather than losing the touchscreen driver as well.
 
-# Parts this board does not have.  They are in the stock module load list, so
-# they have to be taken out of it as well as not shipped.
 DADA_EXCLUDED_KERNEL_MODULES := \
+    aw882xx_dlkm.ko \
     bootmonitor.ko \
-    migt.ko \
+    fs19xx_dlkm.ko \
+    mca_qcom_panel.ko \
     mi_mempool.ko \
+    mi_thermal_interface.ko \
     mi_ubt_test.ko \
+    migt.ko \
     mtdoops.ko \
     perfmgr.ko \
-    ufs_ffu.ko \
     qca_cld3_kiwi_v2.ko \
     qca_cld3_peach.ko \
     qca_cld3_qca6750.ko \
     qca_cld3_wcn7750.ko \
-    aw882xx_dlkm.ko \
-    fs19xx_dlkm.ko \
     sia91xx_dlkm.ko \
-    tfa98xx_dlkm.ko
+    tfa98xx_dlkm.ko \
+    ufs_ffu.ko
 
 DADA_PREBUILT_KERNEL_MODULES := \
     binder_prio.ko \
@@ -45,8 +55,8 @@ DADA_PREBUILT_KERNEL_MODULES := \
     cameramsger.ko \
     charger_partition.ko \
     chipreg.ko \
-    cifs_arc4.ko \
     cifs.ko \
+    cifs_arc4.ko \
     cifs_md4.ko \
     cs35l43_dlkm.ko \
     cs_dsp.ko \
@@ -88,7 +98,6 @@ DADA_PREBUILT_KERNEL_MODULES := \
     mca_protocol_class.ko \
     mca_protocol_pd_class.ko \
     mca_protocol_qc_class.ko \
-    mca_qcom_panel.ko \
     mca_qcom_smem.ko \
     mca_qcom_subpmic_proxy.ko \
     mca_qcom_sysfs.ko \
@@ -104,28 +113,27 @@ DADA_PREBUILT_KERNEL_MODULES := \
     mca_vbat_ovp_monitor.ko \
     mca_wireless_revchg.ko \
     mca_workqueue.ko \
-    mibbr.ko \
     mi_damon.ko \
-    miicmpfilter.ko \
-    minet.ko \
     mi_perf_memory.ko \
     mi_stack.ko \
-    mitee_dlkm.ko \
-    mi_thermal_interface.ko \
     mi_trace.ko \
-    miwill.ko \
     mi_wmark.ko \
+    mibbr.ko \
+    miicmpfilter.ko \
+    minet.ko \
+    mitee_dlkm.ko \
+    miwill.ko \
+    mtd.ko \
     mtd_blkdevs.ko \
     mtdblock.ko \
-    mtd.ko \
     netfs.ko \
     nls_ucs2_utils.ko \
     nuvolta_1652.ko \
     nxp-nci.ko \
     ofpart.ko \
     powersave.ko \
-    process_monitor.ko \
     proc_exit.ko \
+    process_monitor.ko \
     qcom_adsp_pd_protocol.ko \
     rsmc_driver.ko \
     sc8581.ko \
@@ -146,4 +154,3 @@ DADA_PREBUILT_KERNEL_MODULES := \
 PRODUCT_COPY_FILES += \
     $(foreach m,$(DADA_PREBUILT_KERNEL_MODULES),\
         $(KERNEL_PATH)/vendor_dlkm/$(m):$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/$(m))
-
