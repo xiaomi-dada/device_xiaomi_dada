@@ -17,6 +17,14 @@ TARGET_SCREEN_DENSITY := 520
 BOARD_PREBUILT_DTBOIMAGE := $(KERNEL_PATH)/dtbo.img
 BOARD_PREBUILT_DTBIMAGE_DIR := $(KERNEL_PATH)/dtb
 
+# Kernel.
+#
+# Prebuilt.  The vendor modules this device loads were built against the
+# android15-6.6 KMI and cannot be rebuilt: Xiaomi publishes no source for the
+# MCA charging stack or the mi_*/xiaomi_* modules.  Against a newer kernel 19
+# of them fail on symbol CRCs -- the interconnect, cfg80211 and DRM-DP
+# interfaces have all changed -- among them msm_drm, msm_kgsl, camera and
+# every qca_cld3 variant, all of which are in modules.load.
 TARGET_NO_KERNEL_OVERRIDE := true
 TARGET_KERNEL_SOURCE := $(KERNEL_PATH)/kernel-headers
 PRODUCT_COPY_FILES += \
