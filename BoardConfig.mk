@@ -17,27 +17,66 @@ TARGET_SCREEN_DENSITY := 520
 BOARD_PREBUILT_DTBOIMAGE := $(KERNEL_PATH)/dtbo.img
 BOARD_PREBUILT_DTBIMAGE_DIR := $(KERNEL_PATH)/dtb
 
-# Kernel.
+# Kernel
+TARGET_KERNEL_SOURCE := kernel/xiaomi/sm8750
+TARGET_KERNEL_CONFIG := \
+    gki_defconfig \
+    vendor/sun_perf.config \
+    vendor/dada_perf.config
+
+# Kernel modules.
 #
-# Prebuilt.  The vendor modules this device loads were built against the
-# android15-6.6 KMI and cannot be rebuilt: Xiaomi publishes no source for the
-# MCA charging stack or the mi_*/xiaomi_* modules.  Against a newer kernel 19
-# of them fail on symbol CRCs -- the interconnect, cfg80211 and DRM-DP
-# interfaces have all changed -- among them msm_drm, msm_kgsl, camera and
-# every qca_cld3 variant, all of which are in modules.load.
-TARGET_NO_KERNEL_OVERRIDE := true
-TARGET_KERNEL_SOURCE := $(KERNEL_PATH)/kernel-headers
-PRODUCT_COPY_FILES += \
-    $(KERNEL_PATH)/kernel:kernel
+# The stock prebuilts were built against the android15-6.6 KMI; the
+# interconnect, cfg80211 and DRM-DP symbol CRCs have moved since, so the
+# techpacks have to be rebuilt against the kernel above rather than copied.
+
+# Kernel modules.
+#
+# The stock prebuilts were built against a kernel close to Xiaomi's own; the
+# symbol CRCs of anything outside the frozen KMI track the exact source, so the
+# techpacks are rebuilt here rather than copied.
+TARGET_KERNEL_EXT_MODULE_ROOT := kernel/xiaomi/sm8750-modules-qcom
+TARGET_KERNEL_EXT_MODULES := \
+    qcom/opensource/mmrm-driver \
+    qcom/opensource/mm-drivers/hw_fence \
+    qcom/opensource/mm-drivers/msm_ext_display \
+    qcom/opensource/mm-drivers/sync_fence \
+    qcom/opensource/audio-kernel \
+    qcom/opensource/securemsm-kernel \
+    qcom/opensource/synx-kernel \
+    qcom/opensource/camera-kernel \
+    qcom/opensource/data-kernel/drivers/smem-mailbox \
+    qcom/opensource/datarmnet-ext/mem \
+    qcom/opensource/dataipa/drivers/platform/msm \
+    qcom/opensource/datarmnet/core \
+    qcom/opensource/datarmnet-ext/aps \
+    qcom/opensource/datarmnet-ext/offload \
+    qcom/opensource/datarmnet-ext/perf \
+    qcom/opensource/datarmnet-ext/perf_tether \
+    qcom/opensource/datarmnet-ext/sch \
+    qcom/opensource/datarmnet-ext/shs \
+    qcom/opensource/datarmnet-ext/wlan \
+    qcom/opensource/display-drivers/msm \
+    qcom/opensource/dsp-kernel \
+    qcom/opensource/eva-kernel \
+    qcom/opensource/graphics-kernel \
+    qcom/opensource/spu-kernel \
+    qcom/opensource/video-driver \
+    qcom/opensource/wlan/platform \
+    qcom/opensource/wlan/qcacld-3.0 \
+    qcom/opensource/bt-kernel
 
 # Kernel modules
-BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(KERNEL_PATH)/vendor_ramdisk/modules.load))
-BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD := $(strip $(shell cat $(KERNEL_PATH)/vendor_ramdisk/modules.load.recovery))
-BOARD_VENDOR_KERNEL_MODULES_LOAD := $(strip $(shell cat $(KERNEL_PATH)/vendor_dlkm/modules.load))
+include $(DEVICE_PATH)/prebuilt-kernel-modules.mk
+
+BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(filter-out $(DADA_EXCLUDED_KERNEL_MODULES),\
+    $(strip $(shell cat $(KERNEL_PATH)/vendor_ramdisk/modules.load)))
+BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD := $(filter-out $(DADA_EXCLUDED_KERNEL_MODULES),\
+    $(strip $(shell cat $(KERNEL_PATH)/vendor_ramdisk/modules.load.recovery)))
+BOARD_VENDOR_KERNEL_MODULES_LOAD := $(filter-out $(DADA_EXCLUDED_KERNEL_MODULES),\
+    $(strip $(shell cat $(KERNEL_PATH)/vendor_dlkm/modules.load)))
 
 PRODUCT_COPY_FILES += \
-    $(call find-copy-subdir-files,*,$(KERNEL_PATH)/vendor_dlkm/,$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules) \
-    $(call find-copy-subdir-files,*,$(KERNEL_PATH)/vendor_ramdisk/,$(TARGET_COPY_OUT_VENDOR_RAMDISK)/lib/modules) \
     $(call find-copy-subdir-files,*,$(KERNEL_PATH)/system_dlkm_flatten/,$(TARGET_COPY_OUT_SYSTEM_DLKM)/flatten/lib/modules) \
     $(call find-copy-subdir-files,*,$(KERNEL_PATH)/system_dlkm/,$(TARGET_COPY_OUT_SYSTEM_DLKM)/lib/modules/6.6.77-android15-8-g63ce7556864c-ab13994517-4k)
 
