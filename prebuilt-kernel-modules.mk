@@ -10,10 +10,24 @@
 # names the peach wlan chip and cs35l43 amplifiers, so the prebuilt modules for
 # the other wlan chips and for the aw882xx, tfa98xx, fs19xx and sia91xx
 # amplifiers are not shipped.
+#
+# So are the MIUI instrumentation modules.  migt, perfmgr, mi_mempool,
+# bootmonitor, mi_ubt_test, mtdoops and ufs_ffu drive no hardware -- they are
+# scheduler and memory tuning, boot timing, backtrace tests, crash logging to
+# an MTD partition and a firmware update tool -- and each one needs kernel
+# symbols that exist only in Xiaomi's own tree.  migt alone wants 82 of them,
+# from a frame-aware scheduler that is not published anywhere.
 
 # Parts this board does not have.  They are in the stock module load list, so
 # they have to be taken out of it as well as not shipped.
 DADA_EXCLUDED_KERNEL_MODULES := \
+    bootmonitor.ko \
+    migt.ko \
+    mi_mempool.ko \
+    mi_ubt_test.ko \
+    mtdoops.ko \
+    perfmgr.ko \
+    ufs_ffu.ko \
     qca_cld3_kiwi_v2.ko \
     qca_cld3_peach.ko \
     qca_cld3_qca6750.ko \
@@ -26,7 +40,6 @@ DADA_EXCLUDED_KERNEL_MODULES := \
 DADA_PREBUILT_KERNEL_MODULES := \
     binder_prio.ko \
     block2mtd.ko \
-    bootmonitor.ko \
     bq27z561.ko \
     cameralog.ko \
     cameramsger.ko \
@@ -93,28 +106,23 @@ DADA_PREBUILT_KERNEL_MODULES := \
     mca_workqueue.ko \
     mibbr.ko \
     mi_damon.ko \
-    migt.ko \
     miicmpfilter.ko \
-    mi_mempool.ko \
     minet.ko \
     mi_perf_memory.ko \
     mi_stack.ko \
     mitee_dlkm.ko \
     mi_thermal_interface.ko \
     mi_trace.ko \
-    mi_ubt_test.ko \
     miwill.ko \
     mi_wmark.ko \
     mtd_blkdevs.ko \
     mtdblock.ko \
     mtd.ko \
-    mtdoops.ko \
     netfs.ko \
     nls_ucs2_utils.ko \
     nuvolta_1652.ko \
     nxp-nci.ko \
     ofpart.ko \
-    perfmgr.ko \
     powersave.ko \
     process_monitor.ko \
     proc_exit.ko \
@@ -131,7 +139,6 @@ DADA_PREBUILT_KERNEL_MODULES := \
     synaptics_tcm2.ko \
     tas25xx_dlkm.ko \
     typec_analog_acc_dlkm.ko \
-    ufs_ffu.ko \
     unfairmem.ko \
     xiaomi_touch.ko \
     xiaomi_wifi_gpio.ko
