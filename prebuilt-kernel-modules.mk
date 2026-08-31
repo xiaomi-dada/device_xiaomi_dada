@@ -9,6 +9,11 @@
 # compiled against a different kernel.  Only the modules named here are taken
 # from the prebuilts.
 #
+# The charging stack used to be here in its entirety -- fifty-two modules that
+# resolve against each other, so none of them could be replaced until all of
+# them were.  They are all built from source now and none are taken from the
+# prebuilts.
+#
 # Three groups are left out entirely.
 #
 # Parts this board does not have: its device tree names the peach wlan chip
@@ -28,17 +33,18 @@
 # not call into any of it, so the touchscreen works without it.  What goes
 # with it is those features, the fingerprint press report among them.
 #
-# Panel event consumers: mca_qcom_panel and mi_thermal_interface import
+# Panel event consumers: mi_thermal_interface imports
 # panel_event_notifier_register, whose signature takes a struct drm_panel, so
 # its CRC follows the DRM core.  Theirs was computed against 6.6.30 and
-# nothing in this tree reproduces it on 6.6.142.  Both only listen for the
-# screen turning on and off and nothing depends on either.
+# nothing in this tree reproduces it on 6.6.142.  It only listens for the
+# screen turning on and off and nothing depends on it.  mca_qcom_panel wanted
+# the same symbol and was excluded for the same reason; it is built from
+# source now, so its CRCs are this kernel's and it loads.
 
 DADA_EXCLUDED_KERNEL_MODULES := \
     aw882xx_dlkm.ko \
     bootmonitor.ko \
     fs19xx_dlkm.ko \
-    mca_qcom_panel.ko \
     mi_mempool.ko \
     mi_thermal_interface.ko \
     mi_ubt_test.ko \
@@ -57,10 +63,8 @@ DADA_EXCLUDED_KERNEL_MODULES := \
 DADA_PREBUILT_KERNEL_MODULES := \
     binder_prio.ko \
     block2mtd.ko \
-    bq27z561.ko \
     cameralog.ko \
     cameramsger.ko \
-    charger_partition.ko \
     chipreg.ko \
     cifs.ko \
     cifs_arc4.ko \
@@ -73,53 +77,7 @@ DADA_PREBUILT_KERNEL_MODULES := \
     gpio-mi-t1.ko \
     hangdetect.ko \
     hardwareinfo.ko \
-    hl7603.ko \
     lb.ko \
-    mca_adsp_glink.ko \
-    mca_basic_wireless.ko \
-    mca_bmd.ko \
-    mca_buckchg_jeita.ko \
-    mca_business_battery_comp.ko \
-    mca_business_charger_comp.ko \
-    mca_business_misc_comp.ko \
-    mca_charge_interface.ko \
-    mca_charge_mievent.ko \
-    mca_charger_thermal.ko \
-    mca_common.ko \
-    mca_connector_antiburn.ko \
-    mca_event.ko \
-    mca_hwid.ko \
-    mca_ibat_ocp_monitor.ko \
-    mca_log.ko \
-    mca_lpd_detect.ko \
-    mca_parse_dts.ko \
-    mca_path_control.ko \
-    mca_pd_auth.ko \
-    mca_platform_base.ko \
-    mca_platform_bc12_class.ko \
-    mca_platform_buckchg_class.ko \
-    mca_platform_cp_class.ko \
-    mca_platform_fg_ic_ops.ko \
-    mca_platform_loadsw_class.ko \
-    mca_platform_wireless_class.ko \
-    mca_protocol_class.ko \
-    mca_protocol_pd_class.ko \
-    mca_protocol_qc_class.ko \
-    mca_qcom_smem.ko \
-    mca_qcom_subpmic_proxy.ko \
-    mca_qcom_sysfs.ko \
-    mca_quick_wireless.ko \
-    mca_smart_charge.ko \
-    mca_soc_limit.ko \
-    mca_strategy_buckchg.ko \
-    mca_strategy_class.ko \
-    mca_strategy_fg_class.ko \
-    mca_strategy_fg_comp.ko \
-    mca_strategy_quickchg.ko \
-    mca_sysfs.ko \
-    mca_vbat_ovp_monitor.ko \
-    mca_wireless_revchg.ko \
-    mca_workqueue.ko \
     mi_damon.ko \
     mi_perf_memory.ko \
     mi_stack.ko \
@@ -135,15 +93,12 @@ DADA_PREBUILT_KERNEL_MODULES := \
     mtdblock.ko \
     netfs.ko \
     nls_ucs2_utils.ko \
-    nuvolta_1652.ko \
     nxp-nci.ko \
     ofpart.ko \
     powersave.ko \
     proc_exit.ko \
     process_monitor.ko \
-    qcom_adsp_pd_protocol.ko \
     rsmc_driver.ko \
-    sc8581.ko \
     scene_swappiness.ko \
     sdca_registers_dlkm.ko \
     sia91xx_tuning_dlkm.ko \
