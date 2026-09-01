@@ -56,7 +56,11 @@
 # works without it, and what goes with it is those features.
 # mi_thermal_interface imports panel_event_notifier_register, whose signature
 # takes a struct drm_panel, so its CRC follows the DRM core; theirs was
-# computed against 6.6.30 and nothing here reproduces it.
+# computed against 6.6.30 and nothing here reproduces it.  It is the only
+# thing that sends MCA_EVENT_TYPE_THERMAL_TEMP, so the board temperature it
+# would have broadcast never arrives: mca_smart_charge just reports zero on a
+# sysfs node nothing reads, and mca_connector_antiburn no longer treats the
+# absent reading as a cold board -- see the comment on the anti-burn check.
 #
 # A second round of MIUI instrumentation, this time in the first-stage list
 # rather than the vendor_dlkm one: binder_gki, bootinfo, boottime, cpq,
