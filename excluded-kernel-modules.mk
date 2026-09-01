@@ -58,6 +58,19 @@
 # takes a struct drm_panel, so its CRC follows the DRM core; theirs was
 # computed against 6.6.30 and nothing here reproduces it.
 #
+# A second round of MIUI instrumentation, this time in the first-stage list
+# rather than the vendor_dlkm one: binder_gki, bootinfo, boottime, cpq,
+# dcvs_main, debug_ext, kshrink_slabd, lz4asm, metis, mi_memory, mi_power,
+# mi_schedule, mi_ubt, miev, the six millet modules, miloadtrace, mist,
+# perf_helper, printk_enhance, rt_mod, sched-penalty, speed_touch and
+# xm_power.  They are boot timing, backtrace capture, exception logging, an
+# IO scheduler and a set of scheduler and memory tuners, none of them
+# published anywhere and none of them needed to reach /vendor.  The stock
+# modules.dep has much of the first-stage set depending on metis, mi_schedule,
+# mist and miev, but that is Xiaomi's build: the modules here are built from
+# QCOM and mainline source and from drivers/power/supply/mca, and every symbol
+# each of them imports resolves without these.
+
 # Modules with a device but no user here.  cameramsger biases camera thread
 # placement through the scheduler vendor hooks and is driven over
 # /dev/cam_msger by CameraMind and miui-cameraopt.jar; hardwareinfo publishes
@@ -81,29 +94,51 @@
 
 DADA_EXCLUDED_KERNEL_MODULES := \
     aw882xx_dlkm.ko \
+    binder_gki.ko \
     binder_prio.ko \
     block2mtd.ko \
+    bootinfo.ko \
     bootmonitor.ko \
+    boottime.ko \
     cameramsger.ko \
     chipreg.ko \
+    cpq.ko \
+    dcvs_main.ko \
+    debug_ext.ko \
     dump_display.ko \
     fs19xx_dlkm.ko \
     ftun.ko \
     hangdetect.ko \
     hardwareinfo.ko \
+    kshrink_slabd.ko \
     lb.ko \
+    lz4asm.ko \
+    metis.ko \
     mi_damon.ko \
+    mi_memory.ko \
     mi_mempool.ko \
     mi_perf_memory.ko \
+    mi_power.ko \
+    mi_schedule.ko \
     mi_stack.ko \
     mi_thermal_interface.ko \
     mi_trace.ko \
+    mi_ubt.ko \
     mi_ubt_test.ko \
     mi_wmark.ko \
     mibbr.ko \
+    miev.ko \
     migt.ko \
     miicmpfilter.ko \
+    millet_binder.ko \
+    millet_core.ko \
+    millet_hs.ko \
+    millet_oem_cgroup.ko \
+    millet_pkg.ko \
+    millet_sig.ko \
+    miloadtrace.ko \
     minet.ko \
+    mist.ko \
     mitee_dlkm.ko \
     miwill.ko \
     mtd.ko \
@@ -112,8 +147,10 @@ DADA_EXCLUDED_KERNEL_MODULES := \
     mtdoops.ko \
     nxp-nci.ko \
     ofpart.ko \
+    perf_helper.ko \
     perfmgr.ko \
     powersave.ko \
+    printk_enhance.ko \
     proc_exit.ko \
     process_monitor.ko \
     qca_cld3_kiwi_v2.ko \
@@ -121,13 +158,17 @@ DADA_EXCLUDED_KERNEL_MODULES := \
     qca_cld3_qca6750.ko \
     qca_cld3_wcn7750.ko \
     rsmc_driver.ko \
+    rt_mod.ko \
     scene_swappiness.ko \
+    sched-penalty.ko \
     sia91xx_dlkm.ko \
     sia91xx_tuning_dlkm.ko \
     sla.ko \
+    speed_touch.ko \
     swinfo.ko \
     tas25xx_dlkm.ko \
     tfa98xx_dlkm.ko \
     ufs_ffu.ko \
     unfairmem.ko \
-    xiaomi_touch.ko
+    xiaomi_touch.ko \
+    xm_power.ko

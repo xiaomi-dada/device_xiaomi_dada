@@ -85,6 +85,13 @@ BOARD_VENDOR_KERNEL_MODULES_LOAD := $(filter-out $(DADA_EXCLUDED_KERNEL_MODULES)
 BOARD_VENDOR_KERNEL_MODULES_LOAD := $(patsubst synaptics_tcm2.ko,qts.ko synaptics_tcm2_ts.ko,\
     $(BOARD_VENDOR_KERNEL_MODULES_LOAD))
 
+# Mainline spells the Qualcomm UFS host driver with a dash; Xiaomi's tree
+# spells it with an underscore, and the first-stage lists carry their name.
+BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(patsubst ufs_qcom.ko,ufs-qcom.ko,\
+    $(BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD))
+BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD := $(patsubst ufs_qcom.ko,ufs-qcom.ko,\
+    $(BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD))
+
 PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(KERNEL_PATH)/system_dlkm_flatten/,$(TARGET_COPY_OUT_SYSTEM_DLKM)/flatten/lib/modules) \
     $(call find-copy-subdir-files,*,$(KERNEL_PATH)/system_dlkm/,$(TARGET_COPY_OUT_SYSTEM_DLKM)/lib/modules/6.6.77-android15-8-g63ce7556864c-ab13994517-4k)
