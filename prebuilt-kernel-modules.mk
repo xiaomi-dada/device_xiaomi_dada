@@ -121,8 +121,7 @@ DADA_PREBUILT_KERNEL_MODULES := \
     gpio-mi-t1.ko \
     hardwareinfo.ko \
     mitee_dlkm.ko \
-    rsmc_driver.ko \
-    xiaomi_wifi_gpio.ko
+    rsmc_driver.ko
 
 PRODUCT_COPY_FILES += \
     $(foreach m,$(DADA_PREBUILT_KERNEL_MODULES),\
