@@ -118,16 +118,12 @@ DADA_EXCLUDED_KERNEL_MODULES := \
 DADA_PREBUILT_KERNEL_MODULES := \
     cameralog.ko \
     cameramsger.ko \
-    cs35l43_dlkm.ko \
-    cs_dsp.ko \
     gpio-mi-t1.ko \
     hardwareinfo.ko \
     mitee_dlkm.ko \
     rsmc_driver.ko \
-    sdca_registers_dlkm.ko \
     stm_nfc_i2c.ko \
     stm_st54se_gpio.ko \
-    typec_analog_acc_dlkm.ko \
     xiaomi_wifi_gpio.ko
 
 PRODUCT_COPY_FILES += \
