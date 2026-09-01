@@ -31,6 +31,19 @@
 # anyway: __get_mtd_device and __mtd_next_device changed shape since the
 # kernel it was built against.
 #
+# MIUI instrumentation.  mi_stack, mi_trace, mi_damon, mi_wmark,
+# mi_perf_memory, unfairmem, scene_swappiness, powersave, lb, sla, swinfo,
+# hangdetect, proc_exit, process_monitor, dump_display, ftun, binder_prio,
+# mibbr, minet, miwill and miicmpfilter bind to this kernel, but nothing here
+# wants them: they are scheduler and memory tuning, boot and hang timing,
+# backtrace capture and network extensions, none of it driving hardware and
+# none of it exporting a symbol another module imports.  What does reference
+# them does not survive the port -- /sys/kernel/mi_wmark/extra_free_kbytes is
+# written by a vendor script gated on persist.vendor.spc.mi_extra_free_enable,
+# and /proc/mi_mem_engine gets surfaceflinger's pid from a system partition
+# init file that LineageOS rebuilds.  The rest is only chmod and chown lines
+# that log a warning and carry on.
+#
 # Modules that will not bind: migt, perfmgr, mi_mempool, bootmonitor,
 # mi_ubt_test, mtdoops, ufs_ffu, aw882xx, fs19xx, sia91xx, tfa98xx,
 # xiaomi_touch, mi_thermal_interface and the wlan prebuilts for other chips
@@ -49,25 +62,34 @@
 # Everything still listed below does bind, and is shipped because there is no
 # source for it: the CS35L43 amplifiers with their DSP and SDCA register
 # helpers, the ST21NFC controller and its ST54 secure element GPIO, the USB-C
-# analog accessory switch, OP-TEE, the camera log and messager devices, and
-# the board glue Xiaomi wrote for this phone.  The MIUI instrumentation among
-# them -- mi_stack, mi_trace, mi_damon, mi_wmark, mi_perf_memory, unfairmem,
-# scene_swappiness, powersave, lb, sla, swinfo, hangdetect, proc_exit,
-# process_monitor, dump_display, ftun, binder_prio, mibbr, minet, miwill and
-# miicmpfilter -- is kept for now because it loads and the stock device runs
-# it; dropping it is a choice about what this ROM wants to carry, not
-# something the kernel forces.
+# analog accessory switch, OP-TEE, the camera log and messager devices -- the
+# odm camera libraries open the first of those by name -- and the board glue
+# Xiaomi wrote for this phone.
 
 DADA_EXCLUDED_KERNEL_MODULES := \
     aw882xx_dlkm.ko \
+    binder_prio.ko \
     block2mtd.ko \
     bootmonitor.ko \
     chipreg.ko \
+    dump_display.ko \
     fs19xx_dlkm.ko \
+    ftun.ko \
+    hangdetect.ko \
+    lb.ko \
+    mi_damon.ko \
     mi_mempool.ko \
+    mi_perf_memory.ko \
+    mi_stack.ko \
     mi_thermal_interface.ko \
+    mi_trace.ko \
     mi_ubt_test.ko \
+    mi_wmark.ko \
+    mibbr.ko \
     migt.ko \
+    miicmpfilter.ko \
+    minet.ko \
+    miwill.ko \
     mtd.ko \
     mtd_blkdevs.ko \
     mtdblock.ko \
@@ -75,51 +97,37 @@ DADA_EXCLUDED_KERNEL_MODULES := \
     nxp-nci.ko \
     ofpart.ko \
     perfmgr.ko \
+    powersave.ko \
+    proc_exit.ko \
+    process_monitor.ko \
     qca_cld3_kiwi_v2.ko \
     qca_cld3_peach.ko \
     qca_cld3_qca6750.ko \
     qca_cld3_wcn7750.ko \
+    scene_swappiness.ko \
     sia91xx_dlkm.ko \
     sia91xx_tuning_dlkm.ko \
+    sla.ko \
+    swinfo.ko \
     tas25xx_dlkm.ko \
     tfa98xx_dlkm.ko \
     ufs_ffu.ko \
+    unfairmem.ko \
     xiaomi_touch.ko
 
 DADA_PREBUILT_KERNEL_MODULES := \
-    binder_prio.ko \
     cameralog.ko \
     cameramsger.ko \
     cs35l43_dlkm.ko \
     cs_dsp.ko \
-    dump_display.ko \
-    ftun.ko \
     gpio-mi-t1.ko \
-    hangdetect.ko \
     hardwareinfo.ko \
-    lb.ko \
-    mi_damon.ko \
-    mi_perf_memory.ko \
-    mi_stack.ko \
-    mi_trace.ko \
-    mi_wmark.ko \
-    mibbr.ko \
-    miicmpfilter.ko \
-    minet.ko \
     mitee_dlkm.ko \
-    miwill.ko \
-    powersave.ko \
-    proc_exit.ko \
-    process_monitor.ko \
     rsmc_driver.ko \
-    scene_swappiness.ko \
     sdca_registers_dlkm.ko \
-    sla.ko \
     stm_nfc_i2c.ko \
     stm_st54se_gpio.ko \
-    swinfo.ko \
     typec_analog_acc_dlkm.ko \
-    unfairmem.ko \
     xiaomi_wifi_gpio.ko
 
 PRODUCT_COPY_FILES += \
