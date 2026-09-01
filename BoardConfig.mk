@@ -70,7 +70,7 @@ TARGET_KERNEL_EXT_MODULES := \
     st/opensource/eSE-driver
 
 # Kernel modules
-include $(DEVICE_PATH)/prebuilt-kernel-modules.mk
+include $(DEVICE_PATH)/excluded-kernel-modules.mk
 
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(filter-out $(DADA_EXCLUDED_KERNEL_MODULES),\
     $(strip $(shell cat $(KERNEL_PATH)/vendor_ramdisk/modules.load)))

@@ -1,14 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
 #
-# Vendor modules with no source in this tree, so they cannot be built.
+# Vendor modules the stock device loads that this one does not.
 #
-# Everything else the device loads is built from kernel/xiaomi/sm8750 and
-# kernel/xiaomi/sm8750-modules-qcom.  What decides whether a prebuilt still
-# binds is not the kernel release in its vermagic -- with CONFIG_MODVERSIONS
-# the loader skips that and compares symbol CRCs, which is why the stock
-# device runs 6.6.77 with vendor modules built against 6.6.57 -- but whether
-# every symbol it imports has the same CRC here.  Each module below was
-# checked that way against this kernel.
+# Everything the device does load is built from kernel/xiaomi/sm8750 and
+# kernel/xiaomi/sm8750-modules-qcom; nothing is taken from the stock images.
+# Where the reason for dropping a module is that it would not bind, that was
+# decided on symbol CRCs and not on the kernel release in its vermagic -- with
+# CONFIG_MODVERSIONS the loader skips the release, which is why the stock
+# device runs 6.6.77 with vendor modules built against 6.6.57.
 #
 # The charging stack used to be here in its entirety -- fifty-two modules that
 # resolve against each other, so none of them could be replaced until all of
@@ -59,23 +58,39 @@
 # takes a struct drm_panel, so its CRC follows the DRM core; theirs was
 # computed against 6.6.30 and nothing here reproduces it.
 #
-# Everything still listed below does bind, and is shipped because there is no
-# source for it: the CS35L43 amplifiers with their DSP and SDCA register
-# helpers, the ST21NFC controller and its ST54 secure element GPIO, the USB-C
-# analog accessory switch, OP-TEE, the camera log and messager devices -- the
-# odm camera libraries open the first of those by name -- and the board glue
-# Xiaomi wrote for this phone.
+# Modules with a device but no user here.  cameramsger biases camera thread
+# placement through the scheduler vendor hooks and is driven over
+# /dev/cam_msger by CameraMind and miui-cameraopt.jar; hardwareinfo publishes
+# a board summary at /sys/kernel/hardware_info_to_dump/hardw_info that only
+# /vendor/bin/hypsys_vendor reads; mitee_dlkm is the transport to Xiaomi's own
+# trusted execution environment, whose whole userspace -- tee-supplicant,
+# mitee_shell, miteelog, the mitrustedui HAL and the trusted applications in
+# odm/mitee -- stays behind.  None of the four thousand blobs this port ships
+# touches any of them, and no other module depends on them.
+#
+# rsmc_driver is the satellite modem stack.  It looks for a node with the
+# xiaomi_rsmc compatible, which this board's device tree does not have, so it
+# logs that it found none and stops; nothing else references it either.
+#
+# Nothing is shipped prebuilt any more.  What used to be here is built from
+# source: the CS35L43 amplifiers with their DSP and SDCA register helpers and
+# the USB-C analog accessory switch in the audio techpack, the camera log
+# device in the camera techpack -- the odm camera libraries open it by name --
+# the ST21NFC controller and its ST54 secure element GPIO under st/, and the
+# WiFi SAR and T1 GPIO drivers in the kernel.
 
 DADA_EXCLUDED_KERNEL_MODULES := \
     aw882xx_dlkm.ko \
     binder_prio.ko \
     block2mtd.ko \
     bootmonitor.ko \
+    cameramsger.ko \
     chipreg.ko \
     dump_display.ko \
     fs19xx_dlkm.ko \
     ftun.ko \
     hangdetect.ko \
+    hardwareinfo.ko \
     lb.ko \
     mi_damon.ko \
     mi_mempool.ko \
@@ -89,6 +104,7 @@ DADA_EXCLUDED_KERNEL_MODULES := \
     migt.ko \
     miicmpfilter.ko \
     minet.ko \
+    mitee_dlkm.ko \
     miwill.ko \
     mtd.ko \
     mtd_blkdevs.ko \
@@ -104,6 +120,7 @@ DADA_EXCLUDED_KERNEL_MODULES := \
     qca_cld3_peach.ko \
     qca_cld3_qca6750.ko \
     qca_cld3_wcn7750.ko \
+    rsmc_driver.ko \
     scene_swappiness.ko \
     sia91xx_dlkm.ko \
     sia91xx_tuning_dlkm.ko \
@@ -114,15 +131,3 @@ DADA_EXCLUDED_KERNEL_MODULES := \
     ufs_ffu.ko \
     unfairmem.ko \
     xiaomi_touch.ko
-
-DADA_PREBUILT_KERNEL_MODULES := \
-    cameralog.ko \
-    cameramsger.ko \
-    gpio-mi-t1.ko \
-    hardwareinfo.ko \
-    mitee_dlkm.ko \
-    rsmc_driver.ko
-
-PRODUCT_COPY_FILES += \
-    $(foreach m,$(DADA_PREBUILT_KERNEL_MODULES),\
-        $(KERNEL_PATH)/vendor_dlkm/$(m):$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/$(m))
