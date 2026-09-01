@@ -19,6 +19,14 @@ BOARD_PREBUILT_DTBIMAGE_DIR := $(KERNEL_PATH)/dtb
 
 # Kernel
 TARGET_KERNEL_SOURCE := kernel/xiaomi/sm8750
+# Link-time optimisation, as the shipped kernel is built.  On arm64 this is
+# not only a code-generation choice: CONFIG_LTO makes READ_ONCE() compile to an
+# acquire load, because LTO can otherwise break the address dependency the
+# plain load relies on.  Without it our modules carry a handful of acquire
+# loads where the shipped ones carry two thousand, so the two do not agree on
+# memory ordering.
+KERNEL_LTO := thin
+
 TARGET_KERNEL_CONFIG := \
     gki_defconfig \
     vendor/sun_perf.config \
