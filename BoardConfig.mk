@@ -73,11 +73,11 @@ TARGET_KERNEL_EXT_MODULES := \
 include $(DEVICE_PATH)/excluded-kernel-modules.mk
 
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(filter-out $(DADA_EXCLUDED_KERNEL_MODULES),\
-    $(strip $(shell cat $(KERNEL_PATH)/vendor_ramdisk/modules.load)))
+    $(strip $(shell cat $(DEVICE_PATH)/modules/modules.load.vendor_ramdisk)))
 BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD := $(filter-out $(DADA_EXCLUDED_KERNEL_MODULES),\
-    $(strip $(shell cat $(KERNEL_PATH)/vendor_ramdisk/modules.load.recovery)))
+    $(strip $(shell cat $(DEVICE_PATH)/modules/modules.load.recovery)))
 BOARD_VENDOR_KERNEL_MODULES_LOAD := $(filter-out $(DADA_EXCLUDED_KERNEL_MODULES),\
-    $(strip $(shell cat $(KERNEL_PATH)/vendor_dlkm/modules.load)))
+    $(strip $(shell cat $(DEVICE_PATH)/modules/modules.load.vendor_dlkm)))
 
 # The touchscreen driver is built from source now, and the techpack names it
 # synaptics_tcm2_ts rather than synaptics_tcm2.  It sits on QTI Touch
