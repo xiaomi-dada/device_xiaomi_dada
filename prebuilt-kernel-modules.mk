@@ -122,8 +122,6 @@ DADA_PREBUILT_KERNEL_MODULES := \
     hardwareinfo.ko \
     mitee_dlkm.ko \
     rsmc_driver.ko \
-    stm_nfc_i2c.ko \
-    stm_st54se_gpio.ko \
     xiaomi_wifi_gpio.ko
 
 PRODUCT_COPY_FILES += \

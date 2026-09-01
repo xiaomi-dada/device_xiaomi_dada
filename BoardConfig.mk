@@ -65,7 +65,9 @@ TARGET_KERNEL_EXT_MODULES := \
     qcom/opensource/video-driver \
     qcom/opensource/wlan/platform \
     qcom/opensource/wlan/qcacld-3.0 \
-    qcom/opensource/bt-kernel
+    qcom/opensource/bt-kernel \
+    st/opensource/nfc-st-driver \
+    st/opensource/eSE-driver
 
 # Kernel modules
 include $(DEVICE_PATH)/prebuilt-kernel-modules.mk
