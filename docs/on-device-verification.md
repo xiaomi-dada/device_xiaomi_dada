@@ -165,24 +165,22 @@ has no functions by those names and votes the xm_wls family instead, so this
 is a renamed client rather than an added limit. Consistent on both sides here,
 so it works; it simply is not what the vendor calls it.
 
-business_charger acts on two events the shipped module ignores. Both builds
-subscribe to the same six event types, CP_INFO among them, but the shipped
-module's event thread has no case for MCA_EVENT_CP_VUSB_INSERT or
-MCA_EVENT_CP_VUSB_OUT: it receives them and does nothing. Ours adds both
-cases, running the charge pump present handler, which reads the reverse
-charging firmware update flag and calls
-platform_class_wireless_set_enable_mode(0, 0) when VBUS is seen.
+business_charger senses USB presence two ways, and only one of them runs.
+The earlier note here said it acted on events the shipped module ignores and
+called that a live second path. Following the guard back shows otherwise.
 
-The shipped module reaches the same end through business_charger_process_usb_sns_func,
-driven from the online change and the rerun work. So this is a second path to
-a behaviour that already has one, taken on an event the vendor chose to drop.
-Live, not gated by anything.
+process_usb_sns_func() runs when usb_sns_type is PMIC_SNS, and
+process_cp_usb_present_change() - the one reached from the charge pump VBUS
+events - runs when it is CP_VUSB. They do the same work by different routes:
+read whether USB is present, check the reverse charging firmware flag, tell
+the reverse wireless strategy, and either disable the wireless path or
+schedule it back on. usb_sns_type comes from a property no device tree
+declares and defaults to PMIC_SNS, so the charge pump arm never runs here.
 
-    adb shell 'dmesg -w | grep -i "usb_resent\|set_enable_mode"' &
-
-Plug a wired charger while a wireless pad is attached. Two disable calls close
-together, one from the CP event and one from the online change, would confirm
-the duplication.
+The shipped module has only the PMIC arm and no guard around it. Ours has the
+guard and both arms, and on this board the PMIC arm always runs, which is the
+same behaviour. Nothing to change: this is one arm of an either/or whose other
+arm is live, not stray code.
 
 A fake first-usage-date writer the shipped module does not have.
 FG_IC_PROP_FAKE_FIRST_USAGE_DATE routes to fg_write_fake_first_usage_date(),
