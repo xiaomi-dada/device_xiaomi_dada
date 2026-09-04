@@ -69,33 +69,50 @@ retrying and nfg1000_mcu_auth_ok() should loop like the vendor driver does.
 A failure here aborts the update rather than damaging the gauge, so this is safe
 to observe rather than pre-emptively change.
 
-## 4. Fuel-gauge full-access unseal before reflash (bq27z561)
+## 4. Fuel-gauge full-access unseal and reseal (bq27z561)
 
-Before programming, the vendor driver unseals the gauge for full access: it
-writes a four-word key sequence to AltManufacturerAccess about 3 ms apart, reads
-the seal state back from MAC 0x54, and retries the whole sequence up to three
-times before giving up. Ours writes 0x0f00 to CONTROL instead.
+Now implemented as the shipped module does it: four keys to
+AltManufacturerAccess 3 ms apart (0x303b, 0x8ab9, 0xc32e, 0x5947), the seal
+state read back from MAC 0x54, the sequence retried up to three times, and
+command 0x0030 to seal the part again once the update finishes or gives up.
+Byte 1 of the state masked with 0x03 reads 1 for full access and 3 for sealed.
 
-Which the part actually requires cannot be settled from the decompile without
-the gauge datasheet, and this runs during a flash, so it was left alone rather
-than guessed at.
+The values are reproduced from the shipped module and have not been exercised
+against the part, so they stay untested until someone runs a gauge update.
 
-    adb shell 'dmesg -w | grep -i "nfg1000\|ota update attempt"' &
+    adb shell 'dmesg -w | grep -i "nfg1000\|ota update attempt\|seal"' &
 
-Trigger a gauge firmware update. If "ota update attempt N fail" appears for all
-three attempts on a gauge that is otherwise healthy, the unseal is the first
-thing to suspect: the write is not being accepted because the part is still
-sealed, and nfg1000_ota_update_check() needs the vendor's key sequence rather
-than the CONTROL write.
+Trigger a gauge firmware update. What should appear: no "unseal fail", the
+three "ota update attempt" lines absent or stopping early on success, and no
+"ota seal fail" at the end.
+
+"nfg1000 ota unseal fail" means the keys were sent but full access was not
+reached; "write alt_mac1/2 fail" means the bus did not carry them at all,
+which is a wiring or contention problem rather than a key problem.
+
+"nfg1000 ota seal fail" is the line that matters most: it leaves the gauge
+writable by anything that can reach the bus. Check it even when the update
+itself reports success.
 
 Failing here aborts the update rather than damaging the gauge, so this is safe
-to observe. Do not change the sequence speculatively -- an unseal that half
-succeeds is a worse position than one that cleanly fails.
+to observe.
 
 ## Scope note
 
-Everything else in the reconstructed stack is settled statically: identical
-control flow, identical constants, identical call sequences, with differences
-confined to struct layout, __LINE__ values, inlining and constant folding.
-These two are the only behaviours whose correctness depends on values that
-exist only at runtime.
+The four items above are the ones whose correctness depends on values that
+exist only at runtime, and none of them can be settled from the decompile.
+
+The rest of the reconstructed stack is settled statically, function by
+function, against the vendor binary: matching control flow, constants and
+call sequences, with differences confined to struct layout, __LINE__ values,
+inlining and constant folding. Where that comparison turned up a real
+divergence it was fixed rather than recorded here -- an adapter voltage
+ceiling that compounded on every pass, aging revisions applied to the wrong
+jeita band, a suspend gate written by every i2c transfer, a QC settle band
+read as a timeout, and a driver published through a global before its probe
+had succeeded.
+
+Only the charging stack was reconstructed from a binary. Every other module
+on the device builds from source that is already published, so a difference
+there is two builds of the same source disagreeing rather than a
+reconstruction that drifted.
