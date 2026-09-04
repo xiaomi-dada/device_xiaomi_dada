@@ -69,6 +69,29 @@ retrying and nfg1000_mcu_auth_ok() should loop like the vendor driver does.
 A failure here aborts the update rather than damaging the gauge, so this is safe
 to observe rather than pre-emptively change.
 
+## 4. Fuel-gauge full-access unseal before reflash (bq27z561)
+
+Before programming, the vendor driver unseals the gauge for full access: it
+writes a four-word key sequence to AltManufacturerAccess about 3 ms apart, reads
+the seal state back from MAC 0x54, and retries the whole sequence up to three
+times before giving up. Ours writes 0x0f00 to CONTROL instead.
+
+Which the part actually requires cannot be settled from the decompile without
+the gauge datasheet, and this runs during a flash, so it was left alone rather
+than guessed at.
+
+    adb shell 'dmesg -w | grep -i "nfg1000\|ota update attempt"' &
+
+Trigger a gauge firmware update. If "ota update attempt N fail" appears for all
+three attempts on a gauge that is otherwise healthy, the unseal is the first
+thing to suspect: the write is not being accepted because the part is still
+sealed, and nfg1000_ota_update_check() needs the vendor's key sequence rather
+than the CONTROL write.
+
+Failing here aborts the update rather than damaging the gauge, so this is safe
+to observe. Do not change the sequence speculatively -- an unseal that half
+succeeds is a worse position than one that cleanly fails.
+
 ## Scope note
 
 Everything else in the reconstructed stack is settled statically: identical
