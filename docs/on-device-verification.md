@@ -163,6 +163,25 @@ has no functions by those names and votes the xm_wls family instead, so this
 is a renamed client rather than an added limit. Consistent on both sides here,
 so it works; it simply is not what the vendor calls it.
 
+business_charger acts on two events the shipped module ignores. Both builds
+subscribe to the same six event types, CP_INFO among them, but the shipped
+module's event thread has no case for MCA_EVENT_CP_VUSB_INSERT or
+MCA_EVENT_CP_VUSB_OUT: it receives them and does nothing. Ours adds both
+cases, running the charge pump present handler, which reads the reverse
+charging firmware update flag and calls
+platform_class_wireless_set_enable_mode(0, 0) when VBUS is seen.
+
+The shipped module reaches the same end through business_charger_process_usb_sns_func,
+driven from the online change and the rerun work. So this is a second path to
+a behaviour that already has one, taken on an event the vendor chose to drop.
+Live, not gated by anything.
+
+    adb shell 'dmesg -w | grep -i "usb_resent\|set_enable_mode"' &
+
+Plug a wired charger while a wireless pad is attached. Two disable calls close
+together, one from the CP event and one from the online change, would confirm
+the duplication.
+
 The xring block is dead code for another platform. strategy_buckchg's
 reset_charge_para ends with an if (info->use_sc_buck) whose own comment reads
 "xring system abnormal use default ibus and ibat 500mA". XRing is Xiaomi's own
