@@ -97,9 +97,31 @@ itself reports success.
 Failing here aborts the update rather than damaging the gauge, so this is safe
 to observe.
 
+## 5. Bus OVP threshold behind the register key (sc8581)
+
+sc8581_set_busovp_th() sends the unlock key sequence before writing BUS_OVP.
+The shipped module does not: it writes that threshold with no key at all.
+
+The key is transient -- writing any other register relocks the part -- so the
+extra sequence costs three i2c writes and cannot leave anything unlocked. The
+question is the other way round: if BUS_OVP really is one of the protected
+thresholds, the shipped module's write is being dropped and its bus
+overvoltage limit is whatever the part powers up with.
+
+    adb shell 'cat /sys/class/xm_power/cp_master/reg_dump' 2>/dev/null
+
+Read register 0x08 back after boot and compare it against bus-ovp-threshold in
+the device tree for the current mode. If it matches, the key is not needed for
+this register and the unlock can go. If it reads the reset default while the
+device tree asks for something else, the unlock is doing real work and the
+shipped module has been running without that limit.
+
+Left in place meanwhile: an unnecessary key sequence is harmless, and dropping
+a protection threshold is not.
+
 ## Scope note
 
-The four items above are the ones whose correctness depends on values that
+The five items above are the ones whose correctness depends on values that
 exist only at runtime, and none of them can be settled from the decompile.
 
 The rest of the reconstructed stack is settled statically, function by
