@@ -182,6 +182,16 @@ Plug a wired charger while a wireless pad is attached. Two disable calls close
 together, one from the CP event and one from the online change, would confirm
 the duplication.
 
+A fake first-usage-date writer the shipped module does not have.
+FG_IC_PROP_FAKE_FIRST_USAGE_DATE routes to fg_write_fake_first_usage_date(),
+and neither the property nor the function appears anywhere in the shipped
+module.  It writes the same gauge record as the real one, without the real
+one's check that the record is still unset.
+
+The out-of-bounds read both writers had is fixed either way.  What is left to
+decide is whether a path that overwrites a once-only record on demand should
+exist at all.
+
 The xring block is dead code for another platform. strategy_buckchg's
 reset_charge_para ends with an if (info->use_sc_buck) whose own comment reads
 "xring system abnormal use default ibus and ibat 500mA". XRing is Xiaomi's own
