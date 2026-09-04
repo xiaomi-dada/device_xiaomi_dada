@@ -144,16 +144,18 @@ being answered and this can be closed.
 Three separate things, previously described here as one. Corrected after
 reading each site rather than counting call sites.
 
-qc_done is genuinely live and has no counterpart in any shipped module. The
-quick charge strategy casts it when it hands over to the PMIC at high raw SOC,
-capping the buck charge current at 400mA; its own comment says a high ibat
-there could push vbat too high. It is released by buckchg and by the fuel
-gauge strategy. Nothing records why it was added.
+qc_done is gone, and the note that said it was live was wrong. It was
+described here as a real 400mA limit taken at high raw SOC. It was not: the
+vote is cast in one place, behind a flag set in one place, behind a property
+read with a default of zero that no device tree declares. The flag was never
+set, the vote never cast, and the work scheduled beside it existed only to
+release it. That put it in the same category as the full replug limit rather
+than in the category this note claimed, so it has been removed.
 
-    adb shell 'cat /sys/class/xm_power/*/charge_limit_voter' 2>/dev/null
-
-After a quick charge completes, the effective client tells you whether qc_done
-is holding the limit.
+The mistake is worth recording. It came from reading the vote site and its
+comment - which describes a genuine hazard, high ibat pushing vbat up on the
+handover to the PMIC - without following the guard back to where it is set.
+A comment describing why code would matter is not evidence that the code runs.
 
 subpmic_hw is not the cross module protocol described here before. Inside
 buckchg its only vote is in the dead block below; the two live buckchg sites
