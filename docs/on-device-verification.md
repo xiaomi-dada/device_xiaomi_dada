@@ -139,31 +139,41 @@ wrong every page fails that comparison and the update reports failure without
 having damaged anything. If the update completes, the single transfer is
 being answered and this can be closed.
 
-## 7. Two vote clients the shipped module does not use
+## 7. Vote clients and a platform block the shipped module does not have
 
-"qc_done" and "subpmic_hw" appear in no function of any shipped module, but
-both are live here and both span modules:
+Three separate things, previously described here as one. Corrected after
+reading each site rather than counting call sites.
 
-  qc_done     cast by quickchg when the charge completes at high raw SOC,
-              limiting the buck charge current; released by buckchg and by
-              the fuel gauge strategy.
-  subpmic_hw  cast by the wireless strategy to limit input and charge
-              current; released by buckchg.
-
-Neither is gated off, so both change charging behaviour. That makes them
-different from the full replug limit removed alongside this note, which was
-switched off by a property no device tree declares and could simply go.
-
-These were left in place. Removing a working cross module protocol because
-the vendor binary lacks it risks losing a real limit, and the reason for
-adding them is not recorded anywhere in the tree. Whoever knows why they are
-there should decide: either drop all four call sites, or write down what they
-are for so the next comparison does not raise them again.
+qc_done is genuinely live and has no counterpart in any shipped module. The
+quick charge strategy casts it when it hands over to the PMIC at high raw SOC,
+capping the buck charge current at 400mA; its own comment says a high ibat
+there could push vbat too high. It is released by buckchg and by the fuel
+gauge strategy. Nothing records why it was added.
 
     adb shell 'cat /sys/class/xm_power/*/charge_limit_voter' 2>/dev/null
 
-The effective client after a completed quick charge tells you whether qc_done
-is the one holding the limit.
+After a quick charge completes, the effective client tells you whether qc_done
+is holding the limit.
+
+subpmic_hw is not the cross module protocol described here before. Inside
+buckchg its only vote is in the dead block below; the two live buckchg sites
+only release it, which is a no operation if it was never cast. It is cast for
+real by the wireless strategy's ibus and ichg setters - but the shipped module
+has no functions by those names and votes the xm_wls family instead, so this
+is a renamed client rather than an added limit. Consistent on both sides here,
+so it works; it simply is not what the vendor calls it.
+
+The xring block is dead code for another platform. strategy_buckchg's
+reset_charge_para ends with an if (info->use_sc_buck) whose own comment reads
+"xring system abnormal use default ibus and ibat 500mA". XRing is Xiaomi's own
+SoC, not this Qualcomm part. use_sc_buck comes from mca_wire_use_sc_buck,
+which defaults to 0 and is declared by no device tree, so the block never runs
+here. It accounts for every remaining vote difference in stop_charging: three
+wire_chg_type, one online, one icl_limit and both subpmic_hw casts.
+
+It can go, on the same grounds as the full replug limit already removed. It is
+left for now only because it was raised with the owner as a decision and no
+answer has come back.
 
 ## Scope note
 
