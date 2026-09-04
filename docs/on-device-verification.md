@@ -139,9 +139,35 @@ wrong every page fails that comparison and the update reports failure without
 having damaged anything. If the update completes, the single transfer is
 being answered and this can be closed.
 
+## 7. Two vote clients the shipped module does not use
+
+"qc_done" and "subpmic_hw" appear in no function of any shipped module, but
+both are live here and both span modules:
+
+  qc_done     cast by quickchg when the charge completes at high raw SOC,
+              limiting the buck charge current; released by buckchg and by
+              the fuel gauge strategy.
+  subpmic_hw  cast by the wireless strategy to limit input and charge
+              current; released by buckchg.
+
+Neither is gated off, so both change charging behaviour. That makes them
+different from the full replug limit removed alongside this note, which was
+switched off by a property no device tree declares and could simply go.
+
+These were left in place. Removing a working cross module protocol because
+the vendor binary lacks it risks losing a real limit, and the reason for
+adding them is not recorded anywhere in the tree. Whoever knows why they are
+there should decide: either drop all four call sites, or write down what they
+are for so the next comparison does not raise them again.
+
+    adb shell 'cat /sys/class/xm_power/*/charge_limit_voter' 2>/dev/null
+
+The effective client after a completed quick charge tells you whether qc_done
+is the one holding the limit.
+
 ## Scope note
 
-The six items above are the ones whose correctness depends on values that
+The seven items above are the ones whose correctness depends on values that
 exist only at runtime, and none of them can be settled from the decompile.
 
 The rest of the reconstructed stack is settled statically, function by
