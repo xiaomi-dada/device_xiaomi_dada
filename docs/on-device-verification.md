@@ -51,6 +51,24 @@ If the ID reads 0x00, this board is a plain FSA4480 and the alternate table is
 dormant but harmless. If it reads 0xF6, the alternate table is live and the
 above checks are what validate it.
 
+## 3. Fuel-gauge firmware update, MCU auth retry (bq27z561)
+
+The gauge reflash sequence runs seven steps; step 3 authenticates the MCU by
+reading register 0x50 and requiring the signature 04 11 83 00 00 'R'. The vendor
+driver appears to retry that read up to five times about 2 ms apart, but it
+inlines several helpers into one function and the decompile does not separate
+the retry from the boot-entry retries that our step 1 already performs. Ours
+reads once.
+
+    adb shell 'dmesg -w | grep -i "nfg1000\|ota program step"' &
+
+Trigger a gauge firmware update and watch for "nfg1000 ota program step3 fail".
+If step 3 ever fails on a gauge that is otherwise healthy, the read needs
+retrying and nfg1000_mcu_auth_ok() should loop like the vendor driver does.
+
+A failure here aborts the update rather than damaging the gauge, so this is safe
+to observe rather than pre-emptively change.
+
 ## Scope note
 
 Everything else in the reconstructed stack is settled statically: identical
