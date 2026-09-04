@@ -119,9 +119,29 @@ shipped module has been running without that limit.
 Left in place meanwhile: an unnecessary key sequence is harmless, and dropping
 a protection threshold is not.
 
+## 6. Flash read-back protocol (bq27z561)
+
+The read command frame now carries the right address, but the transfer that
+reads the data back still differs. Ours writes a three byte preamble
+(0xaa, addr low, 0xab) and reads the whole section in one go. The shipped
+module loops instead, writing a single register selector that counts up from
+0x32 and reading a chunk per pass.
+
+Which one the part answers cannot be settled from the decompile: the message
+lengths in the shipped module survive only as packed decompiler output, and
+guessing at them during a flash is not worth it.
+
+    adb shell 'dmesg -w | grep -i "nfg1000\|read flash step"' &
+
+Trigger a gauge firmware update. nfg1000_update_flash_step() reads each page
+back and compares it with what it wrote, so if the read-back protocol is
+wrong every page fails that comparison and the update reports failure without
+having damaged anything. If the update completes, the single transfer is
+being answered and this can be closed.
+
 ## Scope note
 
-The five items above are the ones whose correctness depends on values that
+The six items above are the ones whose correctness depends on values that
 exist only at runtime, and none of them can be settled from the decompile.
 
 The rest of the reconstructed stack is settled statically, function by
