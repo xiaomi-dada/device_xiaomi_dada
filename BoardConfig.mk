@@ -100,9 +100,23 @@ BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(patsubst ufs_qcom.ko,ufs-qcom.ko,\
 BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD := $(patsubst ufs_qcom.ko,ufs-qcom.ko,\
     $(BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD))
 
-PRODUCT_COPY_FILES += \
-    $(call find-copy-subdir-files,*,$(KERNEL_PATH)/system_dlkm_flatten/,$(TARGET_COPY_OUT_SYSTEM_DLKM)/flatten/lib/modules) \
-    $(call find-copy-subdir-files,*,$(KERNEL_PATH)/system_dlkm/,$(TARGET_COPY_OUT_SYSTEM_DLKM)/lib/modules/6.6.77-android15-8-g63ce7556864c-ab13994517-4k)
+# GKI modules.
+#
+# These used to be copied in from the stock system_dlkm, which was built for
+# 6.6.77 while the kernel here is 6.6.142.  They loaded only because
+# CONFIG_MODVERSIONS makes the loader check symbol CRCs and skip the release
+# string.  Every one of them builds from the kernel above, so they are taken
+# from there instead and the release strings agree.
+#
+# Naming them here also keeps them out of vendor_dlkm: the build puts this set
+# in system_dlkm and everything else in vendor.  SYSTEM_KERNEL_MODULES, not
+# BOARD_SYSTEM_KERNEL_MODULES: the board variable belongs to build/make, which
+# wants paths to modules it can install, and would take these bare names for
+# files that do not exist.
+SYSTEM_KERNEL_MODULES := \
+    $(strip $(shell cat $(DEVICE_PATH)/modules/modules.system_dlkm))
+BOARD_SYSTEM_KERNEL_MODULES_LOAD := \
+    $(strip $(shell cat $(DEVICE_PATH)/modules/modules.load.system_dlkm))
 
 # Properties
 TARGET_ODM_PROP += $(DEVICE_PATH)/configs/properties/odm.prop
