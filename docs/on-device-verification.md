@@ -139,7 +139,7 @@ wrong every page fails that comparison and the update reports failure without
 having damaged anything. If the update completes, the single transfer is
 being answered and this can be closed.
 
-## 7. Vote clients and a platform block the shipped module does not have
+## 7. Vote clients the shipped module does not have
 
 Three separate things, previously described here as one. Corrected after
 reading each site rather than counting call sites.
@@ -182,27 +182,24 @@ guard and both arms, and on this board the PMIC arm always runs, which is the
 same behaviour. Nothing to change: this is one arm of an either/or whose other
 arm is live, not stray code.
 
-A fake first-usage-date writer the shipped module does not have.
-FG_IC_PROP_FAKE_FIRST_USAGE_DATE routes to fg_write_fake_first_usage_date(),
-and neither the property nor the function appears anywhere in the shipped
-module.  It writes the same gauge record as the real one, without the real
-one's check that the record is still unset.
+Two further items that stood here have since been decided and removed, so
+neither needs anything on hardware.
 
-The out-of-bounds read both writers had is fixed either way.  What is left to
-decide is whether a path that overwrites a once-only record on demand should
-exist at all.
+The fake first-usage-date writer is gone. FG_IC_PROP_FAKE_FIRST_USAGE_DATE
+routed to fg_write_fake_first_usage_date(), which wrote the same gauge record
+as the real writer but without its check that the record is still unset, and
+was reachable through a 0664 file. Neither the property nor the function
+appeared anywhere in the shipped module. The genuine first_usage_date
+attribute is unchanged.
 
-The xring block is dead code for another platform. strategy_buckchg's
-reset_charge_para ends with an if (info->use_sc_buck) whose own comment reads
-"xring system abnormal use default ibus and ibat 500mA". XRing is Xiaomi's own
-SoC, not this Qualcomm part. use_sc_buck comes from mca_wire_use_sc_buck,
-which defaults to 0 and is declared by no device tree, so the block never runs
-here. It accounts for every remaining vote difference in stop_charging: three
-wire_chg_type, one online, one icl_limit and both subpmic_hw casts.
-
-It can go, on the same grounds as the full replug limit already removed. It is
-left for now only because it was raised with the owner as a decision and no
-answer has come back.
+The xring block is gone. strategy_buckchg's reset_charge_para ended with an
+if (info->use_sc_buck) whose own comment read "xring system abnormal use
+default ibus and ibat 500mA" -- XRing is Xiaomi's own SoC, not this Qualcomm
+part. use_sc_buck came from mca_wire_use_sc_buck, which defaults to 0 and is
+declared by no device tree, so the block never ran here. It accounted for
+every remaining vote difference in stop_charging: three wire_chg_type, one
+online, one icl_limit and both subpmic_hw casts. With it removed nothing read
+the field, so the parse and the field went with it.
 
 ## Scope note
 
