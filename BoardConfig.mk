@@ -5,7 +5,6 @@
 #
 
 DEVICE_PATH := device/xiaomi/dada
-KERNEL_PATH := $(DEVICE_PATH)-kernel
 
 # Inherit from sm8750-common
 include device/xiaomi/sm8750-common/BoardConfigCommon.mk
@@ -14,8 +13,17 @@ include device/xiaomi/sm8750-common/BoardConfigCommon.mk
 TARGET_SCREEN_DENSITY := 520
 
 # Dtb/o
-BOARD_PREBUILT_DTBOIMAGE := $(KERNEL_PATH)/dtbo.img
-BOARD_PREBUILT_DTBIMAGE_DIR := $(KERNEL_PATH)/dtb
+#
+# dtb.img is the eight sun/sunp base trees with the QCOM techpack fragments
+# merged into each, which is what the merge script below does and what the
+# vendor's own build does.  dtbo.img is the device overlay, and it must not go
+# through that merge -- see dtboimg.mk.
+BOARD_USES_QCOM_MERGE_DTBS_SCRIPT := true
+TARGET_NEEDS_DTBOIMAGE := true
+TARGET_KERNEL_DTB := dtbs
+BOARD_CUSTOM_DTBOIMG_MK := $(DEVICE_PATH)/dtboimg.mk
+# Deferred: TARGET_OUT_INTERMEDIATES is not set yet while this file is read.
+BOARD_PREBUILT_DTBOIMAGE = $(TARGET_OUT_INTERMEDIATES)/DTBO_OBJ/dtbo.img
 
 # Kernel
 TARGET_KERNEL_SOURCE := kernel/xiaomi/sm8750
@@ -109,10 +117,11 @@ BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD := $(patsubst ufs_qcom.ko,ufs-
 # from there instead and the release strings agree.
 #
 # Naming them here also keeps them out of vendor_dlkm: the build puts this set
-# in system_dlkm and everything else in vendor.  SYSTEM_KERNEL_MODULES, not
-# BOARD_SYSTEM_KERNEL_MODULES: the board variable belongs to build/make, which
-# wants paths to modules it can install, and would take these bare names for
-# files that do not exist.
+# in system_dlkm and everything else in vendor.
+# SYSTEM_KERNEL_MODULES, not BOARD_SYSTEM_KERNEL_MODULES: the board variable
+# belongs to build/make, which wants paths to modules it can install, and
+# would take these bare names for files that do not exist.  This one is the
+# kernel task's own, and it matches on name against what the kernel built.
 SYSTEM_KERNEL_MODULES := \
     $(strip $(shell cat $(DEVICE_PATH)/modules/modules.system_dlkm))
 BOARD_SYSTEM_KERNEL_MODULES_LOAD := \
