@@ -100,6 +100,18 @@ blob_fixups: blob_fixups_user_type = {
         .replace_needed('android.frameworks.cameraservice.service-V2-ndk.so', 'android.frameworks.cameraservice.service-V3-ndk.so')
 }
 
+# android.hardware.graphics.allocator-V1-ndk ships as a blob (copy rule) for the
+# camera stack, but several blobs also link V2. Emitting both as shared_libs makes
+# Soong fail with "depends on multiple versions of the same aidl_interface", so
+# drop V1 from the generated dependencies -- the library is still installed, so
+# anything that needs it resolves at runtime.
+lib_fixups: lib_fixups_user_type = {
+    **lib_fixups,
+    (
+        'android.hardware.graphics.allocator-V1-ndk',
+    ): lib_fixup_remove,
+}
+
 module = ExtractUtilsModule(
     'dada',
     'xiaomi',

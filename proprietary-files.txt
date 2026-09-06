@@ -1847,7 +1847,7 @@ odm/lib64/com.xiaomi.plugin.ecdengine.so
 odm/lib64/hw/camera.qcom.sm8750.so
 odm/lib64/hw/camera.qcom.so;SYMLINK=vendor/lib64/hw/camera.qcom.so
 odm/lib64/hw/com.qti.chi.offline.so
-odm/lib64/hw/com.qti.chi.override.so;SYMLINK=vendor/lib64/hw/com.qti.chi.override.so
+odm/lib64/hw/com.qti.chi.override.so;SYMLINK=vendor/lib64/hw/com.qti.chi.override.so;DISABLE_CHECKELF
 odm/lib64/immunesystem.db.sqlite3.so
 odm/lib64/libAF.so
 odm/lib64/libAncHumanPreviewBokeh.so
@@ -1884,7 +1884,7 @@ odm/lib64/libcamxhwlfrontend.so
 odm/lib64/libcamxhwlipedriver.so
 odm/lib64/libcamxhwnodecontext.so
 odm/lib64/libcamxifestriping.so
-odm/lib64/libcamximageformatutils.so
+odm/lib64/libcamximageformatutils.so;DISABLE_CHECKELF
 odm/lib64/libcamxncsdatafactory.so
 odm/lib64/libcamxods.so
 odm/lib64/libcamxofehwl.so
@@ -1895,7 +1895,7 @@ odm/lib64/libcamxswispiqmodule.so
 odm/lib64/libcamxswprocessalgo.so
 odm/lib64/libcamxtintlessalgo.so
 odm/lib64/libcamxvppservicebase.so
-odm/lib64/libchifeature2.so
+odm/lib64/libchifeature2.so;DISABLE_CHECKELF
 odm/lib64/libchilog.so
 odm/lib64/libchinodeevautils.so
 odm/lib64/libchinodehmeutils.so
@@ -2006,8 +2006,8 @@ odm/lib64/libmmcamera_lscv35.so
 odm/lib64/libmmcamera_mfnr_t4.so
 odm/lib64/libmmcamera_mfnr.so
 odm/lib64/libmmcamera_pdpc.so
-odm/lib64/hw/fingerprint.goodix_us.default.so;DISABLE_DEPS
-odm/lib64/hw/fingerprint.qcom_us.default.so;DISABLE_DEPS
+odm/lib64/hw/fingerprint.goodix_us.so:odm/lib64/hw/fingerprint.goodix_us.default.so;DISABLE_DEPS
+odm/lib64/hw/fingerprint.qcom_us.so:odm/lib64/hw/fingerprint.qcom_us.default.so;DISABLE_DEPS
 odm/lib64/libgf_hal.so;DISABLE_DEPS
 odm/lib64/libmmfp.so;DISABLE_DEPS
 odm/lib64/libmorpho_Depurple.so
@@ -2074,7 +2074,9 @@ vendor/lib64/libopencv_core.so
 vendor/lib64/libopencv_imgproc_se.so
 vendor/lib64/libopencv_imgproc.so
 vendor/lib64/libSNPESample.so
-vendor/lib64/libultrahdr.so|libultrahdr_dada
+vendor/lib64/libjpegdecoder.so:vendor/lib64/libjpegdecoder_dada.so;FIX_SONAME
+vendor/lib64/libjpegencoder.so:vendor/lib64/libjpegencoder_dada.so;FIX_SONAME
+vendor/lib64/libultrahdr.so:vendor/lib64/libultrahdr_dada.so;FIX_SONAME
 vendor/lib64/vendor.xiaomi.hardware.aidl.intentaware-V1-ndk_platform.so
 vendor/lib64/vendor.xiaomi.hardware.aon-V1-ndk.so
 vendor/lib64/vendor.xiaomi.hardware.camera.injection-client.so
@@ -2444,3 +2446,28 @@ odm/lib64/libmicamera_fps_checker.so
 # ACDB (Fluence)
 odm/etc/acdbdata/Fluence/Fluence_acdb_cal.acdb
 odm/etc/acdbdata/Fluence/Fluence_workspaceFileXml.qwsp
+
+# ---------------------------------------------------------------------------
+# Re-tracked blobs
+#
+# These were installed by hand-written entries in the generated
+# vendor/xiaomi/dada makefiles while having no entry here, so re-running
+# extract-files.py against a stock ROM silently dropped them.
+#
+# MAKE_COPY_RULE_ONLY is deliberate. They were previously emitted as
+# PRODUCT_COPY_FILES, and four of them -- libgralloc.qti, libgralloccore,
+# libgrallocutils and vendor.qti.hardware.display.allocator-service -- share
+# their module names with hardware/qcom-caf/sm8750/display/hal/gralloc. Turning
+# them into Soong modules would make Soong fail with 'found in multiple
+# namespaces'. Copy rules keep the existing behaviour byte for byte while
+# making the files reproducible from a stock ROM.
+# ---------------------------------------------------------------------------
+
+odm/lib64/libqc_hal.so;MAKE_COPY_RULE_ONLY
+vendor/bin/hw/vendor.qti.hardware.display.allocator-service;MAKE_COPY_RULE_ONLY
+vendor/etc/init/vendor.qti.hardware.display.allocator-service.rc;MAKE_COPY_RULE_ONLY
+vendor/etc/vintf/manifest/vendor.qti.hardware.display.allocator-service.xml
+vendor/lib64/libc++.so;MAKE_COPY_RULE_ONLY
+vendor/lib64/libgralloc.qti.so;MAKE_COPY_RULE_ONLY
+vendor/lib64/libgralloccore.so;MAKE_COPY_RULE_ONLY
+vendor/lib64/libgrallocutils.so;MAKE_COPY_RULE_ONLY
