@@ -5,7 +5,6 @@
 #
 
 DEVICE_PATH := device/xiaomi/dada
-KERNEL_PATH := $(DEVICE_PATH)-kernel
 
 # Inherit from sm8750-common
 include device/xiaomi/sm8750-common/BoardConfigCommon.mk
@@ -14,24 +13,134 @@ include device/xiaomi/sm8750-common/BoardConfigCommon.mk
 TARGET_SCREEN_DENSITY := 520
 
 # Dtb/o
-BOARD_PREBUILT_DTBOIMAGE := $(KERNEL_PATH)/dtbo.img
-BOARD_PREBUILT_DTBIMAGE_DIR := $(KERNEL_PATH)/dtb
+#
+# dtb.img is the eight sun/sunp base trees with the QCOM techpack fragments
+# merged into each, which is what the merge script below does and what the
+# vendor's own build does.  dtbo.img is the device overlay, and it must not go
+# through that merge -- see dtboimg.mk.
+BOARD_USES_QCOM_MERGE_DTBS_SCRIPT := true
+TARGET_NEEDS_DTBOIMAGE := true
+TARGET_KERNEL_DTB := dtbs
+BOARD_CUSTOM_DTBOIMG_MK := $(DEVICE_PATH)/dtboimg.mk
+# Deferred: TARGET_OUT_INTERMEDIATES is not set yet while this file is read.
+BOARD_PREBUILT_DTBOIMAGE = $(TARGET_OUT_INTERMEDIATES)/DTBO_OBJ/dtbo.img
 
-TARGET_NO_KERNEL_OVERRIDE := true
-TARGET_KERNEL_SOURCE := $(KERNEL_PATH)/kernel-headers
-PRODUCT_COPY_FILES += \
-    $(KERNEL_PATH)/kernel:kernel
+# Kernel
+TARGET_KERNEL_SOURCE := kernel/xiaomi/sm8750
+# Link-time optimisation, as the shipped kernel is built.  On arm64 this is
+# not only a code-generation choice: CONFIG_LTO makes READ_ONCE() compile to an
+# acquire load, because LTO can otherwise break the address dependency the
+# plain load relies on.  Without it our modules carry a handful of acquire
+# loads where the shipped ones carry two thousand, so the two do not agree on
+# memory ordering.
+KERNEL_LTO := thin
+
+TARGET_KERNEL_CONFIG := \
+    gki_defconfig \
+    vendor/sun_perf.config \
+    vendor/dada_perf.config
+
+# Kernel modules.
+#
+# The stock prebuilts were built against the android15-6.6 KMI; the
+# interconnect, cfg80211 and DRM-DP symbol CRCs have moved since, so the
+# techpacks have to be rebuilt against the kernel above rather than copied.
+
+# Kernel modules.
+#
+# The stock prebuilts were built against a kernel close to Xiaomi's own; the
+# symbol CRCs of anything outside the frozen KMI track the exact source, so the
+# techpacks are rebuilt here rather than copied.
+TARGET_KERNEL_EXT_MODULE_ROOT := kernel/xiaomi/sm8750-modules-qcom
+TARGET_KERNEL_EXT_MODULES := \
+    qcom/opensource/mmrm-driver \
+    qcom/opensource/mm-drivers/hw_fence \
+    qcom/opensource/mm-drivers/msm_ext_display \
+    qcom/opensource/mm-drivers/sync_fence \
+    qcom/opensource/audio-kernel \
+    qcom/opensource/securemsm-kernel \
+    qcom/opensource/synx-kernel \
+    qcom/opensource/camera-kernel \
+    qcom/opensource/data-kernel/drivers/smem-mailbox \
+    qcom/opensource/datarmnet-ext/mem \
+    qcom/opensource/dataipa/drivers/platform/msm \
+    qcom/opensource/datarmnet/core \
+    qcom/opensource/datarmnet-ext/aps \
+    qcom/opensource/datarmnet-ext/offload \
+    qcom/opensource/datarmnet-ext/perf \
+    qcom/opensource/datarmnet-ext/perf_tether \
+    qcom/opensource/datarmnet-ext/sch \
+    qcom/opensource/datarmnet-ext/shs \
+    qcom/opensource/datarmnet-ext/wlan \
+    qcom/opensource/display-drivers/msm \
+    qcom/opensource/dsp-kernel \
+    qcom/opensource/eva-kernel \
+    qcom/opensource/graphics-kernel \
+    qcom/opensource/spu-kernel \
+    qcom/opensource/touch-drivers \
+    qcom/opensource/video-driver \
+    qcom/opensource/wlan/platform \
+    qcom/opensource/wlan/qcacld-3.0 \
+    qcom/opensource/bt-kernel \
+    st/opensource/nfc-st-driver \
+    st/opensource/eSE-driver
 
 # Kernel modules
-BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(KERNEL_PATH)/vendor_ramdisk/modules.load))
-BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD := $(strip $(shell cat $(KERNEL_PATH)/vendor_ramdisk/modules.load.recovery))
-BOARD_VENDOR_KERNEL_MODULES_LOAD := $(strip $(shell cat $(KERNEL_PATH)/vendor_dlkm/modules.load))
+include $(DEVICE_PATH)/excluded-kernel-modules.mk
 
-PRODUCT_COPY_FILES += \
-    $(call find-copy-subdir-files,*,$(KERNEL_PATH)/vendor_dlkm/,$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules) \
-    $(call find-copy-subdir-files,*,$(KERNEL_PATH)/vendor_ramdisk/,$(TARGET_COPY_OUT_VENDOR_RAMDISK)/lib/modules) \
-    $(call find-copy-subdir-files,*,$(KERNEL_PATH)/system_dlkm_flatten/,$(TARGET_COPY_OUT_SYSTEM_DLKM)/flatten/lib/modules) \
-    $(call find-copy-subdir-files,*,$(KERNEL_PATH)/system_dlkm/,$(TARGET_COPY_OUT_SYSTEM_DLKM)/lib/modules/6.6.77-android15-8-g63ce7556864c-ab13994517-4k)
+BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(filter-out $(DADA_EXCLUDED_KERNEL_MODULES),\
+    $(strip $(shell cat $(DEVICE_PATH)/modules/modules.load.vendor_ramdisk)))
+BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD := $(filter-out $(DADA_EXCLUDED_KERNEL_MODULES),\
+    $(strip $(shell cat $(DEVICE_PATH)/modules/modules.load.recovery)))
+BOARD_VENDOR_KERNEL_MODULES_LOAD := $(filter-out $(DADA_EXCLUDED_KERNEL_MODULES),\
+    $(strip $(shell cat $(DEVICE_PATH)/modules/modules.load.vendor_dlkm)))
+
+# The touchscreen driver is built from source now, and the techpack names it
+# synaptics_tcm2_ts rather than synaptics_tcm2.  It sits on QTI Touch
+# Services, so that goes in ahead of it.
+BOARD_VENDOR_KERNEL_MODULES_LOAD := $(patsubst synaptics_tcm2.ko,qts.ko synaptics_tcm2_ts.ko,\
+    $(BOARD_VENDOR_KERNEL_MODULES_LOAD))
+
+# Mainline spells the Qualcomm UFS host driver with a dash; Xiaomi's tree
+# spells it with an underscore, and the first-stage lists carry their name.
+BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(patsubst ufs_qcom.ko,ufs-qcom.ko,\
+    $(BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD))
+BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD := $(patsubst ufs_qcom.ko,ufs-qcom.ko,\
+    $(BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD))
+
+# Which modules to put in the ramdisks.
+#
+# The *_LOAD variables above give the order the modules are loaded in; these
+# say which ones to install.  They are separate, and setting only the first
+# builds a ramdisk that carries the load list and none of the modules it
+# names -- first-stage init then has no ufs-qcom, pinctrl or clock driver and
+# cannot mount super.
+BOOT_KERNEL_MODULES := $(BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD)
+RECOVERY_KERNEL_MODULES := $(BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD)
+BOARD_RECOVERY_KERNEL_MODULES_LOAD := $(BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD)
+
+# The load lists name what the vendor loads, not what those modules need in
+# turn; let the build pull each one's dependencies in with it.
+TARGET_AUTO_COLLECT_KERNEL_MODULE_DEPS := true
+
+# GKI modules.
+#
+# These used to be copied in from the stock system_dlkm, which was built for
+# 6.6.77 while the kernel here is 6.6.142.  They loaded only because
+# CONFIG_MODVERSIONS makes the loader check symbol CRCs and skip the release
+# string.  Every one of them builds from the kernel above, so they are taken
+# from there instead and the release strings agree.
+#
+# Naming them here also keeps them out of vendor_dlkm: the build puts this set
+# in system_dlkm and everything else in vendor.
+# SYSTEM_KERNEL_MODULES, not BOARD_SYSTEM_KERNEL_MODULES: the board variable
+# belongs to build/make, which wants paths to modules it can install, and
+# would take these bare names for files that do not exist.  This one is the
+# kernel task's own, and it matches on name against what the kernel built.
+SYSTEM_KERNEL_MODULES := \
+    $(strip $(shell cat $(DEVICE_PATH)/modules/modules.system_dlkm))
+BOARD_SYSTEM_KERNEL_MODULES_LOAD := \
+    $(strip $(shell cat $(DEVICE_PATH)/modules/modules.load.system_dlkm))
 
 # Properties
 TARGET_ODM_PROP += $(DEVICE_PATH)/configs/properties/odm.prop
