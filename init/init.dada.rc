@@ -1,0 +1,10 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+on fs
+    # Cirrus Logic CS35L43 speaker protection calibration
+    mkdir /mnt/vendor/persist/audio 0775 audioserver audio
+    chmod 0666 /mnt/vendor/persist/audio/crus_calr.bin
+    chmod 0666 /mnt/vendor/persist/audio/crus_calr.txt

@@ -1,0 +1,42 @@
+# Audio
+persist.vendor.audio.call.tx.ns=true
+ro.vendor.audio.lowpower.pa.para.support=false
+ro.vendor.audio.product.sleepmonitor.config=true
+ro.vendor.audio.triplemic.support=true
+vendor.audio.support.16bit.record=true
+vendor.audio.usb.multi.ch.device=false
+vendor.audio.usb.multi.ch.play=true
+
+# Bluetooth
+bluetooth.device.default_name=Xiaomi 15
+
+# Camera
+ro.vendor.dynamiccamera.ability_level=2
+
+# Display
+debug.sf.set_idle_timer_ms=110
+ro.surface_flinger.enable_frame_rate_override=false
+vendor.display.antiaging_service_retry_wait_time=10
+vendor.display.demura_long_timer=600000
+vendor.display.demura_primary_panel_override_high=19064576
+vendor.display.demura_primary_panel_override_low=176
+vendor.display.demura_recalib_timer=3600000
+vendor.display.demura_recalib_timer_divider=1
+vendor.display.demura_record_timer=1800000
+vendor.display.demura_short_timer=5000
+vendor.display.disable_3d_adaptive_tm=1
+vendor.display.enable_antiaging=1
+vendor.display.enable_demura=1
+vendor.display.enable_hdr10_gpu_target=0
+vendor.display.enable_spr=1
+vendor.display.force_tonemapping=1
+
+# Fingerprint
+persist.vendor.sys.fp.fod.location.X_Y=518,1954
+persist.vendor.sys.fp.fod.size.width_height=164,164
+ro.hardware.fp.fod.c=true
+ro.hardware.fp.fod.touch.ctl.version=2.0
+ro.hardware.fp.fod=true
+
+# USB
+vendor.usb.product_string=Xiaomi 15
