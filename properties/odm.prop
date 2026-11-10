@@ -1,5 +1,6 @@
 # Audio
 persist.vendor.audio.call.tx.ns=true
+ro.vendor.audio.algorithm.support=Fluence
 ro.vendor.audio.lowpower.pa.para.support=false
 ro.vendor.audio.product.sleepmonitor.config=true
 ro.vendor.audio.triplemic.support=true

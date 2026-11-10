@@ -28,9 +28,10 @@ odm/lib/rfsa/adsp/libmlawbpostproc_dsp_skel.so
 odm/lib/rfsa/adsp/libQnnHtpV79.so
 odm/lib/rfsa/adsp/libQnnHtpV79Skel.so
 odm/lib/rfsa/adsp/libQnnSaver.so
-odm/lib/rfsa/adsp/libSnpeHtpV79Skel.so
+odm/lib/rfsa/adsp/libSnpeHtpV79Skel.so;SYMLINK=vendor/lib/rfsa/adsp/libSnpeHtpV79Skel.so
 
 # Audio
+odm/etc/audio/audio_module_config_primary.xml
 odm/etc/audio/sku_sun/adsp_sleep_monitor.conf
 odm/etc/audio/sku_sun/mixer_paths_overlay_dynamic.xml
 odm/etc/audio/sku_sun/mixer_paths_overlay_static.xml
@@ -1539,11 +1540,11 @@ odm/lib64/bm5a79v08s13n87.bin
 odm/lib64/bm5a79v08s13n88.bin
 odm/lib64/bm5a79v08s13n89.bin
 odm/lib64/bm5a79v08s13n90.bin
-odm/lib64/camera/aon_front_i_1.pb
-odm/lib64/camera/aon_front_ii_1.pb
-odm/lib64/camera/aon_rear_i_2.pb
-odm/lib64/camera/aon_rear_ii_2.pb
-odm/lib64/camera/bitmlconfig.bin
+odm/lib64/camera/aon_front_i_1.pb;SYMLINK=vendor/lib64/camera/aon_front_i_1.pb
+odm/lib64/camera/aon_front_ii_1.pb;SYMLINK=vendor/lib64/camera/aon_front_ii_1.pb
+odm/lib64/camera/aon_rear_i_2.pb;SYMLINK=vendor/lib64/camera/aon_rear_i_2.pb
+odm/lib64/camera/aon_rear_ii_2.pb;SYMLINK=vendor/lib64/camera/aon_rear_ii_2.pb
+odm/lib64/camera/bitmlconfig.bin;SYMLINK=vendor/lib64/camera/bitmlconfig.bin
 odm/lib64/camera/camxfl115indices.bin
 odm/lib64/camera/camxfl300v1indices.bin
 odm/lib64/camera/camxfl300v2indices.bin
@@ -1562,7 +1563,7 @@ odm/lib64/camera/com.qti.eeprom.dada_sunny_ov32b40_gt24p64e_front_i_eeprom.so
 odm/lib64/camera/com.qti.eeprom.dada_sunny_ovx9100_p24u128b_wide_ii_eeprom.so
 odm/lib64/camera/com.qti.eeprom.dada_sunny_s5kjn1_gt24p128f_ultra_i_eeprom.so
 odm/lib64/camera/com.qti.eeprom.dada_sunny_s5kjn5_p24c128f_tele3x_i_eeprom.so
-odm/lib64/camera/com.qti.ofe.profiledb.default.bin
+odm/lib64/camera/com.qti.ofe.profiledb.default.bin;SYMLINK=vendor/lib64/camera/com.qti.ofe.profiledb.default.bin
 odm/lib64/camera/com.qti.ois.dada_ofilm_s5kjn5_bu24619_tele3x_ii_ois.so
 odm/lib64/camera/com.qti.ois.dada_sunny_s5kjn5_bu24619_tele3x_i_ois.so
 odm/lib64/camera/com.qti.sensor.dada_ofilm_ov32b40_front_ii.so
@@ -1822,9 +1823,9 @@ odm/lib64/com.xiaomi.immunesystem.core.so
 odm/lib64/com.xiaomi.messagecenter.so
 odm/lib64/com.xiaomi.plugin.ecdengine.so
 odm/lib64/hw/camera.qcom.sm8750.so
-odm/lib64/hw/camera.qcom.so
+odm/lib64/hw/camera.qcom.so;SYMLINK=vendor/lib64/hw/camera.qcom.so
 odm/lib64/hw/com.qti.chi.offline.so
-odm/lib64/hw/com.qti.chi.override.so
+odm/lib64/hw/com.qti.chi.override.so;SYMLINK=vendor/lib64/hw/com.qti.chi.override.so
 odm/lib64/immunesystem.db.sqlite3.so
 odm/lib64/libAF.so
 odm/lib64/libailab_rawhdr.so
@@ -1851,7 +1852,7 @@ odm/lib64/libcamlog.so
 odm/lib64/libcamxcommonutils.so
 odm/lib64/libcamxcoreutils.so
 odm/lib64/libcamxcsl.so
-odm/lib64/libcamxexternalformatutils.so
+odm/lib64/libcamxexternalformatutils.so;SYMLINK=vendor/lib64/libcamxexternalformatutils.so
 odm/lib64/libcamxfdengine.so
 odm/lib64/libcamxhwlfrontend.so
 odm/lib64/libcamxhwlipedriver.so
@@ -1979,15 +1980,15 @@ odm/lib64/librfs_warp.so
 odm/lib64/libshadowhook.so
 odm/lib64/libsiminputgenutil.so
 odm/lib64/libsimulation.so
-odm/lib64/libSNPE.so
+odm/lib64/libSNPE.so;SYMLINK=vendor/lib64/libSNPE.so
 odm/lib64/libsnpe_config.so
 odm/lib64/libsupermoon.so
 odm/lib64/libTrueSight.so
 odm/lib64/libvega_common.so
 odm/lib64/libwa_widelens_undistort.so
-odm/lib64/qsn1nrt430.bin
+odm/lib64/qsn1nrt430.bin;SYMLINK=vendor/lib64/qsn1nrt430.bin
 odm/lib64/qsn1nrt43180.bin
-odm/lib64/qsn1nrt43270.bin
+odm/lib64/qsn1nrt43270.bin;SYMLINK=vendor/lib64/qsn1nrt43270.bin
 odm/lib64/qsn1nrt4390.bin
 odm/lib64/qsn1rt1690.bin
 odm/lib64/qsn1rt169180.bin
@@ -2001,8 +2002,8 @@ odm/lib64/qsn1rtlp1690.bin
 odm/lib64/qsn1rtlp169270.bin
 odm/lib64/qsn1rtlp430.bin
 odm/lib64/qsn1rtlp43270.bin
-odm/lib64/qsn2all.bin
-odm/lib64/qsn3all.bin
+odm/lib64/qsn2all.bin;SYMLINK=vendor/lib64/qsn2all.bin
+odm/lib64/qsn3all.bin;SYMLINK=vendor/lib64/qsn3all.bin
 odm/lib64/vendor.qti.hardware.camera.aon-service-impl.so
 odm/lib64/vendor.qti.hardware.camera.offlinecamera-service-impl.so
 odm/lib64/vendor.xiaomi.hardware.aidlbgservice-V1-impl.so
@@ -2043,11 +2044,11 @@ product/etc/displayconfig/display_id_4630947212918452371.xml
 
 # DSP modules
 odm/lib64/rfs/dsp/libapn_dsp_skel.so
-odm/lib64/rfs/dsp/libbitml_nsp_73na_skel.so
-odm/lib64/rfs/dsp/libbitml_nsp_79na_skel.so
+odm/lib64/rfs/dsp/libbitml_nsp_73na_skel.so;SYMLINK=vendor/lib64/rfs/dsp/libbitml_nsp_73na_skel.so
+odm/lib64/rfs/dsp/libbitml_nsp_79na_skel.so;SYMLINK=vendor/lib64/rfs/dsp/libbitml_nsp_79na_skel.so
 odm/lib64/rfs/dsp/libbitml_nsp_skel.so
 odm/lib64/rfs/dsp/libhdr_skel.so
-odm/lib64/rfs/dsp/libqsegnetengine_dsp_skel.so
+odm/lib64/rfs/dsp/libqsegnetengine_dsp_skel.so;SYMLINK=vendor/lib64/rfs/dsp/libqsegnetengine_dsp_skel.so
 
 # Fingerprint
 odm/bin/hw/mfp-daemon
