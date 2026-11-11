@@ -1325,6 +1325,7 @@ odm/etc/camera/xmi_slmt_4x_1080p.dlc
 odm/etc/camera/xmi_slmt_4x_720p.dlc
 odm/etc/init/vendor.qti.camera.provider-service_64.rc
 odm/etc/vintf/manifest/vendor.qti.camera.provider.xml
+odm/etc/vintf/manifest/vendor.xiaomi.hardware.aidlbgservice-service.xml
 odm/firmware/CAMERA_ICP.b00
 odm/firmware/CAMERA_ICP.b01
 odm/firmware/CAMERA_ICP.b02
@@ -2011,6 +2012,8 @@ odm/lib64/vendor.xiaomi.hardware.aidlbgservice-V1-ndk.so
 odm/lib64/vendor.xiaomi.hardware.bgservice@1.0-impl.so
 odm/lib64/vendor.xiaomi.hardware.bgservice@1.0.so
 vendor/etc/media_profiles_V1_0.xml
+vendor/etc/vintf/manifest/vendor.xiaomi.hardware.dynamiccameraserver.xml
+vendor/etc/vintf/manifest/vendor.xiaomi.hardware.quickcamera.xml
 vendor/lib64/libcameraobserver.so
 vendor/lib64/libcameraopt.so
 vendor/lib64/libjpegdecoder.so:vendor/lib64/libjpegdecoder_prebuilt.so;FIX_SONAME
@@ -2063,6 +2066,9 @@ vendor/lib64/com.fingerprints.extension3-V1-ndk.so
 vendor/lib64/vendor.qti.hardware.fingerprint-V1-ndk.so
 vendor/lib64/vendor.xiaomi.hardware.fingerprintextension-V1-ndk.so
 vendor/lib64/vendor.xiaomi.hardware.fx.tunnel-V1-ndk.so
+
+# GNSS
+odm/etc/izat_device.conf
 
 # IR
 odm/lib64/hw/consumerir.qcom.so
