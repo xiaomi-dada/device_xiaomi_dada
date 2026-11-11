@@ -2045,6 +2045,7 @@ odm/lib64/libQnnCpu.so
 odm/lib64/libQnnGpu.so
 odm/lib64/libQnnHtp.so
 odm/lib64/libQnnHtpPrepare.so
+odm/lib64/libQnnHtpV79Stub.so
 odm/lib64/libQnnSaver.so
 odm/lib64/libQnnSystem.so
 odm/lib64/libqsegnet.so
@@ -2061,6 +2062,7 @@ odm/lib64/libSNPE.so;SYMLINK=vendor/lib64/libSNPE.so
 odm/lib64/libsnpe_config.so
 odm/lib64/libSnpeHta.so
 odm/lib64/libSnpeHtpPrepare.so
+odm/lib64/libSnpeHtpV79Stub.so
 odm/lib64/libsupermoon.so
 odm/lib64/libswregistrationalgo.so
 odm/lib64/libtfestriping.so
