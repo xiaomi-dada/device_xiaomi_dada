@@ -14,6 +14,7 @@ TARGET_OTA_ASSERT_DEVICE := dada
 
 # Display
 TARGET_SCREEN_DENSITY := 520
+$(call soong_config_set,qtidisplay,xiaomi_rgb_notifier,true)
 
 # Kernel
 TARGET_PREBUILT_KERNEL := $(KERNEL_PREBUILT_PATH)/Image
