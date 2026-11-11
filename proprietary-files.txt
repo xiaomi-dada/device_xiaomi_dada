@@ -2104,6 +2104,7 @@ vendor/lib64/android.hardware.camera.provider-V2-ndk.so:vendor/lib64/android.har
 vendor/lib64/android.hardware.graphics.common-V5-ndk.so:vendor/lib64/android.hardware.graphics.common-V5-ndk_prebuilt.so;FIX_SONAME
 vendor/lib64/libcameraobserver.so
 vendor/lib64/libcameraopt.so
+vendor/lib64/libimage_io.so:vendor/lib64/libimage_io_prebuilt.so;FIX_SONAME
 vendor/lib64/libjpegdecoder.so:vendor/lib64/libjpegdecoder_prebuilt.so;FIX_SONAME
 vendor/lib64/libjpegencoder.so:vendor/lib64/libjpegencoder_prebuilt.so;FIX_SONAME
 vendor/lib64/libkcl_a730.so

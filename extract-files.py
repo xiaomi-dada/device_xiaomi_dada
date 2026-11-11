@@ -230,6 +230,12 @@ blob_fixups: blob_fixups_user_type = {
         'odm/lib64/vendor.qti.hardware.camera.offlinecamera-service-impl.so',
     ): blob_fixup()
         .add_needed('libui-v34_shim.so'),
+    # Android 16 also grew image_io's JpegInfoBuilder, which these construct.
+    (
+        'odm/lib64/camera/plugins/com.xiaomi.plugin.jpegrAggr.so',
+        'vendor/lib64/libultrahdr_prebuilt.so',
+    ): blob_fixup()
+        .replace_needed('libimage_io.so', 'libimage_io_prebuilt.so'),
     'vendor/lib64/libcameraopt.so': blob_fixup()
         .add_needed('libprocessgroup_shim.so'),
     'vendor/lib64/libultrahdr_prebuilt.so': blob_fixup()
