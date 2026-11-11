@@ -1326,6 +1326,7 @@ odm/etc/camera/xmi_slmt_4x_1080p.dlc
 odm/etc/camera/xmi_slmt_4x_720p.dlc
 odm/etc/init/vendor.qti.camera.provider-service_64.rc
 odm/etc/vintf/manifest/vendor.qti.camera.provider.xml
+odm/etc/vintf/manifest/vendor.xiaomi.camera.aon-impl.xml
 odm/etc/vintf/manifest/vendor.xiaomi.hardware.aidlbgservice-service.xml
 odm/firmware/CAMERA_ICP.b00
 odm/firmware/CAMERA_ICP.b01
@@ -2085,6 +2086,7 @@ odm/lib64/vendor.xiaomi.hardware.aidlbgservice-V1-impl.so
 odm/lib64/vendor.xiaomi.hardware.aidlbgservice-V1-ndk.so
 odm/lib64/vendor.xiaomi.hardware.bgservice@1.0-impl.so
 odm/lib64/vendor.xiaomi.hardware.bgservice@1.0.so
+vendor/etc/bpf/cameraBpfGpl.o
 vendor/etc/camera/cameraopt_perf.json
 vendor/etc/camera/cameraopt_vendor.json
 vendor/etc/media_profiles_V1_0.xml
