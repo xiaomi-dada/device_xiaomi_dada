@@ -39,5 +39,9 @@ ro.hardware.fp.fod.c=true
 ro.hardware.fp.fod.touch.ctl.version=2.0
 ro.hardware.fp.fod=true
 
+# Sensors
+ro.vendor.proxcal.factor=3.0
+ro.vendor.sensor.maxbrightness=2731
+
 # USB
 vendor.usb.product_string=Xiaomi 15
