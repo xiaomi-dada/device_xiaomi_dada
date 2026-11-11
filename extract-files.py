@@ -25,6 +25,33 @@ namespace_imports = [
 ]
 
 blob_fixups: blob_fixups_user_type = {
+    # tinyxml2 11 widened the XMLDocument members, so blobs built against the
+    # older headers need the matching library.
+    (
+        'odm/bin/hw/vendor.qti.camera.provider-service_64',
+        'odm/lib64/camera/plugins/com.xiaomi.plugin.anchor.so',
+        'odm/lib64/camera/plugins/com.xiaomi.plugin.offlineawbideal.so',
+        'odm/lib64/camera/plugins/com.xiaomi.plugin.offlineb2y.so',
+        'odm/lib64/camera/plugins/com.xiaomi.plugin.offlineformatconvertor.so',
+        'odm/lib64/camera/plugins/com.xiaomi.plugin.offlinehdrraw2y.so',
+        'odm/lib64/camera/plugins/com.xiaomi.plugin.offlineheic.so',
+        'odm/lib64/camera/plugins/com.xiaomi.plugin.offlinei2y.so',
+        'odm/lib64/camera/plugins/com.xiaomi.plugin.offlinejpeg.so',
+        'odm/lib64/camera/plugins/com.xiaomi.plugin.offlinemfnr.so',
+        'odm/lib64/camera/plugins/com.xiaomi.plugin.offlinemlawb.so',
+        'odm/lib64/camera/plugins/com.xiaomi.plugin.offlinetintless.so',
+        'odm/lib64/camera/plugins/com.xiaomi.plugin.offlinetintlesshdr.so',
+        'odm/lib64/camera/plugins/com.xiaomi.plugin.offlineyuveis.so',
+        'odm/lib64/camera/plugins/com.xiaomi.plugin.offlineyuvreprocess.so',
+        'odm/lib64/camera/plugins/com.xiaomi.plugin.offlineyuvsplit.so',
+        'odm/lib64/com.xiaomi.plugin.ecdengine.so',
+        'odm/lib64/libcamxcoreutils.so',
+        'odm/lib64/libcamxods.so',
+        'odm/lib64/libmicamera_aidl_provider.so',
+        'odm/lib64/libmicamera_hal_core.so',
+        'odm/lib64/libsimulation.so',
+    ): blob_fixup()
+        .replace_needed('libtinyxml2.so', 'libtinyxml2-v34.so'),
     (
         'odm/etc/camera/enhance_motiontuning.xml',
         'odm/etc/camera/motiontuning.xml',
