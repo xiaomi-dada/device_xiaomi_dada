@@ -1818,6 +1818,8 @@ odm/lib64/com.qti.stats.common.so
 odm/lib64/com.xiaomi.camdfx.so
 odm/lib64/com.xiaomi.camhal.extmodel.catch_log_sys.so
 odm/lib64/com.xiaomi.camhal.overlap.so
+odm/lib64/com.xiaomi.camhal.submodel.camxfrag.so
+odm/lib64/com.xiaomi.camhal.submodel.chifrag.so
 odm/lib64/com.xiaomi.immunesystem.bigdata.so
 odm/lib64/com.xiaomi.immunesystem.bigdata2.so
 odm/lib64/com.xiaomi.immunesystem.client.so
@@ -2020,6 +2022,8 @@ odm/lib64/vendor.xiaomi.hardware.aidlbgservice-V1-impl.so
 odm/lib64/vendor.xiaomi.hardware.aidlbgservice-V1-ndk.so
 odm/lib64/vendor.xiaomi.hardware.bgservice@1.0-impl.so
 odm/lib64/vendor.xiaomi.hardware.bgservice@1.0.so
+vendor/etc/camera/cameraopt_perf.json
+vendor/etc/camera/cameraopt_vendor.json
 vendor/etc/media_profiles_V1_0.xml
 vendor/etc/vintf/manifest/vendor.xiaomi.hardware.dynamiccameraserver.xml
 vendor/etc/vintf/manifest/vendor.xiaomi.hardware.quickcamera.xml
