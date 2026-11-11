@@ -39,6 +39,7 @@ odm/etc/audio/sku_sun/mixer_paths_sun_mtp.xml
 odm/etc/audio/sku_sun/resourcemanager_sun_mtp.xml
 odm/etc/audio/sku_sun_qssi/audio_policy_configuration.xml
 odm/etc/usecaseKvManager.xml
+odm/lib64/libcrussp.so
 
 # Audio firmware
 odm/firmware/B-cs35l43-delta-music-spk-prot.bin
@@ -1858,12 +1859,16 @@ odm/lib64/libcamxfdengine.so
 odm/lib64/libcamxhwlfrontend.so
 odm/lib64/libcamxhwlipedriver.so
 odm/lib64/libcamxhwnodecontext.so
+odm/lib64/libcamxifestriping.so
 odm/lib64/libcamximageformatutils.so
+odm/lib64/libcamxncsdatafactory.so
 odm/lib64/libcamxods.so
 odm/lib64/libcamxofehwl.so
+odm/lib64/libcamxqsatalgo.so
 odm/lib64/libcamxsettingsmanager.so
 odm/lib64/libcamxstatscore.so
 odm/lib64/libcamxswispiqmodule.so
+odm/lib64/libcamxswprocessalgo.so
 odm/lib64/libcamxtintlessalgo.so
 odm/lib64/libcamxvppservicebase.so
 odm/lib64/libchifeature2.so
@@ -1954,6 +1959,10 @@ odm/lib64/libmismartae.so
 odm/lib64/libmiStereoCalibLib_qual.so
 odm/lib64/libMiStereoFactoryCalibAnalyzeBin_qual.so
 odm/lib64/libmiZA.so
+odm/lib64/libmmcamera_bestats.so
+odm/lib64/libmmcamera_cac.so
+odm/lib64/libmmcamera_lscv35.so
+odm/lib64/libmmcamera_pdpc.so
 odm/lib64/libmorpho_Depurple.so
 odm/lib64/libmpbase.so
 odm/lib64/libocr_api.so
