@@ -6,4 +6,7 @@
 <resources>
     <!-- Adjust the icon padding in status bar for rounded corners. -->
     <dimen name="rounded_corner_content_padding">69px</dimen>
+
+    <!-- Physical size of a display pixel in microns, used to size the UDFPS icon. -->
+    <item name="pixel_pitch" format="float" type="dimen">55.2</item>
 </resources>
