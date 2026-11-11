@@ -24,11 +24,30 @@ namespace_imports = [
     'vendor/xiaomi/sm8750-common',
 ]
 
+# Xiaomi built these frozen camera interfaces themselves (camera.device V2
+# against graphics.common V5), and the camera provider expects their
+# parcelable layouts. Ship and link Xiaomi's copies under a _prebuilt name.
+xiaomi_camera_aidl_libs = (
+    'android.hardware.camera.common-V1-ndk',
+    'android.hardware.camera.device-V2-ndk',
+    'android.hardware.camera.metadata-V2-ndk',
+    'android.hardware.camera.provider-V2-ndk',
+    'android.hardware.graphics.common-V5-ndk',
+    'vendor.qti.hardware.camera.offlinecamera-V2-ndk',
+)
+
+
+def xiaomi_camera_aidl_fixup() -> blob_fixup:
+    fixup = blob_fixup()
+    for lib in xiaomi_camera_aidl_libs:
+        fixup.replace_needed(f'{lib}.so', f'{lib}_prebuilt.so')
+    return fixup
+
+
 blob_fixups: blob_fixups_user_type = {
     # tinyxml2 11 widened the XMLDocument members, so blobs built against the
     # older headers need the matching library.
     (
-        'odm/bin/hw/vendor.qti.camera.provider-service_64',
         'odm/lib64/camera/plugins/com.xiaomi.plugin.anchor.so',
         'odm/lib64/camera/plugins/com.xiaomi.plugin.offlineawbideal.so',
         'odm/lib64/camera/plugins/com.xiaomi.plugin.offlineb2y.so',
@@ -47,7 +66,6 @@ blob_fixups: blob_fixups_user_type = {
         'odm/lib64/com.xiaomi.plugin.ecdengine.so',
         'odm/lib64/libcamxcoreutils.so',
         'odm/lib64/libcamxods.so',
-        'odm/lib64/libmicamera_aidl_provider.so',
         'odm/lib64/libmicamera_hal_core.so',
         'odm/lib64/libsimulation.so',
     ): blob_fixup()
@@ -97,7 +115,6 @@ blob_fixups: blob_fixups_user_type = {
         'odm/lib64/camera/components/com.qti.node.dewarp.so',
         'odm/lib64/hw/com.qti.chi.override.so',
         'odm/lib64/libchifeature2.so',
-        'odm/lib64/vendor.qti.hardware.camera.offlinecamera-service-impl.so',
     ): blob_fixup()
         .remove_needed('android.hardware.graphics.allocator-V1-ndk.so'),
     # These use the API of the libultrahdr that Xiaomi ships, not the
@@ -113,6 +130,24 @@ blob_fixups: blob_fixups_user_type = {
         .replace_needed('android.hardware.graphics.common-V5-ndk.so', 'android.hardware.graphics.common-V7-ndk.so')
         .replace_needed('android.hardware.sensors-V2-ndk.so', 'android.hardware.sensors-V3-ndk.so')
         .replace_needed('libtinyxml2.so', 'libtinyxml2-v34.so'),
+    (
+        'odm/lib64/camx.device-impl.so',
+        'odm/lib64/libmicamera_aidl_device.so',
+        'odm/lib64/libmicamera_aidl_utils.so',
+        'vendor/lib64/android.hardware.camera.common-V1-ndk_prebuilt.so',
+        'vendor/lib64/android.hardware.camera.device-V2-ndk_prebuilt.so',
+        'vendor/lib64/android.hardware.camera.metadata-V2-ndk_prebuilt.so',
+        'vendor/lib64/android.hardware.camera.provider-V2-ndk_prebuilt.so',
+        'vendor/lib64/android.hardware.graphics.common-V5-ndk_prebuilt.so',
+        'vendor/lib64/vendor.qti.hardware.camera.offlinecamera-V2-ndk_prebuilt.so',
+    ): xiaomi_camera_aidl_fixup(),
+    (
+        'odm/bin/hw/vendor.qti.camera.provider-service_64',
+        'odm/lib64/libmicamera_aidl_provider.so',
+    ): xiaomi_camera_aidl_fixup()
+        .replace_needed('libtinyxml2.so', 'libtinyxml2-v34.so'),
+    'odm/lib64/vendor.qti.hardware.camera.offlinecamera-service-impl.so': xiaomi_camera_aidl_fixup()
+        .remove_needed('android.hardware.graphics.allocator-V1-ndk.so'),
     'odm/lib64/libcamximageformatutils.so': blob_fixup()
         .remove_needed('android.hardware.graphics.allocator-V1-ndk.so')
         .replace_needed('vendor.qti.hardware.display.config-V2-ndk.so', 'vendor.qti.hardware.display.config-V12-ndk.so'),
@@ -122,8 +157,8 @@ blob_fixups: blob_fixups_user_type = {
         'vendor/lib64/vendor.xiaomi.hardware.camera.injection-V1-ndk.so',
         'vendor/lib64/vendor.xiaomi.hardware.camera.injection-client.so',
         'vendor/lib64/vendor.xiaomi.hardware.camera.injection-service.so',
-    ): blob_fixup()
-        .replace_needed('android.hardware.camera.device-V1-ndk.so', 'android.hardware.camera.device-V2-ndk.so'),
+    ): xiaomi_camera_aidl_fixup()
+        .replace_needed('android.hardware.camera.device-V1-ndk.so', 'android.hardware.camera.device-V2-ndk_prebuilt.so'),
     'vendor/lib64/libcameraopt.so': blob_fixup()
         .add_needed('libprocessgroup_shim.so'),
     'vendor/lib64/libultrahdr_prebuilt.so': blob_fixup()
