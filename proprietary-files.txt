@@ -1953,11 +1953,15 @@ odm/lib64/libhdr_stub.so
 odm/lib64/libheichal.so
 odm/lib64/libHISCppAlgos.so
 odm/lib64/libhme.so
+odm/lib64/libhta_hexagon_runtime_snpe.so;FIX_SONAME
 odm/lib64/libhwliqinterface2.so
 odm/lib64/libhwlispcffdump.so
 odm/lib64/libiccprofile.so
 odm/lib64/libIMTCppAlgos.so
 odm/lib64/libIntelligentFocus.so
+odm/lib64/libipebpsstriping.so
+odm/lib64/libipebpsstriping170.so
+odm/lib64/libipebpsstriping480.so
 odm/lib64/libiqdbgmgr.so
 odm/lib64/libisphwsetting.so
 odm/lib64/libITT.so
@@ -2021,11 +2025,13 @@ odm/lib64/libmmfp.so
 odm/lib64/libmorpho_Depurple.so
 odm/lib64/libmpbase.so
 odm/lib64/libocr_api.so
+odm/lib64/libofestriping.so
 odm/lib64/libofflinedebugdata.so
 odm/lib64/libois_channel_stub.so
 odm/lib64/liboischannel.so
 odm/lib64/libopencv.so
 odm/lib64/libopencv3a.so
+odm/lib64/libopestriping.so
 odm/lib64/libPanShotPostProcess.so
 odm/lib64/libportrait_repair_qnn.so
 odm/lib64/libpostprocinfo.so
@@ -2086,7 +2092,6 @@ odm/lib64/vendor.xiaomi.hardware.aidlbgservice-V1-impl.so
 odm/lib64/vendor.xiaomi.hardware.aidlbgservice-V1-ndk.so
 odm/lib64/vendor.xiaomi.hardware.bgservice@1.0-impl.so
 odm/lib64/vendor.xiaomi.hardware.bgservice@1.0.so
-vendor/etc/bpf/cameraBpfGpl.o
 vendor/etc/camera/cameraopt_perf.json
 vendor/etc/camera/cameraopt_vendor.json
 vendor/etc/media_profiles_V1_0.xml
@@ -2158,7 +2163,12 @@ odm/etc/st54l_conf.txt
 odm/firmware/st54l_fw.bin
 
 # Sensors
+odm/bin/hw/vendor.xiaomi.sensor.citsensorservice.aidl
+odm/etc/init/vendor.xiaomi.sensor.citsensorservice.aidl.rc
+odm/etc/vintf/manifest/vendor.xiaomi.sensor.citsensorservice.aidl.xml
 odm/lib64/sensors.touch.detect.so
+vendor/lib64/vendor.xiaomi.sensor.citsensorservice-V1-ndk.so
+vendor/lib64/xiaomi.system.hypsys.common-V1-ndk.so
 
 # Sensors config
 odm/etc/sensors/config/5cm_blue.png

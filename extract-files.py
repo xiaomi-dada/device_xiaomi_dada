@@ -107,6 +107,12 @@ blob_fixups: blob_fixups_user_type = {
         'odm/lib64/camera/plugins/com.xiaomi.plugin.jpegrAggr.so',
     ): blob_fixup()
         .replace_needed('libultrahdr.so', 'libultrahdr_prebuilt.so'),
+    # The CIT sensor service uses no graphics.common or sensors AIDL symbols,
+    # so link the versions we ship.
+    'odm/bin/hw/vendor.xiaomi.sensor.citsensorservice.aidl': blob_fixup()
+        .replace_needed('android.hardware.graphics.common-V5-ndk.so', 'android.hardware.graphics.common-V7-ndk.so')
+        .replace_needed('android.hardware.sensors-V2-ndk.so', 'android.hardware.sensors-V3-ndk.so')
+        .replace_needed('libtinyxml2.so', 'libtinyxml2-v34.so'),
     'odm/lib64/libcamximageformatutils.so': blob_fixup()
         .remove_needed('android.hardware.graphics.allocator-V1-ndk.so')
         .replace_needed('vendor.qti.hardware.display.config-V2-ndk.so', 'vendor.qti.hardware.display.config-V12-ndk.so'),
