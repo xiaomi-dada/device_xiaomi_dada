@@ -7,6 +7,14 @@
 $(call inherit-product, device/xiaomi/sm8750-common/common.mk)
 
 # Fingerprint
+$(call soong_config_set,XIAOMI_BIOMETRICS_FINGERPRINT,IMPL_VER,V2)
+PRODUCT_PACKAGES += \
+    android.hardware.biometrics.fingerprint-service.xiaomi \
+    libudfpshandler
+
+ODM_MANIFEST_FILES += \
+    device/xiaomi/dada/vintf/manifest_fingerprint.xml
+
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.fingerprint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.fingerprint.xml
 

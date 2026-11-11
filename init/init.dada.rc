@@ -8,3 +8,19 @@ on fs
     mkdir /mnt/vendor/persist/audio 0775 audioserver audio
     chmod 0666 /mnt/vendor/persist/audio/crus_calr.bin
     chmod 0666 /mnt/vendor/persist/audio/crus_calr.txt
+
+    # Ultrasonic fingerprint sensor calibration
+    mkdir /mnt/vendor/persist/fingerprint 0770 system system
+    mkdir /mnt/vendor/persist/fingerprint/meta 0770 system system
+
+on boot
+    # Finger state lines of the fingerprint driver, driven by the UDFPS handler
+    chown system system /sys/bus/platform/devices/soc:xiaomi_fingerprint/fingerdown
+    chmod 0660 /sys/bus/platform/devices/soc:xiaomi_fingerprint/fingerdown
+    chown system system /sys/bus/platform/devices/soc:xiaomi_fingerprint/intr2
+    chmod 0660 /sys/bus/platform/devices/soc:xiaomi_fingerprint/intr2
+
+on post-fs-data
+    # Ultrasonic fingerprint sensor debug data
+    mkdir /data/vendor/fpdump 0770 system system
+    mkdir /data/vendor/fpdump/qfs4008 0770 system system

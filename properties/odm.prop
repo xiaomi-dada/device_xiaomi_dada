@@ -34,11 +34,8 @@ vendor.display.enable_spr=1
 vendor.display.force_tonemapping=1
 
 # Fingerprint
-persist.vendor.sys.fp.fod.location.X_Y=518,1954
-persist.vendor.sys.fp.fod.size.width_height=164,164
-ro.hardware.fp.fod.c=true
-ro.hardware.fp.fod.touch.ctl.version=2.0
-ro.hardware.fp.fod=true
+persist.vendor.fingerprint.sensor_location=600|2036|82
+persist.vendor.fingerprint.type=udfps
 
 # Sensors
 ro.vendor.proxcal.factor=3.0

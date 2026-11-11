@@ -87,18 +87,15 @@ blob_fixups: blob_fixups_user_type = {
         .regex_replace(r'(?s)\n *<!-- MIUI ADD: Audio_MultiRoute -->\n *<(mixPort|devicePort)\b.*?</\1>\n *<!-- END Audio_MultiRoute -->', '')
         .regex_replace(r'(?s)\n *<!-- MIUI ADD: Audio_MultiRoute -->\n( *<route type="mix" sink="proxy_out" sources="[^"]*),virtual_deep_buffer" />\n.*?<!-- END Audio_MultiRoute -->', r'\n\1" />')
         .regex_replace(r' +audio/vnd\.mi\.mihc"', '"'),
-    # Xiaomi's android.hardware.biometrics.fingerprint-V5-ndk carries the
-    # interface hash of the frozen V4, so it is V4 under another name.
-    'odm/bin/hw/mfp-daemon': blob_fixup()
-        .replace_needed('android.hardware.biometrics.fingerprint-V5-ndk.so', 'android.hardware.biometrics.fingerprint-V4-ndk.so')
-        .replace_needed('android.hardware.sensors-V2-ndk.so', 'android.hardware.sensors-V3-ndk.so'),
     (
         'odm/bin/hw/vendor.xiaomi.hw.touchfeature-service',
         'odm/lib64/hw/camera.qcom.so',
     ): blob_fixup()
         .replace_needed('android.hardware.sensors-V2-ndk.so', 'android.hardware.sensors-V3-ndk.so'),
+    # Xiaomi's android.hardware.biometrics.fingerprint-V5-ndk carries the
+    # interface hash of the frozen V4, so it is V4 under another name.
     (
-        'odm/lib64/hw/fingerprint.qcom_us.so',
+        'odm/lib64/hw/fingerprint.qcom_us.default.so',
         'odm/lib64/libqc_hal.so',
     ): blob_fixup()
         .replace_needed('android.hardware.biometrics.fingerprint-V5-ndk.so', 'android.hardware.biometrics.fingerprint-V4-ndk.so'),
