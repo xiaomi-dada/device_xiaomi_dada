@@ -80,6 +80,13 @@ blob_fixups: blob_fixups_user_type = {
         'odm/etc/camera/snsc_noface_motiontuning.xml',
     ): blob_fixup()
         .regex_replace('xml=version', 'xml version'),
+    # MIUI's audio framework adds the VIRTUAL_DEEP_BUFFER output flag, the
+    # multiroute device and the MIHC Bluetooth codec. AOSP cannot convert them,
+    # so the audio policy manager rejects the whole primary module.
+    'odm/etc/audio/audio_module_config_primary.xml': blob_fixup()
+        .regex_replace(r'(?s)\n *<!-- MIUI ADD: Audio_MultiRoute -->\n *<(mixPort|devicePort)\b.*?</\1>\n *<!-- END Audio_MultiRoute -->', '')
+        .regex_replace(r'(?s)\n *<!-- MIUI ADD: Audio_MultiRoute -->\n( *<route type="mix" sink="proxy_out" sources="[^"]*),virtual_deep_buffer" />\n.*?<!-- END Audio_MultiRoute -->', r'\n\1" />')
+        .regex_replace(r' +audio/vnd\.mi\.mihc"', '"'),
     # Xiaomi's android.hardware.biometrics.fingerprint-V5-ndk carries the
     # interface hash of the frozen V4, so it is V4 under another name.
     'odm/bin/hw/mfp-daemon': blob_fixup()
