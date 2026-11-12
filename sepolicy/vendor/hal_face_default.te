@@ -1,0 +1,13 @@
+# Xiaomi's face HAL runs its matcher in MiTEE
+allow hal_face_default mitee_device:chr_file rw_file_perms;
+
+allow hal_face_default face_vendor_data_file:dir create_dir_perms;
+allow hal_face_default face_vendor_data_file:file create_file_perms;
+
+add_service(hal_face_default, hal_aek_xiaomi_service)
+
+# It captures frames from the front camera through the camera service
+allow hal_face_default fwk_camera_service:service_manager find;
+binder_call(hal_face_default, cameraserver)
+binder_call(cameraserver, hal_face_default)
+hal_client_domain(hal_face_default, hal_graphics_allocator)

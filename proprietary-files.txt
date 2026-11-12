@@ -2151,6 +2151,13 @@ odm/lib64/rfs/dsp/libbitml_nsp_skel.so
 odm/lib64/rfs/dsp/libhdr_skel.so
 odm/lib64/rfs/dsp/libqsegnetengine_dsp_skel.so;SYMLINK=vendor/lib64/rfs/dsp/libqsegnetengine_dsp_skel.so
 
+# Face
+odm/bin/hw/mifaced
+odm/etc/vintf/manifest/android.hardware.biometrics.face-v4.xml
+odm/etc/vintf/manifest/vendor.xiaomi.hardware.aek.xml
+odm/lib64/libmiface.so
+vendor/lib64/vendor.xiaomi.hardware.aek-V1-ndk.so
+
 # Fingerprint
 odm/lib64/hw/fingerprint.goodix_us.so:odm/lib64/hw/fingerprint.goodix_us.default.so;FIX_SONAME
 odm/lib64/hw/fingerprint.qcom_us.so:odm/lib64/hw/fingerprint.qcom_us.default.so;FIX_SONAME
@@ -2161,6 +2168,17 @@ vendor/lib64/vendor.xiaomi.hardware.fx.tunnel-V1-ndk.so
 
 # GNSS
 odm/etc/izat_device.conf
+
+# MiTEE
+odm/bin/tee-supplicant
+odm/lib64/libteecli.so
+odm/lib64/vendor.qti.qvirt-V1-ndk.so;MODULE_SUFFIX=_odm
+odm/mitee/ta/655a4b46-cd77-11ea-aafbf382a6988e7b.ta
+odm/mitee/ta/66147267-5b44-4aa3-bd734138c7fab03a.ta
+odm/mitee/ta/69e4f326-d5cd-e780-3987619f04784525.ta
+odm/mitee/ta/a13339be-7082-4d2d-bf83a53e4687a635.ta
+odm/mitee/ta/a3ba6512-6e0e-4065-93165e4a7d04ca08.ta
+vendor/lib64/libsi.so
 
 # NFC
 odm/etc/libnfc-hal-st.conf

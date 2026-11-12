@@ -1,3 +1,14 @@
+# Face HAL
+/odm/bin/hw/mifaced                                          u:object_r:hal_face_default_exec:s0
+/data/vendor/face(/.*)?                                      u:object_r:face_vendor_data_file:s0
+
+# MiTEE
+/odm/bin/tee-supplicant                                      u:object_r:tee_exec:s0
+/dev/tee0                                                    u:object_r:mitee_device:s0
+/dev/teepriv0                                                u:object_r:mitee_device:s0
+/data/vendor/mitee(/.*)?                                     u:object_r:mitee_data_file:s0
+/mnt/vendor/persist/mitee(/.*)?                              u:object_r:mitee_persist_file:s0
+
 # StrongBox and Weaver applets on the secure element
 /odm/bin/hw/android\.hardware\.security\.keymint-service\.strongbox-thales u:object_r:vendor_hal_keymint_strongbox_exec:s0
 /odm/bin/hw/android\.hardware\.weaver-service\.thales                    u:object_r:vendor_hal_weaver_default_exec:s0

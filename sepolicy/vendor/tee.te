@@ -1,0 +1,14 @@
+# tee-supplicant starts the MiTEE virtual machine and serves its storage
+allow tee mitee_device:chr_file rw_file_perms;
+allow tee mitee_data_file:dir create_dir_perms;
+allow tee mitee_data_file:file create_file_perms;
+allow tee mitee_persist_file:dir create_dir_perms;
+allow tee mitee_persist_file:file create_file_perms;
+allow tee vendor_gunyah_chr_device:chr_file rw_file_perms;
+
+# Secure storage and rollback counters of MiTEE live in the UFS RPMB
+allow tee vendor_bsg_device:chr_file rw_file_perms;
+
+allow tee kmsg_device:chr_file w_file_perms;
+
+set_prop(tee, vendor_mitee_prop)

@@ -16,6 +16,19 @@ on fs
     mkdir /mnt/vendor/persist/fingerprint 0770 system system
     mkdir /mnt/vendor/persist/fingerprint/meta 0770 system system
 
+    # MiTEE secure storage
+    mkdir /mnt/vendor/persist/mitee 0775 root system
+    mkdir /mnt/vendor/persist/mitee/data 0775 root system
+
+on firmware_mounts_complete
+    # MiTEE, Xiaomi's TEE, runs in a virtual machine that tee-supplicant
+    # starts and then serves storage for
+    chown system system /dev/tee0
+    chmod 0660 /dev/tee0
+    chown system system /dev/teepriv0
+    chmod 0660 /dev/teepriv0
+    start tee-supplicant
+
 on boot
     # Finger state lines of the fingerprint driver, driven by the UDFPS handler
     chown system system /sys/bus/platform/devices/soc:xiaomi_fingerprint/fingerdown
@@ -28,6 +41,10 @@ on post-fs-data
     mkdir /data/vendor/fpdump 0770 system system
     mkdir /data/vendor/fpdump/qfs4008 0770 system system
 
+    # Face templates and MiTEE storage
+    mkdir /data/vendor/face 0770 system system
+    mkdir /data/vendor/mitee 0770 root system
+
     # Thermal configurations of mi_thermald
     mkdir /data/vendor/thermal 0771 root system
     mkdir /data/vendor/thermal/config 0771 root system
@@ -36,3 +53,19 @@ on property:sys.boot_completed=1
     # Lift the thermal limits held while booting
     wait /sys/class/thermal/thermal_message/boot_complete
     write /sys/class/thermal/thermal_message/boot_complete 2
+
+on property:vendor.mitee_vm.boot_completed=1 && property:sys.boot_completed=1
+    start vendor.face-hal
+
+service tee-supplicant /odm/bin/tee-supplicant
+    class core
+    user root
+    group system secure_element nfc drmrpc
+    capabilities SYS_RAWIO
+    disabled
+
+service vendor.face-hal /odm/bin/hw/mifaced
+    class hal
+    user system
+    group system camera
+    disabled

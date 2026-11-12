@@ -6,4 +6,10 @@
 <resources>
     <!-- Whether to show Smooth Display feature in Settings Options -->
     <bool name="config_show_smooth_display">true</bool>
+
+    <!-- The face HAL opens the front camera itself and renders the enrollment
+         preview into a surface of this size. -->
+    <bool name="config_face_enroll_hal_owns_camera">true</bool>
+    <integer name="face_preview_width">640</integer>
+    <integer name="face_preview_height">480</integer>
 </resources>
