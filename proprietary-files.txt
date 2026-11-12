@@ -2162,9 +2162,6 @@ vendor/lib64/vendor.xiaomi.hardware.fx.tunnel-V1-ndk.so
 # GNSS
 odm/etc/izat_device.conf
 
-# IR
-odm/lib64/hw/consumerir.qcom.so
-
 # NFC
 odm/etc/libnfc-hal-st.conf
 odm/etc/libnfc-nci.conf
