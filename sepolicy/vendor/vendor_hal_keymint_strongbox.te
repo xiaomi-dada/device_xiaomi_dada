@@ -1,0 +1,2 @@
+# The StrongBox KeyMint library checks whether boot has completed
+get_prop(vendor_hal_keymint_strongbox, boot_status_prop)

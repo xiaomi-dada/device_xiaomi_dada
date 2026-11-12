@@ -2261,6 +2261,28 @@ odm/etc/sensors/config/tcs3408.json
 odm/etc/sensors/config/vi5300_tof_0.json
 odm/etc/sensors/config/vl53l1_tof_0.json
 
+# StrongBox and Weaver
+odm/bin/hw/android.hardware.security.keymint-service.strongbox-thales
+odm/bin/hw/android.hardware.weaver-service.thales
+odm/etc/init/android.hardware.security.keymint-service.strongbox-thales.rc
+odm/etc/init/android.hardware.weaver-service.thales.rc
+odm/etc/permissions/android.hardware.strongbox_keystore-thales.xml
+odm/etc/vintf/manifest/android.hardware.security.keymint-service.strongbox-thales.xml
+odm/etc/vintf/manifest/android.hardware.security.sharedsecret-service.strongbox-thales.xml
+odm/etc/vintf/manifest/android.hardware.weaver-service.thales.xml
+odm/lib64/ese_weaver_thales.so
+odm/lib64/libjc_keymint-thales.so
+odm/lib64/libjc_keymint_transport-thales.so
+odm/lib64/libjc_weaver_transport.so
+odm/lib64/mi_weaver.so
+vendor/lib64/lib_android_keymaster_keymint_utils.so:vendor/lib64/lib_android_keymaster_keymint_utils_prebuilt.so;FIX_SONAME
+vendor/lib64/libcppbor.so:vendor/lib64/libcppbor_prebuilt.so;FIX_SONAME
+vendor/lib64/libcppbor_external.so:vendor/lib64/libcppbor_external_prebuilt.so;FIX_SONAME
+vendor/lib64/libcppcose_rkp.so:vendor/lib64/libcppcose_rkp_prebuilt.so;FIX_SONAME
+vendor/lib64/libkeymaster_messages.so:vendor/lib64/libkeymaster_messages_prebuilt.so;FIX_SONAME
+vendor/lib64/libkeymaster_portable.so:vendor/lib64/libkeymaster_portable_prebuilt.so;FIX_SONAME
+vendor/lib64/libsoft_attestation_cert.so:vendor/lib64/libsoft_attestation_cert_prebuilt.so;FIX_SONAME
+
 # Thermal
 vendor/bin/mi_thermald
 vendor/etc/init/hw/init.mi_thermald.rc

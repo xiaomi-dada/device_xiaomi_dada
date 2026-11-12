@@ -1,3 +1,7 @@
+# StrongBox and Weaver applets on the secure element
+/odm/bin/hw/android\.hardware\.security\.keymint-service\.strongbox-thales u:object_r:vendor_hal_keymint_strongbox_exec:s0
+/odm/bin/hw/android\.hardware\.weaver-service\.thales                    u:object_r:vendor_hal_weaver_default_exec:s0
+
 # Same process HALs, loaded into app processes by the graphics mapper and camera clients
 /odm/lib64/libanc_single_bokeh\.so         u:object_r:same_process_hal_file:s0
 /odm/lib64/libc\+\+_shared\.so             u:object_r:same_process_hal_file:s0

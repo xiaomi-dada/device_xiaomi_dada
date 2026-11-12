@@ -37,10 +37,30 @@ xiaomi_camera_aidl_libs = (
     'vendor.qti.hardware.camera.offlinecamera-V2-ndk',
 )
 
+# The StrongBox KeyMint HAL was built against the Android 15 keymaster
+# libraries. Android 16 changed the cppbor classes they share, so the HAL keeps
+# Xiaomi's copies.
+xiaomi_keymaster_libs = (
+    'lib_android_keymaster_keymint_utils',
+    'libcppbor',
+    'libcppbor_external',
+    'libcppcose_rkp',
+    'libkeymaster_messages',
+    'libkeymaster_portable',
+    'libsoft_attestation_cert',
+)
+
 
 def xiaomi_camera_aidl_fixup() -> blob_fixup:
     fixup = blob_fixup()
     for lib in xiaomi_camera_aidl_libs:
+        fixup.replace_needed(f'{lib}.so', f'{lib}_prebuilt.so')
+    return fixup
+
+
+def xiaomi_keymaster_fixup() -> blob_fixup:
+    fixup = blob_fixup()
+    for lib in xiaomi_keymaster_libs:
         fixup.replace_needed(f'{lib}.so', f'{lib}_prebuilt.so')
     return fixup
 
@@ -251,6 +271,17 @@ blob_fixups: blob_fixups_user_type = {
     'vendor/lib64/libultrahdr_prebuilt.so': blob_fixup()
         .replace_needed('libjpegdecoder.so', 'libjpegdecoder_prebuilt.so')
         .replace_needed('libjpegencoder.so', 'libjpegencoder_prebuilt.so'),
+    (
+        'odm/bin/hw/android.hardware.security.keymint-service.strongbox-thales',
+        'odm/lib64/libjc_keymint-thales.so',
+        'vendor/lib64/lib_android_keymaster_keymint_utils_prebuilt.so',
+        'vendor/lib64/libcppbor_prebuilt.so',
+        'vendor/lib64/libcppbor_external_prebuilt.so',
+        'vendor/lib64/libcppcose_rkp_prebuilt.so',
+        'vendor/lib64/libkeymaster_messages_prebuilt.so',
+        'vendor/lib64/libkeymaster_portable_prebuilt.so',
+        'vendor/lib64/libsoft_attestation_cert_prebuilt.so',
+    ): xiaomi_keymaster_fixup(),
 }  # fmt: skip
 
 module = ExtractUtilsModule(
