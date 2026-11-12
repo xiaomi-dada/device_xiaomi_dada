@@ -25,6 +25,10 @@ ODM_MANIFEST_FILES += \
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.fingerprint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.fingerprint.xml
 
+# GNSS
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.location.gps.xml:$(TARGET_COPY_OUT_ODM)/etc/permissions/android.hardware.location.gps.xml
+
 # Init
 PRODUCT_PACKAGES += \
     init.dada.rc
@@ -34,6 +38,11 @@ PRODUCT_PACKAGES += \
     FrameworkResOverlayDada \
     SettingsOverlayDada \
     SystemUIOverlayDada
+
+# Sensors
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.sensor.barometer.xml:$(TARGET_COPY_OUT_ODM)/etc/permissions/android.hardware.sensor.barometer.xml \
+    frameworks/native/data/etc/android.hardware.sensor.hifi_sensors.xml:$(TARGET_COPY_OUT_ODM)/etc/permissions/android.hardware.sensor.hifi_sensors.xml
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
