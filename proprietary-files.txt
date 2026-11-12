@@ -2360,7 +2360,6 @@ odm/etc/touch/dynamicrate.json
 odm/etc/touch/gameturbotool-fastinput.json
 odm/etc/touch/gameturbotool.json
 odm/etc/vintf/manifest/vendor.xiaomi.hw.touchfeature-service.xml
-odm/lib64/libtensorflowlite_touch_c.so
 odm/lib64/libtouchreport.so
 odm/lib64/libtouchreport_alg.so
 odm/lib64/libtouchreport_hal.so

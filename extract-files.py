@@ -92,6 +92,10 @@ blob_fixups: blob_fixups_user_type = {
         'odm/lib64/hw/camera.qcom.so',
     ): blob_fixup()
         .replace_needed('android.hardware.sensors-V2-ndk.so', 'android.hardware.sensors-V3-ndk.so'),
+    # Xiaomi's copy of TensorFlow Lite is only used through its stable C API,
+    # which the platform library provides as well.
+    'odm/lib64/libtouchreport_sensor.so': blob_fixup()
+        .replace_needed('libtensorflowlite_touch_c.so', 'libtensorflowlite_c.so'),
     # Xiaomi's android.hardware.biometrics.fingerprint-V5-ndk carries the
     # interface hash of the frozen V4, so it is V4 under another name.
     (
