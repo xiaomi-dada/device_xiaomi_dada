@@ -1,0 +1,66 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Iscle <albertiscle9@gmail.com>
+Date: Thu, 12 Nov 2026 08:43:38 +0100
+Subject: [PATCH] MiuiCamera: Take the Xiaomi system code paths
+
+The camera checks ro.mi.os.version.code and ro.miui.ui.version.code to
+decide whether it runs on HyperOS. Off HyperOS it only uses the public
+capture request keys, so it never sets the vendor tags the camera
+provider needs, such as the snapshot image name, and the full size
+photo is dropped.
+---
+ smali_classes6/Ig/H.smali | 37 +------------------------------------
+ 1 file changed, 1 insertion(+), 36 deletions(-)
+
+diff --git a/smali_classes6/Ig/H.smali b/smali_classes6/Ig/H.smali
+index ef8e022..eced5d3 100644
+--- a/smali_classes6/Ig/H.smali
++++ b/smali_classes6/Ig/H.smali
+@@ -624,43 +624,8 @@
+ .end method
+ 
+ .method public static p()Z
+-    .locals 2
+-
+-    const-string v0, "ro.mi.os.version.code"
+-
+-    const-string v1, ""
+-
+-    invoke-static {v0, v1}, Lmiuix/core/util/SystemProperties;->get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v0
+-
+-    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+-
+-    move-result v0
+-
+-    if-eqz v0, :cond_1
+-
+-    const-string v0, "ro.miui.ui.version.code"
+-
+-    invoke-static {v0, v1}, Lmiuix/core/util/SystemProperties;->get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v0
+-
+-    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+-
+-    move-result v0
+-
+-    if-nez v0, :cond_0
+-
+-    goto :goto_0
+-
+-    :cond_0
+-    const/4 v0, 0x0
+-
+-    return v0
++    .locals 1
+ 
+-    :cond_1
+-    :goto_0
+     const/4 v0, 0x1
+ 
+     return v0
+-- 
+2.56.0
+

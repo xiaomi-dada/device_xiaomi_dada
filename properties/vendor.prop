@@ -1,2 +1,5 @@
+# Camera
+persist.vendor.camera.privapp.list=com.android.camera
+
 # Fingerprint
 persist.vendor.qfp=true

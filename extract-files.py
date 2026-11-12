@@ -240,6 +240,8 @@ blob_fixups: blob_fixups_user_type = {
         'vendor/lib64/libultrahdr_prebuilt.so',
     ): blob_fixup()
         .replace_needed('libimage_io.so', 'libimage_io_prebuilt.so'),
+    'product/priv-app/MiuiCamera/MiuiCamera.apk': blob_fixup()
+        .apktool_patch('blob-patches/MiuiCamera'),
     'vendor/lib64/libcameraopt.so': blob_fixup()
         .add_needed('libprocessgroup_shim.so'),
     'vendor/lib64/libultrahdr_prebuilt.so': blob_fixup()

@@ -1,0 +1,288 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Iscle <albertiscle9@gmail.com>
+Date: Thu, 12 Nov 2026 11:51:59 +0100
+Subject: [PATCH] MiuiCamera: Use the stock mod_device
+
+The app reads ro.product.mod_device to tell global builds from Chinese
+ones and asks for MIUI's Security Center on the latter. Use the stock
+value directly instead of setting the property system-wide.
+---
+ smali/y9/A.smali                              |  8 +--
+ smali_classes2/Y2/c.smali                     |  8 +--
+ .../camera/module/AmbilightModule.smali       |  6 +--
+ smali_classes4/C7/k$c.smali                   |  6 +--
+ smali_classes4/I7/d.smali                     |  6 +--
+ smali_classes4/Tb/a.smali                     |  6 +--
+ smali_classes4/j8/a$c.smali                   | 47 +-----------------
+ smali_classes6/Ai/a.smali                     |  8 +--
+ smali_classes6/Ig/u.smali                     |  8 +--
+ .../pickerwidget/widget/NumberPicker.smali    | 49 +------------------
+ 10 files changed, 10 insertions(+), 142 deletions(-)
+
+diff --git a/smali/y9/A.smali b/smali/y9/A.smali
+index 60228285..bfa30bf1 100644
+--- a/smali/y9/A.smali
++++ b/smali/y9/A.smali
+@@ -108,13 +108,7 @@
+     :cond_1
+     sget-object v2, Ly9/q;->a:Lnf/n;
+ 
+-    const-string/jumbo v2, "ro.product.mod_device"
+-
+-    const-string v3, ""
+-
+-    invoke-static {v2, v3}, Lkc/f;->b(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v2
++    const-string v2, "dada_eea_global"
+ 
+     if-eqz v2, :cond_2
+ 
+diff --git a/smali_classes2/Y2/c.smali b/smali_classes2/Y2/c.smali
+index 067f3e96..1f3941d0 100644
+--- a/smali_classes2/Y2/c.smali
++++ b/smali_classes2/Y2/c.smali
+@@ -175,13 +175,7 @@
+     goto :goto_0
+ 
+     :cond_1
+-    const-string v0, "ro.product.mod_device"
+-
+-    const-string v1, ""
+-
+-    invoke-static {v0, v1}, Lkc/f;->b(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v0
++    const-string v0, "dada_eea_global"
+ 
+     if-eqz v0, :cond_2
+ 
+diff --git a/smali_classes2/com/android/camera/module/AmbilightModule.smali b/smali_classes2/com/android/camera/module/AmbilightModule.smali
+index 9960a4f6..7d13d21b 100644
+--- a/smali_classes2/com/android/camera/module/AmbilightModule.smali
++++ b/smali_classes2/com/android/camera/module/AmbilightModule.smali
+@@ -3813,11 +3813,7 @@
+ 
+     if-nez v1, :cond_4
+ 
+-    const-string v1, "ro.product.mod_device"
+-
+-    invoke-static {v1}, Lkc/f;->a(Ljava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v1
++    const-string v1, "dada_eea_global"
+ 
+     if-eqz v1, :cond_2
+ 
+diff --git a/smali_classes4/C7/k$c.smali b/smali_classes4/C7/k$c.smali
+index 38baea29..9c74585b 100644
+--- a/smali_classes4/C7/k$c.smali
++++ b/smali_classes4/C7/k$c.smali
+@@ -660,12 +660,8 @@
+     :goto_7
+     if-nez v0, :cond_11
+ 
+-    const-string v0, "ro.product.mod_device"
+-
+     :try_start_4
+-    invoke-static {v0, v4}, LC7/h;->a(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v5
++    const-string v5, "dada_eea_global"
+ 
+     const-string v12, "_alpha"
+ 
+diff --git a/smali_classes4/I7/d.smali b/smali_classes4/I7/d.smali
+index 1f905f17..c1a5f1e8 100644
+--- a/smali_classes4/I7/d.smali
++++ b/smali_classes4/I7/d.smali
+@@ -223,11 +223,7 @@
+ 
+     sput-boolean v0, LI7/d;->l:Z
+ 
+-    const-string v0, "ro.product.mod_device"
+-
+-    invoke-static {v0, v3}, Lkc/f;->b(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v0
++    const-string v0, "dada_eea_global"
+ 
+     const-string v3, "_global"
+ 
+diff --git a/smali_classes4/Tb/a.smali b/smali_classes4/Tb/a.smali
+index c90e5ceb..6fc1c739 100644
+--- a/smali_classes4/Tb/a.smali
++++ b/smali_classes4/Tb/a.smali
+@@ -19,11 +19,7 @@
+ 
+     sget-object v1, Landroid/os/Build;->DEVICE:Ljava/lang/String;
+ 
+-    const-string v2, "ro.product.mod_device"
+-
+-    invoke-static {v2, v1}, Lkc/f;->b(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v2
++    const-string v2, "dada_eea_global"
+ 
+     const-string v3, "get(...)"
+ 
+diff --git a/smali_classes4/j8/a$c.smali b/smali_classes4/j8/a$c.smali
+index 6d5c3f90..a5938b1f 100644
+--- a/smali_classes4/j8/a$c.smali
++++ b/smali_classes4/j8/a$c.smali
+@@ -50,53 +50,8 @@
+ .method public final invoke()Ljava/lang/Object;
+     .locals 2
+ 
+-    const-string p0, "ro.product.mod_device"
++    const-string p0, "dada_eea_global"
+ 
+-    :try_start_0
+-    const-string v0, "android.os.SystemProperties"
+-
+-    invoke-static {v0}, Ljava/lang/Class;->forName(Ljava/lang/String;)Ljava/lang/Class;
+-
+-    move-result-object v0
+-
+-    const-class v1, Ljava/lang/String;
+-
+-    filled-new-array {v1}, [Ljava/lang/Class;
+-
+-    move-result-object v1
+-
+-    invoke-static {v0, v1}, Lj8/c;->a(Ljava/lang/Class;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+-
+-    move-result-object v0
+-
+-    filled-new-array {p0}, [Ljava/lang/Object;
+-
+-    move-result-object p0
+-
+-    const/4 v1, 0x0
+-
+-    invoke-virtual {v0, v1, p0}, Ljava/lang/reflect/Method;->invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+-
+-    move-result-object p0
+-
+-    const-string v0, "null cannot be cast to non-null type kotlin.String"
+-
+-    invoke-static {p0, v0}, Lkotlin/jvm/internal/l;->d(Ljava/lang/Object;Ljava/lang/String;)V
+-
+-    check-cast p0, Ljava/lang/String;
+-    :try_end_0
+-    .catchall {:try_start_0 .. :try_end_0} :catchall_0
+-
+-    goto :goto_0
+-
+-    :catchall_0
+-    move-exception p0
+-
+-    invoke-virtual {p0}, Ljava/lang/Throwable;->printStackTrace()V
+-
+-    const-string p0, ""
+-
+-    :goto_0
+     const/4 v0, 0x0
+ 
+     const-string v1, "_global"
+diff --git a/smali_classes6/Ai/a.smali b/smali_classes6/Ai/a.smali
+index 3daf658a..e376417a 100644
+--- a/smali_classes6/Ai/a.smali
++++ b/smali_classes6/Ai/a.smali
+@@ -27,13 +27,7 @@
+ .method static constructor <clinit>()V
+     .locals 6
+ 
+-    const-string v0, "ro.product.mod_device"
+-
+-    const-string v1, ""
+-
+-    invoke-static {v0, v1}, Lmiuix/core/util/SystemProperties;->get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v0
++    const-string v0, "dada_eea_global"
+ 
+     const-string v1, "_global"
+ 
+diff --git a/smali_classes6/Ig/u.smali b/smali_classes6/Ig/u.smali
+index 7a68a027..fdf6ea5c 100644
+--- a/smali_classes6/Ig/u.smali
++++ b/smali_classes6/Ig/u.smali
+@@ -1487,13 +1487,7 @@
+     move v0, v1
+ 
+     :goto_2
+-    const-string v2, "ro.product.mod_device"
+-
+-    const-string v6, ""
+-
+-    invoke-static {v2, v6}, LFc/a;->a(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v2
++    const-string v2, "dada_eea_global"
+ 
+     const-string v6, "_global"
+ 
+diff --git a/smali_classes6/miuix/pickerwidget/widget/NumberPicker.smali b/smali_classes6/miuix/pickerwidget/widget/NumberPicker.smali
+index 6faf619e..4e895eae 100644
+--- a/smali_classes6/miuix/pickerwidget/widget/NumberPicker.smali
++++ b/smali_classes6/miuix/pickerwidget/widget/NumberPicker.smali
+@@ -1995,54 +1995,7 @@
+ 
+     if-nez v0, :cond_0
+ 
+-    const-string v0, "android.os.SystemProperties"
+-
+-    :try_start_0
+-    invoke-static {v0}, Ljava/lang/Class;->forName(Ljava/lang/String;)Ljava/lang/Class;
+-
+-    move-result-object v0
+-    :try_end_0
+-    .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_0} :catch_0
+-
+-    goto :goto_0
+-
+-    :catch_0
+-    move-exception v1
+-
+-    const-string v2, "Cant find class "
+-
+-    invoke-virtual {v2, v0}, Ljava/lang/String;->concat(Ljava/lang/String;)Ljava/lang/String;
+-
+-    move-result-object v0
+-
+-    const-string v2, "ReflectUtil"
+-
+-    invoke-static {v2, v0, v1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+-
+-    const/4 v0, 0x0
+-
+-    :goto_0
+-    const-class v1, Ljava/lang/String;
+-
+-    filled-new-array {v1, v1}, [Ljava/lang/Class;
+-
+-    move-result-object v1
+-
+-    const-string v2, "ro.product.mod_device"
+-
+-    const-string v3, ""
+-
+-    filled-new-array {v2, v3}, [Ljava/lang/Object;
+-
+-    move-result-object v2
+-
+-    const-string v3, "get"
+-
+-    invoke-static {v0, v3, v1, v2}, LA/b;->k(Ljava/lang/Class;Ljava/lang/String;[Ljava/lang/Class;[Ljava/lang/Object;)Ljava/lang/Object;
+-
+-    move-result-object v0
+-
+-    check-cast v0, Ljava/lang/String;
++    const-string v0, "dada_eea_global"
+ 
+     iput-object v0, p0, Lmiuix/pickerwidget/widget/NumberPicker;->R0:Ljava/lang/String;
+ 
+-- 
+2.56.0
+

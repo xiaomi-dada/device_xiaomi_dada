@@ -2004,6 +2004,7 @@ odm/lib64/libmicamGlobalPool.so
 odm/lib64/libMiEmojiEffect.so
 odm/lib64/libMiMotion.so
 odm/lib64/libminikin.xiaomi.so
+odm/lib64/libmiocr.so
 odm/lib64/libmiphone_capture_bokeh.so
 odm/lib64/libmiphone_dualcam_depth_aideploy.so
 odm/lib64/libMiPhotoFilter.so
@@ -2070,6 +2071,7 @@ odm/lib64/libTrueSight.so
 odm/lib64/libvega_common.so
 odm/lib64/libvideoml.so
 odm/lib64/libwa_widelens_undistort.so
+odm/lib64/libxmi_slow_motion_mein.so
 odm/lib64/qsn1nrt430.bin;SYMLINK=vendor/lib64/qsn1nrt430.bin
 odm/lib64/qsn1nrt43180.bin
 odm/lib64/qsn1nrt43270.bin;SYMLINK=vendor/lib64/qsn1nrt43270.bin
@@ -2094,6 +2096,7 @@ odm/lib64/vendor.xiaomi.hardware.aidlbgservice-V1-impl.so
 odm/lib64/vendor.xiaomi.hardware.aidlbgservice-V1-ndk.so
 odm/lib64/vendor.xiaomi.hardware.bgservice@1.0-impl.so
 odm/lib64/vendor.xiaomi.hardware.bgservice@1.0.so
+product/priv-app/MiuiCamera/MiuiCamera.apk;OVERRIDES=Aperture
 vendor/etc/camera/cameraopt_perf.json
 vendor/etc/camera/cameraopt_vendor.json
 vendor/etc/media_profiles_V1_0.xml
@@ -2111,7 +2114,10 @@ vendor/lib64/libjpegdecoder.so:vendor/lib64/libjpegdecoder_prebuilt.so;FIX_SONAM
 vendor/lib64/libjpegencoder.so:vendor/lib64/libjpegencoder_prebuilt.so;FIX_SONAME
 vendor/lib64/libkcl_a730.so
 vendor/lib64/libopencv_core.so
+vendor/lib64/libopencv_core_se.so
 vendor/lib64/libopencv_imgproc.so
+vendor/lib64/libopencv_imgproc_se.so
+vendor/lib64/libSEGModel.so
 vendor/lib64/libultrahdr.so:vendor/lib64/libultrahdr_prebuilt.so;FIX_SONAME
 vendor/lib64/vendor.qti.hardware.camera.offlinecamera-V2-ndk.so:vendor/lib64/vendor.qti.hardware.camera.offlinecamera-V2-ndk_prebuilt.so;FIX_SONAME
 vendor/lib64/vendor.xiaomi.hardware.aon-V1-ndk.so

@@ -1,0 +1,9 @@
+# Xiaomi camera: saving goes through the background service hosted by the
+# camera provider, which calls back into the app
+allow platform_app hal_aidlbgservice_service:service_manager find;
+binder_call(platform_app, hal_camera_default)
+binder_call(hal_camera_default, platform_app)
+
+get_prop(platform_app, vendor_camera_p3enable_prop)
+get_prop(platform_app, vendor_camera_sensor_prop)
+get_prop(platform_app, vendor_camera_xdrversion_prop)
