@@ -2168,6 +2168,9 @@ odm/etc/libnfc-nci.conf
 odm/etc/st54l_conf.txt
 odm/firmware/st54l_fw.bin
 
+# Secure element
+vendor/etc/hal_uuid_map_dada.xml
+
 # Sensors
 odm/bin/hw/vendor.xiaomi.sensor.citsensorservice.aidl
 odm/etc/init/vendor.xiaomi.sensor.citsensorservice.aidl.rc
