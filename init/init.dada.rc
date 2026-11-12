@@ -3,6 +3,9 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+import /vendor/etc/init/hw/init.batterysecret.rc
+import /vendor/etc/init/hw/init.mi_thermald.rc
+
 on fs
     # Cirrus Logic CS35L43 speaker protection calibration
     mkdir /mnt/vendor/persist/audio 0775 audioserver audio
@@ -24,3 +27,12 @@ on post-fs-data
     # Ultrasonic fingerprint sensor debug data
     mkdir /data/vendor/fpdump 0770 system system
     mkdir /data/vendor/fpdump/qfs4008 0770 system system
+
+    # Thermal configurations of mi_thermald
+    mkdir /data/vendor/thermal 0771 root system
+    mkdir /data/vendor/thermal/config 0771 root system
+
+on property:sys.boot_completed=1
+    # Lift the thermal limits held while booting
+    wait /sys/class/thermal/thermal_message/boot_complete
+    write /sys/class/thermal/thermal_message/boot_complete 2
