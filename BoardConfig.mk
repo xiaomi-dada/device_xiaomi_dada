@@ -14,6 +14,7 @@ TARGET_OTA_ASSERT_DEVICE := dada
 
 # Display
 TARGET_SCREEN_DENSITY := 520
+$(call soong_config_set,qtidisplay,panel_dimensions_in_tenth_mm,true)
 $(call soong_config_set,qtidisplay,xiaomi_rgb_notifier,true)
 
 # Kernel
