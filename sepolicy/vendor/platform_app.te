@@ -7,3 +7,7 @@ binder_call(hal_camera_default, platform_app)
 get_prop(platform_app, vendor_camera_p3enable_prop)
 get_prop(platform_app, vendor_camera_sensor_prop)
 get_prop(platform_app, vendor_camera_xdrversion_prop)
+
+# Xiaomi camera: downloadable modes such as long exposure and panorama
+# load their native libraries from the app's data directory
+allow platform_app app_data_file:file execute;
