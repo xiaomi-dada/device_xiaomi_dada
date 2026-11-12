@@ -10,6 +10,9 @@ $(call inherit-product, device/xiaomi/sm8750-common/common.mk)
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/permissions/privapp-permissions-miuicamera.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-miuicamera.xml
 
+PRODUCT_PACKAGES += \
+    vendor.xiaomi.hardware.misys.common-service.xiaomi
+
 # Fingerprint
 $(call soong_config_set,XIAOMI_BIOMETRICS_FINGERPRINT,IMPL_VER,V2)
 PRODUCT_PACKAGES += \

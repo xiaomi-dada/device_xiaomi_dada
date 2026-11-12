@@ -11,3 +11,7 @@ get_prop(platform_app, vendor_camera_xdrversion_prop)
 # Xiaomi camera: downloadable modes such as long exposure and panorama
 # load their native libraries from the app's data directory
 allow platform_app app_data_file:file execute;
+
+# Xiaomi camera: watermarks, fonts and filters are handed to the camera
+# provider through MiSys
+hal_client_domain(platform_app, hal_misys_xiaomi)
