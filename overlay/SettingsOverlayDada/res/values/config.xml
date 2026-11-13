@@ -8,8 +8,9 @@
     <bool name="config_show_smooth_display">true</bool>
 
     <!-- The face HAL opens the front camera itself and renders the enrollment
-         preview into a surface of this size. -->
+         preview into a surface of this size. The preview is shown in
+         a square, so use the only square size the front camera supports. -->
     <bool name="config_face_enroll_hal_owns_camera">true</bool>
-    <integer name="face_preview_width">640</integer>
-    <integer name="face_preview_height">480</integer>
+    <integer name="face_preview_width">2448</integer>
+    <integer name="face_preview_height">2448</integer>
 </resources>
