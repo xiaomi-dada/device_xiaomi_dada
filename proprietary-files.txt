@@ -2099,7 +2099,7 @@ odm/lib64/vendor.xiaomi.hardware.bgservice@1.0.so
 product/priv-app/MiuiCamera/MiuiCamera.apk;OVERRIDES=Aperture
 vendor/etc/camera/cameraopt_perf.json
 vendor/etc/camera/cameraopt_vendor.json
-vendor/etc/media_profiles_V1_0.xml
+vendor/etc/media_profiles_sun.xml
 vendor/etc/vintf/manifest/vendor.xiaomi.hardware.dynamiccameraserver.xml
 vendor/etc/vintf/manifest/vendor.xiaomi.hardware.quickcamera.xml
 vendor/lib64/android.hardware.camera.common-V1-ndk.so:vendor/lib64/android.hardware.camera.common-V1-ndk_prebuilt.so;FIX_SONAME
