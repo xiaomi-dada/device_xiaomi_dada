@@ -11,3 +11,7 @@ allow hal_face_default fwk_camera_service:service_manager find;
 binder_call(hal_face_default, cameraserver)
 binder_call(cameraserver, hal_face_default)
 hal_client_domain(hal_face_default, hal_graphics_allocator)
+
+# The secure camera path runs through Qualcomm's trusted VM, reached over QRTR
+allow hal_face_default self:qipcrtr_socket create_socket_perms_no_ioctl;
+allow hal_face_default vendor_membuf_dev:chr_file rw_file_perms;
