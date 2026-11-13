@@ -1,17 +1,18 @@
 # Xiaomi camera: saving goes through the background service hosted by the
 # camera provider, which calls back into the app
-allow platform_app hal_aidlbgservice_service:service_manager find;
-binder_call(platform_app, hal_camera_default)
-binder_call(hal_camera_default, platform_app)
+allow platform_app_all hal_aidlbgservice_service:service_manager find;
+binder_call(platform_app_all, hal_camera_default)
+binder_call(hal_camera_default, platform_app_all)
 
-get_prop(platform_app, vendor_camera_p3enable_prop)
-get_prop(platform_app, vendor_camera_sensor_prop)
-get_prop(platform_app, vendor_camera_xdrversion_prop)
+get_prop(platform_app_all, vendor_camera_p3enable_prop)
+get_prop(platform_app_all, vendor_camera_sensor_prop)
+get_prop(platform_app_all, vendor_camera_xdrversion_prop)
 
 # Xiaomi camera: downloadable modes such as long exposure and panorama
 # load their native libraries from the app's data directory
-allow platform_app app_data_file:file execute;
+allow platform_app_all app_data_file:file execute;
 
 # Xiaomi camera: watermarks, fonts and filters are handed to the camera
 # provider through MiSys
 hal_client_domain(platform_app, hal_misys_xiaomi)
+hal_client_domain(platform_app_36, hal_misys_xiaomi)
