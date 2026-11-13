@@ -43,6 +43,10 @@ PRODUCT_PACKAGES += \
     SettingsOverlayDada \
     SystemUIOverlayDada
 
+# PowerShare
+PRODUCT_PACKAGES += \
+    vendor.lineage.powershare-service.xiaomi
+
 # Secure element
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.nfc.ese.xml:$(TARGET_COPY_OUT_ODM)/etc/permissions/android.hardware.nfc.ese.xml \

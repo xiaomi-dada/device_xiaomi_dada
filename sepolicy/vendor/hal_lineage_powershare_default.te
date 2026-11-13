@@ -1,0 +1,3 @@
+# Reverse wireless charging is switched through the charger driver's sysfs node
+allow hal_lineage_powershare_default vendor_sysfs_battery_supply:dir search;
+allow hal_lineage_powershare_default vendor_sysfs_battery_supply:file rw_file_perms;
