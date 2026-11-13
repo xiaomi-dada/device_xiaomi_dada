@@ -61,5 +61,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH)
 
+# Telephony
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.telephony.euicc.xml:$(TARGET_COPY_OUT_ODM)/etc/permissions/android.hardware.telephony.euicc.xml \
+    frameworks/native/data/etc/android.hardware.telephony.euicc.mep.xml:$(TARGET_COPY_OUT_ODM)/etc/permissions/android.hardware.telephony.euicc.mep.xml
+
 # Inherit from the proprietary version
 $(call inherit-product, vendor/xiaomi/dada/dada-vendor.mk)
