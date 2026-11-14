@@ -1,9 +1,5 @@
 [
   {
-    "repository": "android_device_xiaomi_dada-kernel",
-    "target_path": "device/xiaomi/dada-kernel"
-  },
-  {
     "repository": "android_device_xiaomi_sm8750-common",
     "target_path": "device/xiaomi/sm8750-common"
   }

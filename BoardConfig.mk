@@ -4,7 +4,6 @@
 #
 
 DEVICE_PATH := device/xiaomi/dada
-KERNEL_PREBUILT_PATH := device/xiaomi/dada-kernel
 
 # Inherit from sm8750-common
 include device/xiaomi/sm8750-common/BoardConfigCommon.mk
@@ -18,22 +17,9 @@ $(call soong_config_set,qtidisplay,panel_dimensions_in_tenth_mm,true)
 $(call soong_config_set,qtidisplay,xiaomi_rgb_notifier,true)
 
 # Kernel
-TARGET_PREBUILT_KERNEL := $(KERNEL_PREBUILT_PATH)/Image
-
-BOARD_PREBUILT_DTBIMAGE_DIR := $(KERNEL_PREBUILT_PATH)/dtbs
-BOARD_PREBUILT_DTBOIMAGE := $(KERNEL_PREBUILT_PATH)/dtbo.img
-
-# Kernel modules
-BOARD_SYSTEM_DLKM_SRC := $(KERNEL_PREBUILT_PATH)/system_dlkm
-
-BOARD_VENDOR_KERNEL_MODULES := $(wildcard $(KERNEL_PREBUILT_PATH)/vendor_dlkm/*.ko)
-BOARD_VENDOR_KERNEL_MODULES_BLOCKLIST_FILE := $(KERNEL_PREBUILT_PATH)/vendor_dlkm/modules.blocklist
-BOARD_VENDOR_KERNEL_MODULES_LOAD := $(strip $(shell cat $(KERNEL_PREBUILT_PATH)/vendor_dlkm/modules.load))
-
-BOARD_VENDOR_RAMDISK_KERNEL_MODULES := $(wildcard $(KERNEL_PREBUILT_PATH)/vendor_ramdisk/*.ko)
-BOARD_VENDOR_RAMDISK_KERNEL_MODULES_BLOCKLIST_FILE := $(KERNEL_PREBUILT_PATH)/vendor_ramdisk/modules.blocklist
-BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(KERNEL_PREBUILT_PATH)/vendor_ramdisk/modules.load))
-BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD := $(strip $(shell cat $(KERNEL_PREBUILT_PATH)/vendor_ramdisk/modules.load.recovery))
+TARGET_KERNEL_CONFIG += vendor/xiaomi/dada.config
+TARGET_KERNEL_ADDITIONAL_FLAGS += CONFIG_DADA_DTB=y
+TARGET_MERGE_DTBOS_WILDCARD := dada-sm8750-overlay
 
 # Properties
 TARGET_ODM_PROP += $(DEVICE_PATH)/properties/odm.prop
