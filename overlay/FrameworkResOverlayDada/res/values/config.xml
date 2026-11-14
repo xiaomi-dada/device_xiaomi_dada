@@ -32,6 +32,10 @@
         <item>3200.0</item>
     </array>
 
+    <!-- The light sensor that drives the auto brightness: the brighter of the front
+         and back ambient light sensors, combined by the sensors HAL. -->
+    <string name="config_displayLightSensorType" translatable="false">org.lineageos.sensor.fused_light</string>
+
     <!-- Array of light sensor lux values to define our levels for auto backlight
          brightness support. -->
     <integer-array name="config_autoBrightnessLevels">
