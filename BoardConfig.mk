@@ -23,6 +23,7 @@ TARGET_MERGE_DTBOS_WILDCARD := dada-sm8750-overlay
 
 # Properties
 TARGET_ODM_PROP += $(DEVICE_PATH)/properties/odm.prop
+TARGET_PRODUCT_PROP += $(DEVICE_PATH)/properties/product.prop
 TARGET_VENDOR_PROP += $(DEVICE_PATH)/properties/vendor.prop
 
 # SEPolicy

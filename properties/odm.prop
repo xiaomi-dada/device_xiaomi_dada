@@ -12,6 +12,9 @@ vendor.audio.usb.multi.ch.play=true
 bluetooth.device.default_name=Xiaomi 15
 
 # Camera
+debug.config.video.hevchdr10.encode.support=true
+debug.config.video.p3.encode.support=true
+persist.sys.miui.camera.quickcamera.supported=true
 ro.vendor.dynamiccamera.ability_level=2
 
 # Display

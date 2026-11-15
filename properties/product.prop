@@ -1,0 +1,3 @@
+# Camera
+ro.miui.notch=1
+ro.product.camera.livephoto.support=3
