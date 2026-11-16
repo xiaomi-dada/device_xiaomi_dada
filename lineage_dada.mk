@@ -41,3 +41,7 @@ PRODUCT_BUILD_PROP_OVERRIDES += \
     DeviceProduct=$(PRODUCT_SYSTEM_NAME)
 
 PRODUCT_GMS_CLIENTID_BASE := android-xiaomi
+
+# Updates for each build flavour, from its own index
+PRODUCT_PRODUCT_PROPERTIES += \
+    lineage.updater.uri=https://dl.ilovekt.com/lineage/{device}/$(if $(filter true,$(WITH_GMS)),gapps,vanilla)/{incr}.json
