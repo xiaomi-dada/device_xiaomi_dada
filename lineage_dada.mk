@@ -7,6 +7,18 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
+# GApps build (WITH_GMS=true): MindTheGapps (vendor/gapps) built in, named
+# lineage-<version>-<date>-UNOFFICIAL-GAPPS-dada. The build ID must be set before
+# Lineage's config, which derives the version from it.
+ifeq ($(WITH_GMS),true)
+TARGET_UNOFFICIAL_BUILD_ID := GAPPS
+$(call inherit-product, vendor/gapps/arm64/arm64-vendor.mk)
+# Its makefiles add $(LOCAL_PATH) as their namespace, which inherit-product doesn't set.
+PRODUCT_SOONG_NAMESPACES += \
+    vendor/gapps/arm64 \
+    vendor/gapps/common
+endif
+
 # Inherit some common Lineage stuff.
 $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 
